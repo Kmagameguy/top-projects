@@ -24,13 +24,8 @@ class SharkAttackGame
     ask_for_player_input
     return if @saved_and_quit
 
-    @shark_position = @incorrect_guesses.size
-    draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
-    if game_over?
-      draw_game_over(@word_to_guess, won: game_won)
-    else
-      play
-    end
+    show_round_results
+    game_over? ? draw_game_over : play
   end
 
   private
@@ -49,7 +44,7 @@ class SharkAttackGame
       puts 'Invalid option.  Try again.'
       ask_for_player_input
     else
-      save_input
+      record_input
     end
   end
 
@@ -101,8 +96,13 @@ class SharkAttackGame
       @input =~ /[^a-z]/)
   end
 
-  def save_input
+  def record_input
     @word_to_guess.chars.include?(@input) ? @correct_guesses << @input : @incorrect_guesses << @input
+  end
+
+  def show_round_results
+    @shark_position = @incorrect_guesses.size
+    draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 end
 
