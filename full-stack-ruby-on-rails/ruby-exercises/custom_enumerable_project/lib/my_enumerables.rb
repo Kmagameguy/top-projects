@@ -41,6 +41,14 @@ module Enumerable
       self
     end
   end
+
+  def my_map
+    if block_given?
+      arr = []
+      my_each { |item| arr << yield(item) }
+      arr
+    end
+  end
 end
 
 # You will first have to define my_each
