@@ -2,16 +2,15 @@ def bubble_sort(array)
   max_iterations = array.length
 
   while max_iterations > 1 do
-    index = 0
-    while index < array.length - 1 do
-      current_value = array[index]
+    array.each_with_index do |value, index|
+      current_value = value
       next_value = array[index + 1]
+      break if next_value.nil?
 
       if current_value > next_value
         array[index] = next_value
         array[index + 1] = current_value
       end
-      index += 1
     end
     max_iterations -= 1
   end
