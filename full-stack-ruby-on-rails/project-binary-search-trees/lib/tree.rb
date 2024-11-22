@@ -158,6 +158,13 @@ class Tree
     end
   end
 
+  def balanced?
+    l_tree_size = height(@root.left)
+    r_tree_size = height(@root.right)
+
+    (l_tree_size - r_tree_size).between?(0, 1)
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right

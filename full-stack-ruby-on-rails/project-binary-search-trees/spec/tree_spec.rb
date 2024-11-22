@@ -152,4 +152,18 @@ RSpec.describe 'tree' do
       expect(tree.depth(5)).to be 2
     end
   end
+
+  describe 'determining whether a tree is balanced' do
+    it 'returns true if the tree is balanced' do
+      tree = Tree.new([1,2,3,4,5])
+      expect(tree.balanced?).to be true
+    end
+
+    it 'returns false if the tree is unbalanced' do
+      tree = Tree.new([1,2,3,4,5])
+      tree.delete(4)
+      tree.delete(5)
+      expect(tree.balanced?).to be false
+    end
+  end
 end
