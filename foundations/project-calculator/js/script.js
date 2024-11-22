@@ -7,7 +7,6 @@ class Memory {
         this.firstNum  = null;
         this.operator  = null;
         this.secondNum = null;
-        this.hasHistory = false;
     }
 
     equals() {
@@ -40,7 +39,6 @@ class Memory {
     }
 
     setHistory() {
-        this.hasHistory = true;
         CLEAR_BUTTON.innerText = 'C';
     }
 
@@ -105,7 +103,6 @@ class Display {
     clear() {
         this.update('0');
         memory.shift();
-        memory.hasHistory = false;
         CLEAR_BUTTON.innerText = 'AC';
     }
 
