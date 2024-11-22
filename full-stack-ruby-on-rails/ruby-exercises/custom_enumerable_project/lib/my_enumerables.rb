@@ -30,6 +30,17 @@ module Enumerable
       count
     end
   end
+
+  def my_each_with_index
+    if block_given?
+      index = 0
+      my_each do |item|
+        yield(item, index)
+        index += 1
+      end
+      self
+    end
+  end
 end
 
 # You will first have to define my_each
