@@ -3,12 +3,47 @@
 # A player character
 class Player
   attr_accessor :name, :moves
-  attr_reader :character
+  attr_reader :marker
 
-  def initialize(character, name = 'Computer')
-    @character = character
+  def initialize(marker, name = 'Computer')
+    @marker = marker
     @name = name
     @moves = []
+  end
+end
+
+# A game board which displays the current open and marked cells to the player
+class Board
+  def initialize(size)
+    @board = Array.new(size, ' ')
+    show_board
+  end
+
+  def update_cells(move_list = [], marker = ' ')
+    # Offset by 1 to map back from 1-indexed array to @board's 0-indexed array
+    @board[move_list.last - 1] = marker if move_list.last
+    show_board
+  end
+
+  private
+
+  def show_board
+    new_rows = [2, 5]
+    clear_screen
+    @board.each_with_index do |cell, index|
+      draw_cell(cell)
+      puts "\n" if new_rows.include?(index)
+    end
+    puts "\n\n"
+  end
+
+  def clear_screen
+    system('clear')
+    puts "\n"
+  end
+
+  def draw_cell(value)
+    print "|#{value}|"
   end
 end
 
@@ -25,13 +60,12 @@ class NoughtsAndCrossesGame
     [3, 5, 7]
   ].freeze
 
-  BOARD = Array.new(WIN_CONDITIONS.flatten.uniq.size, ' ')
-
   def initialize(name)
     @player = Player.new('x', name)
     @computer = Player.new('o')
     @current_player = @computer
-    show_board
+    @board = Board.new(WIN_CONDITIONS.flatten.uniq.size)
+    @board.update_cells
   end
 
   def play
@@ -41,7 +75,7 @@ class NoughtsAndCrossesGame
                              else
                                random_move
                              end
-    show_board
+    @board.update_cells(@current_player.moves, @current_player.marker)
     play unless game_over?
   end
 
@@ -83,31 +117,6 @@ class NoughtsAndCrossesGame
     no_moves_left = (@player.moves + @computer.moves).count >= 9
     puts "Game over! It's a draw!" if no_moves_left
     no_moves_left
-  end
-
-  def clear_screen
-    system('clear')
-    puts "\n"
-  end
-
-  def update_marked_cells
-    player = @current_player
-    BOARD[player.moves.last - 1] = player.character if player.moves.last
-  end
-
-  def draw_cell(value)
-    print "|#{value}|"
-  end
-
-  def show_board
-    new_rows = [2, 5]
-    clear_screen
-    update_marked_cells
-    BOARD.each_with_index do |cell, index|
-      draw_cell(cell)
-      puts "\n" if new_rows.include?(index)
-    end
-    puts "\n\n"
   end
 end
 
