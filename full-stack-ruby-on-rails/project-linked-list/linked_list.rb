@@ -89,6 +89,24 @@ class LinkedList
     match
   end
 
+  def find(value)
+    return nil if @head.nil?
+
+    reference = @head
+    counter = 0
+    index = nil
+
+    while reference.next_node
+      index = counter if reference.data == value
+      break if reference.data == value
+
+      reference = reference.next_node
+      counter += 1
+    end
+
+    index
+  end
+
   def find_tail
     current_node = @head
     current_node = current_node.next_node while current_node.next_node
@@ -114,6 +132,9 @@ p list.contains?('f') # false
 list.append(30)
 
 p list.contains?(30) # true
+p list.find(20)
+p list.find('Cowabunga')
+
 # Build the following methods in your linked list class:
 #   1. append(value) adds a new node containing value to the end of the list
 #   2. prepend(value) adds a new node containing value to the start of the list
