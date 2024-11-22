@@ -4,6 +4,7 @@ const playerButtons = document.querySelectorAll('button');
 const computerChoiceDisplay = document.querySelector('#computer-choice');
 const playerChoiceDisplay = document.querySelector('#player-choice');
 const roundResultDisplay = document.querySelector('#round-result');
+const playerScoreDisplay = document.querySelector('#player-score');
 
 const CHOICES = ["rock", "paper", "scissors"];
 
@@ -19,6 +20,8 @@ const VERBS = {
     "scissors": "cuts"
 };
 
+let playerScore = 0;
+
 function RoundResult(incrementScore, winningChoice=null, losingChoice=null) {
     let playerWinOrLose = incrementScore ? "You win!" : "You lose!";
 
@@ -29,6 +32,10 @@ function RoundResult(incrementScore, winningChoice=null, losingChoice=null) {
     }
 
     this.incrementScore = incrementScore;
+}
+
+function updateScore(playerScore) {
+    playerScoreDisplay.textContent = `Score: ${playerScore}`;
 }
 
 function getComputerChoice() {
@@ -51,7 +58,6 @@ function promptForPlayerHand() {
 }
 
 function playGame(e) {
-    let playerScore = 0;
     let playerChoice = e.target.id;
     let computerChoice = getComputerChoice();
     let roundResult = playRound(playerChoice, computerChoice);
@@ -61,9 +67,14 @@ function playGame(e) {
     roundResultDisplay.textContent = `=> ${roundResult.resultText}`;
 
     if(roundResult.incrementScore) {
-        ++playerScore;
+        updateScore(++playerScore);
     }
-    console.log(`You won ${playerScore} rounds.`);
+
+    if (playerScore === 5) {
+        roundResultDisplay.textContent += ' Congrats!  You won 5 rounds, game over!';
+        playerButtons.forEach(button => button.disabled = true);
+    }
 }
 
+updateScore(playerScore);
 playerButtons.forEach(button => button.addEventListener('click',playGame));
