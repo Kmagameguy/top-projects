@@ -103,9 +103,7 @@ class NoughtsAndCrossesGame
   end
 
   def random_move
-    selection = @board.available_cells(all_moves).sample
-    puts "#{@current_player.name} selected #{selection}."
-    selection
+    @board.available_cells(all_moves).sample
   end
 
   def game_over?
