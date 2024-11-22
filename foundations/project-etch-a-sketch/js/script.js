@@ -2,6 +2,7 @@ const GAME_BOARD = document.querySelector('#grid-container');
 const GRID_SIZE_BTN = document.querySelector('#change-grid');
 const GRID_MAX_SIZE = 512;
 const CELL_THRESHOLDS = [1, 100];
+const RGB_MAX_VALUE = 255;
 
 
 function drawGrid(numCellsPerSide=16) {
@@ -45,7 +46,14 @@ function calculateNumberOfCells(width) {
 }
 
 function highlightBox(e) {
-    e.target.classList.toggle('marked');
+    if (e.target.style.backgroundColor) { e.target.style.backgroundColor = '' }
+    else {
+        e.target.style.backgroundColor = `rgb(${randValueOnRGBScale()}, ${randValueOnRGBScale()}, ${randValueOnRGBScale()})`;
+    }
+}
+
+function randValueOnRGBScale() {
+    return Math.floor(Math.random() * RGB_MAX_VALUE);
 }
 
 drawGrid();
