@@ -1,4 +1,11 @@
+# frozen_string_literal: true
+
+require_relative './support/linked_listable'
 require_relative '../lib/linked_list'
+
+RSpec.configure do |c|
+  c.include LinkedListable
+end
 
 RSpec.describe 'Linked List' do
   describe 'creating linked lists' do
@@ -16,10 +23,7 @@ RSpec.describe 'Linked List' do
     end
 
     it 'adds several nodes to the end of the linked list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.find_tail.data).to be 30
     end
   end
@@ -32,20 +36,14 @@ RSpec.describe 'Linked List' do
     end
 
     it 'adds several nodes to the beginning of the linked list' do
-      list = LinkedList.new
-      list.prefix(10)
-      list.prefix(20)
-      list.prefix(30)
+      list = create_linked_list_with_several_prefixed_nodes
       expect(list.head.data).to be 30
     end
   end
 
   describe 'adding to start and end of linked lists' do
     it 'prefixes and appends nodes to the linked list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       list.prefix(100)
       expect(list.head.data).to be 100
       expect(list.find_tail.data).to be 30
@@ -59,29 +57,19 @@ RSpec.describe 'Linked List' do
     end
 
     it 'returns the number of nodes in the linked list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
-      list.append(100)
-      expect(list.size).to be 4
+      list = create_linked_list_with_several_appended_nodes
+      expect(list.size).to be 3
     end
   end
 
   describe 'using head and tail convenience methods' do
     it 'returns the value of the head node' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.head.data).to be 10
     end
 
     it 'returns the value of the tail node' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.find_tail.data).to be 30
     end
   end
@@ -93,22 +81,14 @@ RSpec.describe 'Linked List' do
     end
 
     it 'returns nil if index is not within the linked list range' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
-      list.prefix(100)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.at(-3)).to be nil
       expect(list.at(8)).to be nil
     end
 
     it 'returns the node at the specified index' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
-      list.prefix(100)
-      expect(list.at(2).data).to be 20
+      list = create_linked_list_with_several_appended_nodes
+      expect(list.at(1).data).to be 20
     end
   end
 
@@ -119,14 +99,10 @@ RSpec.describe 'Linked List' do
     end
 
     it 'uses pop to remove the last element from the list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
-      list.append(40)
+      list = create_linked_list_with_several_appended_nodes
       list.pop
       tail = list.find_tail
-      expect(tail.data).to be 30
+      expect(tail.data).to be 20
       expect(tail.next_node).to be nil
     end
   end
@@ -157,18 +133,12 @@ RSpec.describe 'Linked List' do
     end
 
     it 'is false if the queried value does not exist in the linked list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.contains?('Cowabunga')).to be false
     end
 
     it 'is true if the queried value exists in the linked list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.contains?(30)).to be true
     end
   end
@@ -180,20 +150,14 @@ RSpec.describe 'Linked List' do
     end
 
     it 'is nil if the value does not exist in the linked list' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       expect(list.find('bob')).to be nil
     end
 
     it 'shows the index of the node which contains the queried value' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
+      list = create_linked_list_with_several_appended_nodes
       list.append('bob')
-      list.append(30)
-      expect(list.find('bob')).to be 2
+      expect(list.find('bob')).to be 3
     end
   end
 
@@ -204,11 +168,8 @@ RSpec.describe 'Linked List' do
     end
 
     it 'renders the data of each node if the linked list is not empty' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
+      list = create_linked_list_with_several_appended_nodes
       list.prefix('bob')
-      list.append(30)
       list.prefix(100)
       expect(list.to_s).to eq '( 100 ) -> ( bob ) -> ( 10 ) -> ( 20 ) -> ( 30 ) -> nil'
     end
@@ -223,31 +184,21 @@ RSpec.describe 'Linked List' do
     end
 
     it 'creates a node at HEAD if index is negative' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       list.insert_at('bob', -7)
       expect(list.head.data).to eq 'bob'
       expect(list.at(1).data).to be 10
     end
 
     it 'creates a node at TAIL if positive index is out of range' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
-      list.append(40)
+      list = create_linked_list_with_several_appended_nodes
       list.insert_at('bob', 300)
       expect(list.find_tail.data).to eq 'bob'
-      expect(list.size).to be 5
+      expect(list.size).to be 4
     end
 
     it 'creates a node at the specified index if index is between HEAD and TAIL' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       list.append(40)
       list.append(50)
       list.insert_at('hello', 2)
@@ -266,20 +217,14 @@ RSpec.describe 'Linked List' do
     end
 
     it 'does nothing if the supplied index is a negative value' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       original_list_size = list.size
       list.remove_at(-1)
       expect(list.size).to eq original_list_size
     end
 
     it 'does nothing if the supplied index is greater than the list length' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
-      list.append(30)
+      list = create_linked_list_with_several_appended_nodes
       original_list_size = list.size
       list.remove_at(3000)
       expect(list.size).to eq original_list_size
@@ -293,23 +238,18 @@ RSpec.describe 'Linked List' do
     end
 
     it 'sets head to the next node if head is removed' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
+      list = create_linked_list_with_several_appended_nodes
       list.remove_at(0)
       expect(list.head.data).to be 20
     end
 
     it 'removes the node at the specified index' do
-      list = LinkedList.new
-      list.append(10)
-      list.append(20)
+      list = create_linked_list_with_several_appended_nodes
       list.append('Cowabunga')
-      list.append(30)
       list.append(40)
-      list.remove_at(2)
-      expect(list.at(1).data).to be 20
+      list.remove_at(3)
       expect(list.at(2).data).to be 30
+      expect(list.at(3).data).to be 40
       expect(list.contains?('Cowabunga')).to be false
     end
 
