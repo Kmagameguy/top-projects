@@ -1,3 +1,43 @@
+# frozen_string_literal: true
+
+# A class which represents an individual game board pin
+class Peg
+  attr_reader :symbol, :color, :location
+
+  COLORS = {
+    red: 31,
+    green: 32,
+    brown: 33,
+    blue: 34
+  }.freeze
+
+  def initialize(color, location)
+    @symbol = "\u2022"
+    @color = COLORS[color.to_sym]
+    @location = location
+  end
+
+  def to_s
+    colorize
+  end
+
+  private
+
+  def colorize
+    "\e[#{color}m#{symbol}\e[0m"
+  end
+end
+
+# class Guess; end
+# class Player; end
+# class Codemaker; end
+# class MastermindGame; end
+
+print Peg.new('red', 1)
+print Peg.new('green', 2)
+print Peg.new('brown', 3)
+print Peg.new('blue', 4)
+puts ''
 # Mastermind Components
 
 # A guess
