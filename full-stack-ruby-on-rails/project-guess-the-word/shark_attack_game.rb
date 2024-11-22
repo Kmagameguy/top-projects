@@ -20,7 +20,11 @@ class SharkAttackGame
     choose_letter
     @display.shark_position = @word_to_guess.incorrect_guesses.size
     @display.draw(@word_to_guess)
-    play unless game_over?
+    if game_over?
+      @display.game_over(@word_to_guess.word, won: game_won)
+    else
+      play
+    end
   end
 
   private

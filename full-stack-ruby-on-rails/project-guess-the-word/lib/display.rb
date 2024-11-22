@@ -24,6 +24,17 @@ class Display
     show_revealed_characters(word.correct_guesses, word.word)
   end
 
+  def game_over(word, won: false)
+    clear_screen
+    if won
+      puts '🏊'
+      puts "Congratulations!  You guessed the word (#{word}) and stopped the shark!"
+    else
+      puts '🦈🥪'
+      puts "Oh no!  You didn't guess the word (#{word}).  The shark made the swimmer its lunch!"
+    end
+  end
+
   private
 
   def clear_screen
