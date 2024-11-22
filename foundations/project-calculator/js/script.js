@@ -12,6 +12,7 @@ class Memory {
         if (this.firstNum !== null && this.operator !== null) {
             this.secondNum = display.getFloat();
             this.shift(this.#calculate());
+            display.update(this.firstNum)
         }
     }
 
@@ -166,7 +167,6 @@ function handleInput(e) {
             break;
         case '=':
             memory.equals();
-            display.update(memory.firstNum);
             break;
         case '/':
         case '*':
@@ -181,6 +181,8 @@ function handleInput(e) {
     }
 }
 
+
 let memory = new Memory();
 let display = new Display();
+
 BUTTONS.forEach(button => button.addEventListener('click', handleInput));
