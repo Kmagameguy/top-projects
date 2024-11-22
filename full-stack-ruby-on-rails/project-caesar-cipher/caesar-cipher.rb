@@ -12,9 +12,20 @@
 # Join back into a string
 # Keep the casing consistent
 
+def map_to_num(char)
+  # Upcase and subtract 65 to shift the ordinal number index
+  # to 'A' = 0 through 'Z' = 25
+  return char.upcase.ord - 65
+end
+
+def test_alphabet_assignment()
+  alphabet = ('a'..'z').to_a
+  alphabet.each { |char| puts "Character #{char} is: #{map_to_num(char)}"}
+end
+
 def caesar_cipher(text, offset)
   arr = text.split('')
-  p arr
+  test_alphabet_assignment()
 end
 
 caesar_cipher('What a string!', 5)
