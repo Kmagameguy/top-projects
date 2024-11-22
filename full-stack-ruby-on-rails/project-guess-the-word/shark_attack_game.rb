@@ -30,7 +30,7 @@ class SharkAttackGame
   end
 
   def game_won
-    @word_to_guess.correct_guesses.length == @word_to_guess.word.length
+    @word_to_guess.correct_guesses.length == @word_to_guess.word.chars.uniq.length
   end
 
   def game_lost
