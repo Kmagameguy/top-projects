@@ -90,8 +90,6 @@ class MastermindGame
     @user_guesses = create_row(*pick_a_code)
     result = calculate_matches_and_near_hits
 
-    print @code.join(' ')
-    puts ''
     print @user_guesses.join(' ')
     result[:black_pegs].times { print ResultPeg.new(:full_match) }
     result[:white_pegs].times { print ResultPeg.new(:partial_match) }
