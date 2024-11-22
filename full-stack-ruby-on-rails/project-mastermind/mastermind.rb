@@ -130,6 +130,8 @@ class Player
       puts "Color options are: (#{Peg::COLORS.keys.join(', ')})."
       input = gets.chomp.strip.split(' ')
       break unless invalid_input?(input)
+
+      puts 'Invalid selection.  Try again.'
     end
     input.map(&:to_sym)
   end
@@ -137,10 +139,8 @@ class Player
   private
 
   def invalid_input?(input)
-    error = (input.any? { |color| !Peg::COLORS.keys.include?(color.to_sym) } ||
-    input.length != Row::MAX_ROW_SIZE)
-    puts 'Invalid selection.  Try again.' if error
-    error
+    (input.any? { |color| !Peg::COLORS.keys.include?(color.to_sym) } ||
+      input.length != Row::MAX_ROW_SIZE)
   end
 end
 
