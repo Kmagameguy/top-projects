@@ -66,67 +66,52 @@ class LinkedList
   end
 
   def insert_at(value, index)
-    if empty?
-      @head = Node.new(value)
-      return
-    end
+    return prefix(value) if empty? || index <= 0
 
-    if index <= 0
-      prefix(value)
-      return
-    end
+    node_created = false
+    current_node = @head
+    previous_node = nil
 
-    counter = 0
-    list_length = size - 1
-    n_current = @head
-    n_previous = nil
-
-    loop do
-      if counter == index
+    size.times do |list_index|
+      if list_index == index
         temp = Node.new(value)
-        temp.next = n_current
-        n_previous.next = temp
-        break
-      elsif counter == list_length
-        append(value)
+        temp.next = current_node
+        previous_node.next = temp
+        node_created = true
         break
       else
-        n_previous = n_current unless counter.zero?
-        n_current = n_current.next
+        previous_node = current_node
+        current_node = current_node.next
       end
-
-      counter += 1
     end
+
+    append(value) unless node_created
   end
 
   def remove_at(index)
     return if empty? || out_of_range?(index)
-
-    if index.zero?
-      @head = @head.next.nil? ? nil : @head.next
-      return
-    end
 
     if @head.next.nil?
       @head = nil
       return
     end
 
-    counter = 1
-    n_previous = @head
-    n_current = @head.next
+    if index.zero?
+      @head = @head.next
+      return
+    end
 
-    loop do
-      if counter == index
-        n_next = n_current.next.nil? ? nil : n_current.next
-        n_previous.next = n_next
+    previous_node = nil
+    current_node = @head
+
+    size.times do |list_index|
+      if list_index == index
+        next_node = current_node.next.nil? ? nil : current_node.next
+        previous_node.next = next_node
         break
       else
-        break if n_current.next.nil?
-
-        n_previous = n_current
-        n_current = n_current.next
-        counter += 1
+        previous_node = current_node
+        current_node = current_node.next
       end
     end
   end
