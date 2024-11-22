@@ -72,4 +72,13 @@ def caesar_cipher(text, offset)
   puts adjust_casing(text, shifted_arr).join
 end
 
-caesar_cipher('What a string!', 5)
+#caesar_cipher('What a string!', 5)
+
+def caesar_cipher2(text, offset)
+  alphabet = ('A'..'Z').to_a
+  rotatabet = alphabet.rotate(offset)
+
+  puts rotatabet
+end
+
+caesar_cipher2('What a string!', 5)
