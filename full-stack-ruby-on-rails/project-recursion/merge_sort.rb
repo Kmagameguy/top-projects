@@ -13,32 +13,22 @@ end
 
 def merge(left_array, right_array)
   temp_array = []
-  left_index = 0
-  right_index = 0
-  array_index = 0
 
-  while left_index < left_array.size && right_index < right_array.size
-    if left_array[left_index] < right_array[right_index]
-      temp_array[array_index] = left_array[left_index]
-      left_index += 1
+  while !left_array.empty? && !right_array.empty?
+    if left_array[0] < right_array[0]
+      temp_array << left_array.shift
     else
-      temp_array[array_index] = right_array[right_index]
-      right_index += 1
+      temp_array << right_array.shift
     end
-    array_index += 1
   end
 
-  if left_index == left_array.size
-    while right_index < right_array.size
-      temp_array[array_index] = right_array[right_index]
-      array_index += 1
-      right_index += 1
+  if left_array.empty?
+    while !right_array.empty?
+      temp_array << right_array.shift
     end
   else
-    while left_index < left_array.size
-      temp_array[array_index] = left_array[left_index]
-      array_index += 1
-      left_index += 1
+    while !left_array.empty?
+      temp_array << left_array.shift
     end
   end
   p temp_array
