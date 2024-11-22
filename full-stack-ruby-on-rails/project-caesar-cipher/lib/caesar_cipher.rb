@@ -24,10 +24,8 @@ class CaesarCipher
   private
 
   def create_hash(alphabet, rotated_alphabet)
-    index = 0
-    alphabet.each_with_object({}) do |key, hash|
+    alphabet.each_with_object({}).with_index do |(key, hash), index|
       hash[key] = rotated_alphabet[index]
-      index += 1
     end
   end
 end
