@@ -23,8 +23,13 @@ function divideNumbers(num1, num2) {
 }
 
 function appendToDisplay(number) {
-    let currentDisplay = CALCULATOR_DISPLAY.innerText;
-    CALCULATOR_DISPLAY.innerText = currentDisplay === '0' ? number : currentDisplay += number;
+    displayValue = CALCULATOR_DISPLAY.innerText;
+    CALCULATOR_DISPLAY.innerText = displayValue === '0' ? number : displayValue += number;
+}
+
+function clearDisplay() {
+    CALCULATOR_DISPLAY.innerText = '0';
+    displayValue = 0;
 }
 
 function operate(num1, num2, operator) {
@@ -51,6 +56,8 @@ function handleInput(e) {
 
     if (!isNaN(parseInt(selectedButton))) {
         appendToDisplay(selectedButton);
+    } else if (selectedButton === 'AC') {
+        clearDisplay();
     }
 
     console.log(operate(1, 3, '+'));
