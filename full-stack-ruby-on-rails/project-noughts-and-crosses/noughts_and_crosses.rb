@@ -21,12 +21,12 @@ class Board
 
   def update_cells(move_list = [], marker = ' ')
     # Offset by 1 to map back from 1-indexed array to @board's 0-indexed array
-    @board[move_list.last - 1] = marker if move_list.last
+    @board[move_list.last - 1] = marker unless move_list.empty?
     show_board
   end
 
-  def available_cells(used_moves)
-    (1..@board.size).to_a - used_moves
+  def available_cells
+    (1..@board.size).to_a - indexes_of_marked_cells
   end
 
   private
@@ -48,6 +48,12 @@ class Board
 
   def draw_cell(value)
     print "|#{value}|"
+  end
+
+  def indexes_of_marked_cells
+    @board.map.with_index do |cell_value, cell_index|
+      cell_index + 1 unless cell_value == ' '
+    end.compact
   end
 end
 
@@ -85,12 +91,8 @@ class NoughtsAndCrossesGame
 
   private
 
-  def all_moves
-    @player.moves + @computer.moves
-  end
-
   def prompt_for_input
-    valid_cells = @board.available_cells(all_moves)
+    valid_cells = @board.available_cells
 
     loop do
       puts "#{@current_player.name}, make your move! Valid options are: #{valid_cells}"
@@ -103,7 +105,7 @@ class NoughtsAndCrossesGame
   end
 
   def random_move
-    @board.available_cells(all_moves).sample
+    @board.available_cells.sample
   end
 
   def game_over?
@@ -119,7 +121,7 @@ class NoughtsAndCrossesGame
   end
 
   def game_draw?
-    no_moves_left = all_moves.count >= 9
+    no_moves_left = @board.available_cells.count <= 0
     puts "Game over! It's a draw!" if no_moves_left
     no_moves_left
   end
