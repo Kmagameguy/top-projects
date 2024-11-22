@@ -19,7 +19,7 @@ def caesar_cipher(text, offset)
 
   cipher = cipher_upcase_hash.merge(cipher_downcase_hash)
 
-  puts text.split('').map { |char| cipher.fetch(char, char)}.join
+  puts text.split('').map { |char| cipher.fetch(char, char) }.join
 end
 
 caesar_cipher('What a string!', 5)
