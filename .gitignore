@@ -57,3 +57,7 @@ build-iPhoneSimulator/
 
 # Node stuff
 **/node_modules
+
+# Project stuff
+# SharkAttackGame Save Files
+saved.yml
