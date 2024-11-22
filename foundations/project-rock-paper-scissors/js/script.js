@@ -1,7 +1,6 @@
 console.log('get ready!');
 
 const CHOICES = ["rock", "paper", "scissors"];
-const NUM_ROUNDS = 5;
 
 const WIN_CONDITIONS = {
     "rock": "scissors",
@@ -49,29 +48,26 @@ function promptForPlayerHand() {
 function playGame() {
     let playerScore = 0;
 
-    for (let i = 0; i < NUM_ROUNDS; i++) {
-        let playerChoice = promptForPlayerHand();
+    let playerChoice = promptForPlayerHand();
 
-        while (!CHOICES.includes(playerChoice) && playerChoice !== null) {
-            console.log("We didn't understand your guess.  Try again.");
-            playerChoice = promptForPlayerHand();
+    while (!CHOICES.includes(playerChoice) && playerChoice !== null) {
+        console.log("We didn't understand your guess.  Try again.");
+        playerChoice = promptForPlayerHand();
+    }
+
+    if (playerChoice !== null) {
+        let computerChoice = getComputerChoice();
+        let roundResult = playRound(playerChoice, computerChoice);
+
+        console.log(`Computer chose: ${computerChoice}`);
+        console.log(`You chose: ${playerChoice}`);
+        console.log(`=> ${roundResult.resultText}`);
+
+        if(roundResult.incrementScore) {
+            ++playerScore;
         }
-
-        if (playerChoice !== null) {
-            let computerChoice = getComputerChoice();
-            let roundResult = playRound(playerChoice, computerChoice);
-
-            console.log(`Computer chose: ${computerChoice}`);
-            console.log(`You chose: ${playerChoice}`);
-            console.log(`=> ${roundResult.resultText}`);
-
-            if(roundResult.incrementScore) {
-                ++playerScore;
-            }
-        } else {
-            console.log("Game canceled!");
-            break;
-        }
+    } else {
+        console.log("Game canceled!");
     }
     console.log(`You won ${playerScore} rounds.`);
 }
