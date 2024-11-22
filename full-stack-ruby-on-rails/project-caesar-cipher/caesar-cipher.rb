@@ -74,21 +74,31 @@ end
 
 #caesar_cipher('What a string!', 5)
 
-def caesar_cipher2(text, offset)
-  alphabet = ('A'..'Z').to_a
-  rotatabet = alphabet.rotate(offset)
-
-  index = 0;
-
-  cipher_hash = alphabet.reduce(Hash.new({})) do |hash, key|
-    hash[key] = rotatabet[index]
+def create_hash(alphabet, rotated_alphabet)
+  index = 0
+  alphabet.reduce(Hash.new({})) do |hash, key|
+    hash[key] = rotated_alphabet[index]
     index += 1
     hash
   end
+end
 
-  puts text.split('').map { |char| cipher_hash.fetch(char, char)}
+def caesar_cipher2(text, offset)
+  upcase_alphabet = ('A'..'Z').to_a
+  upcase_rotated_alphabet = upcase_alphabet.rotate(offset)
+  downcase_alphabet = ('a'..'z').to_a
+  downcase_rotated_alphabet = downcase_alphabet.rotate(offset)
+
+
+  cipher_upcase_hash = create_hash(upcase_alphabet, upcase_rotated_alphabet)
+  cipher_downcase_hash = create_hash(downcase_alphabet, downcase_rotated_alphabet)
+
+  cipher = cipher_upcase_hash.merge(cipher_downcase_hash)
+
+  puts cipher
+
+  #puts text.split('').map { |char| cipher_hash.fetch(char, char)}
 
 end
 
-caesar_cipher2('WHAT A STRING!', 5)
-#caesar_cipher2('What a string!', 5)
+caesar_cipher2('What a string!', 5)
