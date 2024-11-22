@@ -14,6 +14,29 @@ class SharkAttackGame
   def play
     # Debugging line:
     puts @word_to_guess.word
+    choose_letter
+    p "Incorrect List: #{@word_to_guess.incorrect_guesses}"
+    p "Correct List: #{@word_to_guess.correct_guesses}"
+  end
+
+  private
+
+  def choose_letter
+    puts 'Guess a letter:'
+    input = gets.chomp
+
+    if invalid_input?(input)
+      puts 'Try again:'
+      choose_letter
+    else
+      @word_to_guess.save_input(input)
+    end
+  end
+
+  def invalid_input?(input)
+    (input.length > 1 ||
+      @word_to_guess.correct_guesses.include?(input) ||
+      @word_to_guess.incorrect_guesses.include?(input))
   end
 end
 
