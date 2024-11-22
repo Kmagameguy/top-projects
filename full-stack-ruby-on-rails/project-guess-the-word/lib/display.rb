@@ -12,6 +12,12 @@ class Display
   # .--.\s
   EMPTY_LINE = "#{WAVE_TOP}#{WAVE_SPACER}"
 
+  def update(word, correct_guesses, incorrect_guesses, game_won: nil)
+    game_won.nil? ? draw_round(word, correct_guesses, incorrect_guesses) : draw_game_over(word, game_won)
+  end
+
+  private
+
   def draw_round(word, correct_guesses = [], incorrect_guesses = [])
     clear_screen
     draw_waves_shark_and_swimmer(incorrect_guesses)
@@ -19,18 +25,20 @@ class Display
     show_incorrectly_guessed_characters(incorrect_guesses)
   end
 
-  def draw_game_over(word, won: false)
+  def draw_game_over(word, game_won)
     clear_screen
-    if won
-      puts '🏊'
-      puts "Congratulations!  You guessed the word (#{word}) and stopped the shark!"
-    else
-      puts '🦈🥪'
-      puts "Oh no!  You didn't guess the word (#{word}).  The shark made the swimmer its lunch!"
-    end
+    game_won ? draw_win_message(word) : draw_loss_message(word)
   end
 
-  private
+  def draw_win_message(word)
+    puts '🏊'
+    puts "Congratulations!  You guessed the word (#{word}) and stopped the shark!"
+  end
+
+  def draw_loss_message(word)
+    puts '🦈🥪'
+    puts "Oh no!  You didn't guess the word (#{word}).  The shark made the swimmer its lunch!"
+  end
 
   def clear_screen
     system('clear')

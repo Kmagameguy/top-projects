@@ -13,7 +13,7 @@ class SharkAttackGame
     @display = display
     @saved_and_quit = false
     @input = ''
-    @display.draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
+    @display.update(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 
   def play
@@ -21,7 +21,7 @@ class SharkAttackGame
     return if @saved_and_quit
 
     show_round_results
-    game_over? ? @display.draw_game_over(@word_to_guess, won: game_won?) : play
+    advance_round_or_end
   end
 
   private
@@ -102,7 +102,11 @@ class SharkAttackGame
   end
 
   def show_round_results
-    @display.draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
+    @display.update(@word_to_guess, @correct_guesses, @incorrect_guesses)
+  end
+
+  def advance_round_or_end
+    game_over? ? @display.update(@word_to_guess, @correct_guesses, @incorrect_guesses, game_won: game_won?) : play
   end
 
   def yes_response?
