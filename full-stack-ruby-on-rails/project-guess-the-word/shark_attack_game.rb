@@ -34,11 +34,11 @@ class SharkAttackGame
   end
 
   def ask_for_player_input
-    puts 'Guess a letter or type "save game" to save and quit:'
+    puts 'Guess a letter or type "quit game" to quit:'
     @input = gets.chomp.to_s.downcase.strip
 
-    if save_game?
-      save
+    if quit_game?
+      quit
     elsif invalid_input?
       puts 'Invalid option.  Try again.'
       ask_for_player_input
@@ -51,7 +51,7 @@ class SharkAttackGame
     return false unless GameFile.save_exists?
 
     puts 'Load saved game? (y/n)'
-    gets.chomp.to_s.downcase == 'y'
+    yes_response?
   end
 
   def load
@@ -63,11 +63,20 @@ class SharkAttackGame
   end
 
   def save_game?
-    @input == 'save game'
+    puts 'Save before quiting? (y/n)'
+    yes_response?
+  end
+
+  def quit_game?
+    @input == 'quit game'
+  end
+
+  def quit
+    @saved_and_quit = true
+    save if save_game?
   end
 
   def save
-    @saved_and_quit = true
     data = {
       correct_guesses: @correct_guesses,
       incorrect_guesses: @incorrect_guesses,
@@ -104,6 +113,10 @@ class SharkAttackGame
   def show_round_results
     @shark_position = @incorrect_guesses.size
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
+  end
+
+  def yes_response?
+    gets.chomp.to_s.downcase.strip == 'y'
   end
 end
 
