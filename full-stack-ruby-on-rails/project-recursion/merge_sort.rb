@@ -4,8 +4,12 @@ def merge_sort(array)
   half = array.size/2.0
 
   left, right = array.each_slice(half).to_a
-  p left
-  p right
+
+  sort_left = merge_sort(left)
+  sort_right = merge_sort(right)
+
+  p sort_left
+  p sort_right
 end
 
 array = [4, 8, 6, 2, 1, 7, 5, 3]
