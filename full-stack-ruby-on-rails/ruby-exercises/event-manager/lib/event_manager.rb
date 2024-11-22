@@ -3,6 +3,7 @@
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
+require 'date'
 
 def clean_zipcode(zipcode)
   # Ensure all zipcodes a strings,
@@ -52,6 +53,18 @@ def save_thank_you_letter(id, form_letter)
   end
 end
 
+def format_timestamp_as_hour(timestamp)
+  DateTime.strptime(timestamp, '%m/%d/%Y %H:%M').hour
+end
+
+def format_timestamp_as_day_of_week(timestamp)
+  Date::DAYNAMES[DateTime.strptime(timestamp, '%m/%d/%Y %H:%M').wday]
+end
+
+def sort_by_most_common_value(registrations)
+  registrations.tally.sort_by { |_k, v| v }.reverse.to_h
+end
+
 puts 'Event Manager Initialized!'
 
 filename = 'event_attendees.csv'
@@ -65,14 +78,21 @@ contents = CSV.open(
 template_letter = File.read('form_letter.erb')
 erb_template = ERB.new template_letter
 
+registration_hours = []
+registration_days = []
 contents.each do |row|
   id = row[0]
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
   phone = clean_phone_number(row[:homephone])
+  registration_hours.push(format_timestamp_as_hour(row[:regdate]))
+  registration_days.push(format_timestamp_as_day_of_week(row[:regdate]))
   legislators = legislators_by_zipcode(zipcode)
 
   form_letter = erb_template.result(binding)
 
   save_thank_you_letter(id, form_letter)
 end
+
+puts "Registrations by hour: #{sort_by_most_common_value(registration_hours)}"
+puts "Registrations by day: #{sort_by_most_common_value(registration_days)}"
