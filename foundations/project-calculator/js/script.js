@@ -18,6 +18,41 @@ let memory = {
         this.firstNum = null;
         this.operator = null;
         this.secondNum = null;
+    },
+    add() {
+        return this.firstNum + this.secondNum;
+    },
+    subtract() {
+        return this.firstNum - this.secondNum;
+    },
+    multiply() {
+        return this.firstNum * this.secondNum;
+    },
+    divide() {
+        if (this.secondNum === 0) {
+            this.reset();
+            return DIVIDE_BY_ZERO_MESSAGE
+        } else {
+            return this.firstNum / this.secondNum
+        }
+    },
+    calculate() {
+        let result = '';
+        switch(this.operator) {
+            case '+':
+                result = this.add();
+                break;
+            case '-':
+                result = this.subtract();
+                break;
+            case '*':
+                result = this.multiply();
+                break;
+            case '/':
+                result = this.divide();
+                break;
+        }
+        return result;
     }
 };
 
@@ -50,25 +85,6 @@ let display = {
     }
 }
 
-function addNumbers(num1, num2) {
-    return num1 + num2;
-}
-
-function subtractNumbers(num1, num2) {
-    return num1 - num2;
-}
-
-function multiplyNumbers(num1, num2) {
-    return num1 * num2;
-}
-
-function divideNumbers(num1, num2) {
-    if (num2 === 0) {
-        memory.reset();
-        return DIVIDE_BY_ZERO_MESSAGE
-    } else { return num1 / num2 }
-}
-
 function isNumber(value) {
     return !isNaN(parseFloat(value));
 }
@@ -88,25 +104,6 @@ function toggleDecimalButtonState() {
     DECIMAL_BUTTON.disabled = display.hasDecimal();
 }
 
-function operate(num1, operator, num2) {
-    let result = '';
-    switch(operator) {
-        case '+':
-            result = addNumbers(num1, num2);
-            break;
-        case '-':
-            result = subtractNumbers(num1, num2);
-            break;
-        case '*':
-            result = multiplyNumbers(num1, num2);
-            break;
-        case '/':
-            result = divideNumbers(num1, num2);
-            break;
-    }
-    return result;
-}
-
 function handleInput(e) {
     let selectedButton = e.target.innerText;
 
@@ -120,7 +117,7 @@ function handleInput(e) {
         // We have to handle = separately since it can't be chained like other operators
         if (memory.firstNum !== null && memory.operator !== null && memory.secondNum !== null) {
             memory.secondNum = display.getDisplayAsFloat();
-            display.update(operate(memory.firstNum, memory.operator, memory.secondNum));
+            display.update(memory.calculate());
             memory.reset();
         }
     } else if (memory.firstNum === null && memory.operator === null && memory.secondNum === null) {
@@ -152,7 +149,7 @@ function handleInput(e) {
             updateOrAppendToDisplay(selectedButton);
         } else {
             memory.secondNum = display.getDisplayAsFloat();
-            display.update(operate(memory.firstNum, memory.operator, memory.secondNum));
+            display.update(memory.calculate());
             memory.shift();
             memory.operator = selectedButton;
         }
