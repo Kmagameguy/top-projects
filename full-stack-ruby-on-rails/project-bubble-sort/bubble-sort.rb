@@ -31,7 +31,19 @@
 # 7. Repeat #1 - #6 until max_iterations is exhausted
 # 8. Return the result, which should now be sorted
 
+
 def bubble_sort(sequence)
+  index = 0
+  while index < sequence.length - 1 do
+    current_position = sequence[index]
+    next_position = sequence[index + 1]
+
+    if current_position > next_position
+      sequence[index] = next_position
+      sequence[index + 1] = current_position
+    end
+    index += 1
+  end
   p sequence
 end
 
