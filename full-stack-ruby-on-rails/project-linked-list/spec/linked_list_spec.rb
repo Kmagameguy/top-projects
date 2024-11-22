@@ -103,7 +103,7 @@ RSpec.describe 'Linked List' do
       list.pop
       tail = list.tail
       expect(tail.data).to be 20
-      expect(tail.next_node).to be nil
+      expect(tail.next).to be nil
     end
   end
 

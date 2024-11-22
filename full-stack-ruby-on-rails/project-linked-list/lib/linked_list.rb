@@ -20,7 +20,7 @@ class LinkedList
 
   def append(value)
     node = Node.new(value)
-    empty? ? @head = node : tail.next_node = node
+    empty? ? @head = node : tail.next = node
   end
 
   def size
@@ -29,9 +29,9 @@ class LinkedList
     counter = 1
     reference = @head
 
-    while reference.next_node
+    while reference.next
       counter += 1
-      reference = reference.next_node
+      reference = reference.next
     end
     counter
   end
@@ -49,7 +49,7 @@ class LinkedList
       elsif counter == list_length
         return nil
       else
-        reference = reference.next_node
+        reference = reference.next
         counter += 1
       end
     end
@@ -61,14 +61,14 @@ class LinkedList
     counter = 0
     index = (self.size - 2)
     new_tail = @head
-    while new_tail.next_node
+    while new_tail.next
       break if counter == index
 
       counter += 1
-      new_tail = new_tail.next_node
+      new_tail = new_tail.next
     end
 
-    new_tail.next_node = nil
+    new_tail.next = nil
     new_tail
   end
 
@@ -81,9 +81,9 @@ class LinkedList
     loop do
       match = reference.data == value
 
-      break if match || reference.next_node.nil?
+      break if match || reference.next.nil?
 
-      reference = reference.next_node
+      reference = reference.next
     end
 
     match
@@ -98,9 +98,9 @@ class LinkedList
 
     loop do
       index = counter if reference.data == value
-      break if (reference.data == value) || reference.next_node.nil?
+      break if (reference.data == value) || reference.next.nil?
 
-      reference = reference.next_node
+      reference = reference.next
       counter += 1
     end
 
@@ -126,15 +126,15 @@ class LinkedList
     loop do
       if counter == index
         temp = Node.new(value)
-        temp.next_node = n_current
-        n_previous.next_node = temp
+        temp.next = n_current
+        n_previous.next = temp
         break
       elsif counter == list_length
         append(value)
         break
       else
         n_previous = n_current unless counter.zero?
-        n_current = n_current.next_node
+        n_current = n_current.next
       end
 
       counter += 1
@@ -145,29 +145,29 @@ class LinkedList
     return if empty? || out_of_range?(index)
 
     if index.zero?
-      @head = @head.next_node.nil? ? nil : @head.next_node
+      @head = @head.next.nil? ? nil : @head.next
       return
     end
 
-    if @head.next_node.nil?
+    if @head.next.nil?
       @head = nil
       return
     end
 
     counter = 1
     n_previous = @head
-    n_current = @head.next_node
+    n_current = @head.next
 
     loop do
       if counter == index
-        n_next = n_current.next_node.nil? ? nil : n_current.next_node
-        n_previous.next_node = n_next
+        n_next = n_current.next.nil? ? nil : n_current.next
+        n_previous.next = n_next
         break
       else
-        break if n_current.next_node.nil?
+        break if n_current.next.nil?
 
         n_previous = n_current
-        n_current = n_current.next_node
+        n_current = n_current.next
         counter += 1
       end
     end
@@ -182,9 +182,9 @@ class LinkedList
 
     loop do
       string += "( #{reference.data} )#{pointer}"
-      break if reference.next_node.nil?
+      break if reference.next.nil?
 
-      reference = reference.next_node
+      reference = reference.next
     end
 
     "#{string}nil"
@@ -192,7 +192,7 @@ class LinkedList
 
   def tail
     current_node = @head
-    current_node = current_node.next_node while current_node.next_node
+    current_node = current_node.next while current_node.next
     current_node
   end
 
