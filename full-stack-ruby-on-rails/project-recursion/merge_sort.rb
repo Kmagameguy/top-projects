@@ -12,11 +12,11 @@ def merge(left_array, right_array)
   temp_array = []
 
   until left_array.empty? || right_array.empty?
-    if left_array[0] < right_array[0]
-      temp_array << left_array.shift
-    else
-      temp_array << right_array.shift
-    end
+    temp_array << if left_array[0] < right_array[0]
+                    left_array.shift
+                  else
+                    right_array.shift
+                  end
   end
 
   temp_array << right_array << left_array
