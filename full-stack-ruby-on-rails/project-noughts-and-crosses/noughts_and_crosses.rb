@@ -92,11 +92,15 @@ class NoughtsAndCrossesGame
     [3, 5, 7]
   ].freeze
 
+  # Derive board size from our list of win conditions.
+  # This would allow for silly changes like a 4x4-sized grid.
+  BOARD_SIZE = WIN_CONDITIONS.flatten.uniq.size
+
   def initialize(name)
     @player = Player.new('x', name)
     @computer = Computer.new('o')
     @current_player = @player
-    @board = Board.new(WIN_CONDITIONS.flatten.uniq.size)
+    @board = Board.new(BOARD_SIZE)
     @board.update_cells
   end
 
