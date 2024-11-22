@@ -33,15 +33,19 @@ function isNumber(value) {
     return !isNaN(parseFloat(value));
 }
 
-function updateDisplay(number) {
-    CALCULATOR_DISPLAY.innerText = number;
+function updateDisplay(text) {
+    CALCULATOR_DISPLAY.innerText = text;
 }
 
-function updateOrAppendToDisplay(number) {
+function updateOrAppendToDisplay(text) {
     let currentDisplay = CALCULATOR_DISPLAY.innerText;
-    if (currentDisplay == '0' || currentDisplay === DIVIDE_BY_ZERO_MESSAGE) {
-        updateDisplay(number)
-    } else {updateDisplay(currentDisplay + number) };
+    if (currentDisplay === DIVIDE_BY_ZERO_MESSAGE) {
+        updateDisplay(text);
+    } else if (currentDisplay == '0' && text != '.') {
+        updateDisplay(text);
+    } else {
+        updateDisplay(currentDisplay + text)
+    }
 }
 
 function clearDisplay() {
@@ -91,7 +95,7 @@ function handleInput(e) {
             secondNum = null;
         }
     } else if (firstNum === null && operator === null && secondNum === null) {
-        if (isNumber(selectedButton)) {
+        if (isNumber(selectedButton) || selectedButton === '.') {
             updateOrAppendToDisplay(selectedButton);
         } else {
             firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
@@ -103,14 +107,14 @@ function handleInput(e) {
     // to a value other than null so that it short circuits the next time around and
     // continues to the third else if statement in this chain
     } else if (firstNum !== null && operator !== null && secondNum === null) {
-        if (isNumber(selectedButton)) {
+        if (isNumber(selectedButton) || selectedButton === '.') {
             updateDisplay(selectedButton);
             secondNum = parseFloat(selectedButton);
         }
     // this condition is what helps us chain operators together.  if the list of operations is full
     // we execute the stored stuff and then shift the values around so we're ready to take the next input
     } else if (firstNum !== null && operator !== null && secondNum !== null) {
-        if (isNumber(selectedButton)) {
+        if (isNumber(selectedButton) || selectedButton === '.') {
             updateOrAppendToDisplay(selectedButton);
         } else {
             secondNum = parseFloat(CALCULATOR_DISPLAY.innerText);
