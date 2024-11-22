@@ -25,6 +25,10 @@ class Board
     show_board
   end
 
+  def available_cells(used_moves)
+    (1..@board.size).to_a - used_moves
+  end
+
   private
 
   def show_board
@@ -86,7 +90,7 @@ class NoughtsAndCrossesGame
   end
 
   def prompt_for_input
-    valid_cells = (1..9).to_a - all_moves
+    valid_cells = @board.available_cells(all_moves)
 
     loop do
       puts "#{@current_player.name}, make your move! Valid options are: #{valid_cells}"
@@ -99,8 +103,7 @@ class NoughtsAndCrossesGame
   end
 
   def random_move
-    valid_cells = (1..9).to_a - all_moves
-    selection = valid_cells.sample
+    selection = @board.available_cells(all_moves).sample
     puts "#{@current_player.name} selected #{selection}."
     selection
   end
