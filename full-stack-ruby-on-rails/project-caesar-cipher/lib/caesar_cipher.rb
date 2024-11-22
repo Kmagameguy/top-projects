@@ -2,6 +2,8 @@
 
 # A class which offsets the characters in a given string by the provided key amount
 class CaesarCipher
+  attr_writer :text, :key
+
   def initialize(text:, key: 1)
     @text = text
     @key = key
