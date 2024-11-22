@@ -90,16 +90,9 @@ class Row
   end
 
   def to_s
-    string = ''
-    @colors.each do |color|
-      string += "#{Peg.new(color)} "
-    end
-
-    @results.each do |peg_type|
-      string += "#{ResultPeg.new(peg_type)} "
-    end
-
-    string
+    pegs = @colors.map { |color| "#{Peg.new(color)}"} +
+           @results.map { |peg_type| "#{ResultPeg.new(peg_type)}"}
+    pegs.join(' ')
   end
 
   private
