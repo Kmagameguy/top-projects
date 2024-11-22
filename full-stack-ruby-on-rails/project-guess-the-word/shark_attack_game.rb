@@ -14,13 +14,16 @@ class SharkAttackGame
     @correct_guesses = []
     @incorrect_guesses = []
     @shark_position = 0
-    @word_to_guess = load_game? ? load : pick_word
+    @word_to_guess = setup_game
+    @saved_and_quit = false
+    @input = ''
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 
   def play
-    save_game?
-    choose_letter
+    ask_for_player_input
+    return if @saved_and_quit
+
     @shark_position = @incorrect_guesses.size
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
     if game_over?
@@ -32,12 +35,27 @@ class SharkAttackGame
 
   private
 
+  def setup_game
+    load_game? ? load : pick_word
+  end
+
+  def ask_for_player_input
+    puts 'Guess a letter or type "save game" to save and quit:'
+    @input = gets.chomp.to_s.downcase.strip
+
+    if save_game?
+      save
+    elsif invalid_input?
+      puts 'Invalid option.  Try again.'
+      ask_for_player_input
+    else
+      save_input
+    end
+  end
+
   def load_game?
     puts 'Load saved game? (y/n)'
-
-    input = gets.chomp.to_s.downcase
-
-    load if input == 'y'
+    gets.chomp.to_s.downcase == 'y'
   end
 
   def load
@@ -49,10 +67,11 @@ class SharkAttackGame
   end
 
   def save_game?
-    puts 'Save game? (y/n)'
+    @input == 'save game'
+  end
 
-    input = gets.chomp.to_s.downcase
-
+  def save
+    @saved_and_quit = true
     data = {
       correct_guesses: @correct_guesses,
       incorrect_guesses: @incorrect_guesses,
@@ -60,7 +79,7 @@ class SharkAttackGame
       word_to_guess: @word_to_guess,
     }
 
-    GameFile.new(data) if input == 'y'
+    GameFile.new(data)
   end
 
   def game_over?
@@ -75,26 +94,14 @@ class SharkAttackGame
     @shark_position >= WAVE_COUNT
   end
 
-  def choose_letter
-    puts 'Guess a letter:'
-    input = gets.chomp
-
-    if invalid_input?(input)
-      puts 'Try again:'
-      choose_letter
-    else
-      save_input(input)
-    end
+  def invalid_input?
+    (@input.length > 1 ||
+      @correct_guesses.include?(@input) ||
+      @incorrect_guesses.include?(@input))
   end
 
-  def invalid_input?(input)
-    (input.length > 1 ||
-      @correct_guesses.include?(input) ||
-      @incorrect_guesses.include?(input))
-  end
-
-  def save_input(letter)
-    @word_to_guess.chars.include?(letter) ? @correct_guesses << letter : @incorrect_guesses << letter
+  def save_input
+    @word_to_guess.chars.include?(@input) ? @correct_guesses << @input : @incorrect_guesses << @input
   end
 end
 
