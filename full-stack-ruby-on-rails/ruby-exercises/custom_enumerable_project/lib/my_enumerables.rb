@@ -49,6 +49,14 @@ module Enumerable
       arr
     end
   end
+
+  def my_none?
+    if block_given?
+      match = true
+      my_any? { |index| match = false if yield(index) }
+      match
+    end
+  end
 end
 
 # You will first have to define my_each
