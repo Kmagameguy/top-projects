@@ -1,25 +1,36 @@
 # frozen_string_literal: true
 
-def caesar_cipher(text, offset)
-  upcase_alphabet = ('A'..'Z').to_a
-  upcase_rotated_alphabet = upcase_alphabet.rotate(offset)
-  downcase_alphabet = ('a'..'z').to_a
-  downcase_rotated_alphabet = downcase_alphabet.rotate(offset)
+# A class which offsets the characters in a given string by the provided key amount
+class CaesarCipher
+  def initialize(text:, key: 1)
+    @text = text
+    @key = key
+  end
 
-  cipher_upcase_hash = create_hash(upcase_alphabet, upcase_rotated_alphabet)
-  cipher_downcase_hash = create_hash(downcase_alphabet, downcase_rotated_alphabet)
+  def encode
+    upcase_alphabet = ('A'..'Z').to_a
+    upcase_ciphered_alphabet = upcase_alphabet.rotate(@key)
+    downcase_alphabet = ('a'..'z').to_a
+    downcase_ciphered_alphabet = downcase_alphabet.rotate(@key)
 
-  cipher = cipher_upcase_hash.merge(cipher_downcase_hash)
+    cipher_upcase_hash = create_hash(upcase_alphabet, upcase_ciphered_alphabet)
+    cipher_downcase_hash = create_hash(downcase_alphabet, downcase_ciphered_alphabet)
 
-  puts text.split('').map { |char| cipher.fetch(char, char) }.join
-end
+    cipher = cipher_upcase_hash.merge(cipher_downcase_hash)
 
-def create_hash(alphabet, rotated_alphabet)
-  index = 0
-  alphabet.each_with_object({}) do |key, hash|
-    hash[key] = rotated_alphabet[index]
-    index += 1
+    @text.split('').map { |char| cipher.fetch(char, char) }.join
+  end
+
+  private
+
+  def create_hash(alphabet, rotated_alphabet)
+    index = 0
+    alphabet.each_with_object({}) do |key, hash|
+      hash[key] = rotated_alphabet[index]
+      index += 1
+    end
   end
 end
 
-caesar_cipher('What a string!', 5)
+c = CaesarCipher.new(text: 'What a string!', key: 5)
+p c.encode
