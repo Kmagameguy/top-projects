@@ -35,22 +35,22 @@ class Memory {
     }
 
     #add() {
-        return this.firstNum + this.secondNum;
+        return ((this.firstNum * 10) + (this.secondNum * 10)) / 10;
     }
 
     #subtract() {
-        return this.firstNum - this.secondNum;
+        return ((this.firstNum * 10) - (this.secondNum * 10)) / 10;
     }
 
     #multiply() {
-        return this.firstNum * this.secondNum;
+        return ((this.firstNum * 10) * (this.secondNum * 10)) / 100;
     }
 
     #divide() {
         if (this.secondNum === 0) {
             return DIVIDE_BY_ZERO_MESSAGE
         } else {
-            return this.firstNum / this.secondNum
+            return ((this.firstNum * 10) / (this.secondNum * 10));
         }
     }
 
