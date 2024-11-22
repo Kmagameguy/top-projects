@@ -1,6 +1,7 @@
 console.log('ready!');
 
 const BUTTONS = document.querySelectorAll('button');
+const DECIMAL_BUTTON = document.querySelector('#btn-decimal');
 const CALCULATOR_DISPLAY = document.querySelector('#calculator-text');
 const DIVIDE_BY_ZERO_MESSAGE = 'Divide by Zero Error';
 
@@ -75,6 +76,14 @@ function shiftMemory() {
     secondNum = null;
 }
 
+function displayHasDecimal() {
+    return CALCULATOR_DISPLAY.innerText.indexOf('.') > -1;
+}
+
+function toggleDecimalButtonState() {
+    DECIMAL_BUTTON.disabled = displayHasDecimal();
+}
+
 function operate(num1, operator, num2) {
     let result = '';
     switch(operator) {
@@ -113,9 +122,14 @@ function handleInput(e) {
             secondNum = null;
         }
     } else if (firstNum === null && operator === null && secondNum === null) {
-        if (isNumber(selectedButton) || selectedButton === '.') {
+        if (isNumber(selectedButton)) {
             updateOrAppendToDisplay(selectedButton);
-        } else {
+        } else if (selectedButton === '.') {
+            if (CALCULATOR_DISPLAY.innerText.indexOf('.') === -1) {
+                updateOrAppendToDisplay(selectedButton);
+            }
+        }
+        else {
             firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
             operator = selectedButton;
         }
@@ -125,7 +139,7 @@ function handleInput(e) {
     // to a value other than null so that it short circuits the next time around and
     // continues to the third else if statement in this chain
     } else if (firstNum !== null && operator !== null && secondNum === null) {
-        if (isNumber(selectedButton) || selectedButton === '.') {
+        if (isNumber(selectedButton)) {
             updateDisplay(selectedButton);
             secondNum = parseFloat(selectedButton);
         }
@@ -141,6 +155,8 @@ function handleInput(e) {
             operator = selectedButton;
         }
     }
+
+    toggleDecimalButtonState();
 }
 
 BUTTONS.forEach(button => button.addEventListener('click',handleInput));
