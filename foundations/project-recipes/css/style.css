@@ -1,0 +1,22 @@
+* {
+  font-family: Tahoma, sans-serif;
+}
+
+li {
+  line-height: 1.8rem;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.recipe-title {
+  text-align: center;
+}
+
+.caption {
+ text-align: center;
+}
