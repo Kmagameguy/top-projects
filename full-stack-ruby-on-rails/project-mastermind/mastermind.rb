@@ -99,7 +99,7 @@ class Row
 
   def random_colors
     (1..MAX_ROW_SIZE).each_with_object([]) do |_i, row|
-      row.push(Peg::COLORS.keys.sample).to_sym
+      row.push(Peg::COLORS.keys.sample)
     end
   end
 end
@@ -124,7 +124,7 @@ class Player
 
       puts 'Invalid selection.  Try again.'
     end
-    input.map(&:to_sym)
+    Row.new(*input)
   end
 
   private
@@ -140,11 +140,7 @@ class Computer < Player
   def pick_colors
     puts 'Computer is thinking...'
     sleep 1
-    row = []
-    4.times do
-      row.push(Peg::COLORS.keys.sample)
-    end
-    row.map(&:to_sym)
+    Row.new
   end
 end
 
@@ -158,14 +154,14 @@ class MastermindGame
     @computer = Computer.new(codemaker: !@player.codemaker?)
     @codebreaker = @player.codemaker? ? @computer : @player
     @codemaker = @player.codemaker? ? @player : @computer
-    @coded_message = Row.new(*@codemaker.pick_colors)
+    @coded_message = @codemaker.pick_colors
     @user_guesses = []
     @display = Display.new
     @display.clear
   end
 
   def play
-    @user_guesses = Row.new(*@codebreaker.pick_colors)
+    @user_guesses = @codebreaker.pick_colors
     @user_guesses.results = calculate_matches_and_near_hits
     @display.save_row(@user_guesses)
 
