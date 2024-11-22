@@ -1,4 +1,5 @@
 const BUTTONS = document.querySelectorAll('button');
+const CLEAR_BUTTON = document.querySelector('#btn-clear');
 const DIVIDE_BY_ZERO_MESSAGE = 'Divide by Zero Error';
 
 class Memory {
@@ -6,6 +7,7 @@ class Memory {
         this.firstNum  = null;
         this.operator  = null;
         this.secondNum = null;
+        this.hasHistory = false;
     }
 
     equals() {
@@ -32,6 +34,11 @@ class Memory {
         this.firstNum = answer;
         this.operator = operator;
         this.secondNum = null;
+    }
+
+    setHistory() {
+        this.hasHistory = true;
+        CLEAR_BUTTON.innerText = 'C';
     }
 
     #add() {
@@ -91,6 +98,8 @@ class Display {
     clear() {
         this.update('0');
         memory.shift();
+        memory.hasHistory = false;
+        CLEAR_BUTTON.innerText = 'AC';
     }
 
     getFloat() {
@@ -154,6 +163,7 @@ function handleInput(e) {
 
     switch(selectedButton) {
         case 'AC':
+        case 'C':
             display.clear();
             break;
         case '+/-':
@@ -175,9 +185,11 @@ function handleInput(e) {
             display.freeze();
             memory.operate(selectedButton);
             display.update(memory.firstNum);
+            memory.setHistory();
             break;
         default:
             display.insertNumber(selectedButton);
+            memory.setHistory();
     }
 }
 
