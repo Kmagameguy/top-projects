@@ -63,36 +63,13 @@ class LinkedList
   def contains?(value)
     return false if empty?
 
-    reference = @head
-    match = false
-
-    loop do
-      match = reference.data == value
-
-      break if match || reference.next.nil?
-
-      reference = reference.next
-    end
-
-    match
+    !!iterate_until_data_match_or_end(node: @head, value_to_find: value)
   end
 
   def find(value)
     return nil if empty?
 
-    reference = @head
-    counter = 0
-    index = nil
-
-    loop do
-      index = counter if reference.data == value
-      break if (reference.data == value) || reference.next.nil?
-
-      reference = reference.next
-      counter += 1
-    end
-
-    index
+    iterate_until_data_match_or_end(node: @head, value_to_find: value)
   end
 
   def insert_at(value, index)
@@ -203,6 +180,21 @@ class LinkedList
     node = @head
     node = node.next until node.next.next.nil?
     node
+  end
+
+  def iterate_until_data_match_or_end(node:, value_to_find:)
+    index_of_value = nil
+
+    size.times do |index|
+      if node.data == value_to_find
+        index_of_value = index
+        break
+      else
+        node = node.next
+      end
+    end
+
+    index_of_value
   end
 
   def out_of_range?(index)
