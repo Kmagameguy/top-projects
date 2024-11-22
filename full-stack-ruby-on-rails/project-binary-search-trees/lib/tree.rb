@@ -165,6 +165,10 @@ class Tree
     (l_tree_size - r_tree_size).between?(0, 1)
   end
 
+  def rebalance!
+    initialize(inorder)
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right

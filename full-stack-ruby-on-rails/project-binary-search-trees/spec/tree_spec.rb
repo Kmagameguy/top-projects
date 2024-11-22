@@ -166,4 +166,21 @@ RSpec.describe 'tree' do
       expect(tree.balanced?).to be false
     end
   end
+
+  describe 'rebalancing a tree' do
+    it "recalculates an existing tree's node positions until it is balanced" do
+      tree = Tree.new([1,2,3,4,5,6,7,8,9,10,11]).tap do |t|
+        t.delete(8)
+        t.delete(7)
+        t.delete(11)
+        t.delete(10)
+      end
+      expect(tree.root.value).to be 6
+      expect(tree.balanced?).to be false
+      tree.rebalance!
+      expect(tree.root.value).to be 4
+      expect(tree.balanced?).to be true
+
+    end
+  end
 end
