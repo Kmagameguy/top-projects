@@ -1,5 +1,10 @@
 console.log('get ready!');
 
+const playerButtons = document.querySelectorAll('button');
+const computerChoiceDisplay = document.querySelector('#computer-choice');
+const playerChoiceDisplay = document.querySelector('#player-choice');
+const roundResultDisplay = document.querySelector('#round-result');
+
 const CHOICES = ["rock", "paper", "scissors"];
 
 const WIN_CONDITIONS = {
@@ -45,31 +50,20 @@ function promptForPlayerHand() {
     return userInput !== null ? userInput.toLowerCase().trim() : userInput;
 }
 
-function playGame() {
+function playGame(e) {
     let playerScore = 0;
+    let playerChoice = e.target.id;
+    let computerChoice = getComputerChoice();
+    let roundResult = playRound(playerChoice, computerChoice);
 
-    let playerChoice = promptForPlayerHand();
+    computerChoiceDisplay.textContent = `Computer chose: ${computerChoice}`;
+    playerChoiceDisplay.textContent = `You chose: ${playerChoice}`;
+    roundResultDisplay.textContent = `=> ${roundResult.resultText}`;
 
-    while (!CHOICES.includes(playerChoice) && playerChoice !== null) {
-        console.log("We didn't understand your guess.  Try again.");
-        playerChoice = promptForPlayerHand();
-    }
-
-    if (playerChoice !== null) {
-        let computerChoice = getComputerChoice();
-        let roundResult = playRound(playerChoice, computerChoice);
-
-        console.log(`Computer chose: ${computerChoice}`);
-        console.log(`You chose: ${playerChoice}`);
-        console.log(`=> ${roundResult.resultText}`);
-
-        if(roundResult.incrementScore) {
-            ++playerScore;
-        }
-    } else {
-        console.log("Game canceled!");
+    if(roundResult.incrementScore) {
+        ++playerScore;
     }
     console.log(`You won ${playerScore} rounds.`);
 }
 
-playGame();
+playerButtons.forEach(button => button.addEventListener('click',playGame));
