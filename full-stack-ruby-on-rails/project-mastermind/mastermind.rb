@@ -2,7 +2,7 @@
 
 # A class which represents an individual game board pin
 class Peg
-  attr_reader :symbol, :color, :location
+  attr_reader :symbol, :color
 
   COLORS = {
     red: 31,
@@ -11,10 +11,9 @@ class Peg
     blue: 34
   }.freeze
 
-  def initialize(color, location)
+  def initialize(color)
     @symbol = "\u25CF"
     @color = COLORS[color]
-    @location = location
   end
 
   def to_s
@@ -46,17 +45,45 @@ class ResultPeg
   end
 end
 
+# Helper module to generate rows of pegs ('codes')
+module Codable
+  def create_row(*colors)
+    colors.empty? ? random_code : submit_code(colors)
+  end
+
+  private
+
+  def submit_code(colors)
+    row = []
+    colors.each do |color|
+      row.push(Peg.new(color))
+    end
+    row
+  end
+
+  def random_code
+    row = []
+    4.times do
+      row.push(Peg.new(Peg::COLORS.keys.sample))
+    end
+    row
+  end
+end
+
+# Our main class which controls the game state
+class MastermindGame
+  include Codable
+end
 # class Guess; end
 # class Player; end
 # class Codemaker; end
-# class MastermindGame; end
 
-print Peg.new(:red, 1)
-print Peg.new(:green, 2)
-print Peg.new(:brown, 3)
-print Peg.new(:blue, 4)
+game = MastermindGame.new
+game.create_row.each { |peg| print peg }
 print ResultPeg.new(:full_match)
 print ResultPeg.new(:partial_match)
+puts ''
+game.create_row(:red, :red, :green, :blue).each { |peg| print peg }
 puts ''
 # Mastermind Components
 
