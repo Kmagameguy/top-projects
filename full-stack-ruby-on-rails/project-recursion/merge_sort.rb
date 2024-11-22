@@ -31,3 +31,9 @@ p merge_sort array
 
 array = []
 p merge_sort array
+
+array = [-4, 3, 200, 16, -33, 10000]
+p merge_sort array
+
+array = [1, 7, 8, 3, 1, 15, -43, 22]
+p merge_sort array
