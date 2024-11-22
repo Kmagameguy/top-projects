@@ -38,7 +38,12 @@ DICTIONARY = %w(
 
 def substrings(string)
   cleaned_string = string.downcase.gsub(/[^A-Z]/i, '')
-  puts cleaned_string
+  DICTIONARY.each do |word|
+    cleaned_string.chars.each_with_index do |char, index|
+      temp_str = cleaned_string[index, word.length]
+      puts "Match found: #{word} in #{temp_str}" if temp_str == word
+    end
+  end
 end
 
 substrings("Howdy partner, sit down! How's it going?")
