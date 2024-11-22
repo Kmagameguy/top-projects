@@ -1,20 +1,19 @@
 # frozen_string_literal: true
 
 require './lib/dictionary'
-require './lib/displayable'
+require './lib/display'
 require './lib/game_file'
 
 # A class to manage our game's state
 class SharkAttackGame
-  include Displayable
-
-  def initialize(dictionary = Dictionary.new)
+  def initialize(dictionary = Dictionary.new, display = Display.new)
     @correct_guesses = []
     @incorrect_guesses = []
     @word_to_guess = load_game? ? load! : dictionary.random_word
+    @display = display
     @saved_and_quit = false
     @input = ''
-    draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
+    @display.draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 
   def play
@@ -22,7 +21,7 @@ class SharkAttackGame
     return if @saved_and_quit
 
     show_round_results
-    game_over? ? draw_game_over(@word_to_guess, won: game_won?) : play
+    game_over? ? @display.draw_game_over(@word_to_guess, won: game_won?) : play
   end
 
   private
@@ -88,7 +87,7 @@ class SharkAttackGame
   end
 
   def game_lost?
-    @incorrect_guesses.size >= WAVE_COUNT
+    @incorrect_guesses.size >= Display::WAVE_COUNT
   end
 
   def invalid_input?
@@ -103,7 +102,7 @@ class SharkAttackGame
   end
 
   def show_round_results
-    draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
+    @display.draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 
   def yes_response?

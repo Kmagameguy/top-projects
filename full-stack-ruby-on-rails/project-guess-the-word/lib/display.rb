@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# A module which helps to show the player feedback as the game progresses
-module Displayable
+# A class which helps to show the player feedback as the game progresses
+class Display
   WAVE_TOP = '.--.'
   WAVE_SPACER = ' '
   SHARK_FIN = '𓂄'
