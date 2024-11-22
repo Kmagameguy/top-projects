@@ -20,16 +20,12 @@ def merge(left_array, right_array)
   end
 
   if left_array.empty?
-    while !right_array.empty?
-      temp_array << right_array.shift
-    end
+    temp_array << right_array
   else
-    while !left_array.empty?
-      temp_array << left_array.shift
-    end
+    temp_array << left_array
   end
-  p temp_array
-  temp_array
+  p temp_array.flatten
+  temp_array.flatten
 end
 
 array = [4, 8, 6, 2, 1, 7, 5, 3]
