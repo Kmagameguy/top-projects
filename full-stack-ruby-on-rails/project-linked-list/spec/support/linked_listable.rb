@@ -3,20 +3,18 @@
 # A helper module to quickly create a LinkedList for use in tests
 module LinkedListable
   def create_linked_list_with_several_appended_nodes
-    list = LinkedList.new
-    list.append(10)
-    list.append(20)
-    list.append(30)
-
-    list
+    LinkedList.new.tap do |l|
+      l.append(10)
+      l.append(20)
+      l.append(30)
+    end
   end
 
   def create_linked_list_with_several_prefixed_nodes
-    list = LinkedList.new
-    list.prefix(10)
-    list.prefix(20)
-    list.prefix(30)
-
-    list
+    LinkedList.new.tap do |l|
+      l.prefix(10)
+      l.prefix(20)
+      l.prefix(30)
+    end
   end
 end

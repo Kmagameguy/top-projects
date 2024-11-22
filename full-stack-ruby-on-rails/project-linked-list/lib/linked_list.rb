@@ -20,14 +20,18 @@ class LinkedList
 
   def append(value)
     node = Node.new(value)
-    empty? ? @head = node : tail.next = node
+    if empty?
+      @head = node
+    else
+      tail.next = node
+    end
   end
 
   def size
     if empty?
       0
     else
-      count_all_nodes(node: @head, counter: 1)
+      count_all_nodes(node: @head)
     end
   end
 
@@ -56,13 +60,29 @@ class LinkedList
   def contains?(value)
     return false if empty?
 
-    !!iterate_until_data_match_or_end(node: @head, value_to_find: value)
+    find?(value)
+  end
+
+  def find?(value)
+    !!find(value)
   end
 
   def find(value)
     return nil if empty?
 
-    iterate_until_data_match_or_end(node: @head, value_to_find: value)
+    index_of_value = nil
+    node = @head
+
+    size.times do |index|
+      if node.data == value
+        index_of_value = index
+        break
+      else
+        node = node.next
+      end
+    end
+
+    index_of_value
   end
 
   def insert_at(value, index)
@@ -106,7 +126,7 @@ class LinkedList
 
     size.times do |list_index|
       if list_index == index
-        next_node = current_node.next.nil? ? nil : current_node.next
+        next_node = current_node.next ||= nil
         previous_node.next = next_node
         break
       else
@@ -143,7 +163,8 @@ class LinkedList
 
   private
 
-  def count_all_nodes(node:, counter:)
+  def count_all_nodes(node:)
+    counter = 1
     last_node = tail
     while node != last_node
       counter += 1
@@ -156,21 +177,6 @@ class LinkedList
     node = @head
     node = node.next until node.next.next.nil?
     node
-  end
-
-  def iterate_until_data_match_or_end(node:, value_to_find:)
-    index_of_value = nil
-
-    size.times do |index|
-      if node.data == value_to_find
-        index_of_value = index
-        break
-      else
-        node = node.next
-      end
-    end
-
-    index_of_value
   end
 
   def out_of_range?(index)
