@@ -142,6 +142,15 @@ class Tree
     end
   end
 
+  def height(node = @root)
+    return 0 if node.nil?
+
+    l_height = height(node.left)
+    r_height = height(node.right)
+
+    [l_height, r_height].max + 1
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
@@ -170,18 +179,35 @@ end
 array = [1, 2, 3, 4, 5]
 tree = Tree.new(array)
 puts tree.pretty_print
+print "\n\n-------\n\n"
 
 p tree.level_order
-p (tree.level_order { |node| node * 2 })
+puts "level order: #{tree.level_order}"
+puts "w/ n * 2 block: #{tree.level_order { |node| node * 2 }}"
+print "\n\n-------\n\n"
 
 p tree.inorder
-p (tree.inorder { |node| node * 2 })
+puts "inorder: #{tree.inorder}"
+puts "w/ n * 2 block: #{tree.inorder { |node| node * 2 }}"
+print "\n\n-------\n\n"
 
 p tree.preorder
-p (tree.preorder { |node| node * 2 })
+puts "preorder: #{tree.preorder}"
+puts "w/ n * 2 block: #{tree.preorder { |node| node * 2 }}"
+print "\n\n-------\n\n"
 
 p tree.postorder
-p (tree.postorder { |node| node * 2 })
+puts "postorder: #{tree.postorder}"
+puts "w/ n * 2 block: #{tree.postorder { |node| node * 2 }}"
+print "\n\n-------\n\n"
+
+array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+tree = Tree.new(array)
+puts tree.pretty_print
+puts "tree height: #{tree.height}"
+puts "node 9 height: #{tree.height(tree.find(9))}"
+print "\n\n-------\n\n"
+
 # array = [1, 2, 3, 5]
 # tree = Tree.new(array)
 # puts tree.pretty_print
