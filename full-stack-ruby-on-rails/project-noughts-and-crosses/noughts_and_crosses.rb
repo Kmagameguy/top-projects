@@ -97,15 +97,25 @@ class NoughtsAndCrossesGame
   end
 
   def play
-    @current_player = @current_player == @player ? @computer : @player
-    @current_player.moves << @current_player.move(@board.available_cells)
-    @board.update_cells(@current_player.moves, @current_player.marker)
+    change_players
+    player_pick_cell
+    show_turn_results
     play unless game_over?
   end
 
   private
 
+  def change_players
+    @current_player = @current_player == @player ? @computer : @player
+  end
 
+  def player_pick_cell
+    @current_player.moves << @current_player.move(@board.available_cells)
+  end
+
+  def show_turn_results
+    @board.update_cells(@current_player.moves, @current_player.marker)
+  end
 
   def game_over?
     winning_move? || game_draw?
