@@ -86,7 +86,9 @@ def caesar_cipher2(text, offset)
     hash
   end
 
-  puts cipher_hash
+  puts text.split('').map { |char| cipher_hash.fetch(char, char)}
+
 end
 
-caesar_cipher2('What a string!', 5)
+caesar_cipher2('WHAT A STRING!', 5)
+#caesar_cipher2('What a string!', 5)
