@@ -97,7 +97,7 @@ class Tree
     ordered_tree
   end
 
-  def inorder(node = @root)
+  def inorder(node = @root, &block)
     inorder_tree = []
     return nil if node.nil?
 
@@ -105,10 +105,14 @@ class Tree
     inorder_tree << node.value
     inorder_tree << inorder(node.right) unless node.right.nil?
 
-    inorder_tree.compact.flatten
+    if block_given?
+      inorder_tree.compact.flatten.map(&block)
+    else
+      inorder_tree.compact.flatten
+    end
   end
 
-  def preorder(node = @root)
+  def preorder(node = @root, &block)
     preorder_tree = []
     return nil if node.nil?
 
@@ -116,10 +120,14 @@ class Tree
     preorder_tree << preorder(node.left) unless node.left.nil?
     preorder_tree << preorder(node.right) unless node.right.nil?
 
-    preorder_tree.compact.flatten
+    if block_given?
+      preorder_tree.compact.flatten.map(&block)
+    else
+      preorder_tree.compact.flatten
+    end
   end
 
-  def postorder(node = @root)
+  def postorder(node = @root, &block)
     postorder_tree = []
     return nil if node.nil?
 
@@ -127,7 +135,11 @@ class Tree
     postorder_tree << postorder(node.right) unless node.right.nil?
     postorder_tree << node.value
 
-    postorder_tree.compact.flatten
+    if block_given?
+      postorder_tree.compact.flatten.map(&block)
+    else
+      postorder_tree.compact.flatten
+    end
   end
 
   # Not mine -- The odin assignment provided this method
@@ -158,10 +170,18 @@ end
 array = [1, 2, 3, 4, 5]
 tree = Tree.new(array)
 puts tree.pretty_print
+
+p tree.level_order
 p (tree.level_order { |node| node * 2 })
+
 p tree.inorder
+p (tree.inorder { |node| node * 2 })
+
 p tree.preorder
+p (tree.preorder { |node| node * 2 })
+
 p tree.postorder
+p (tree.postorder { |node| node * 2 })
 # array = [1, 2, 3, 5]
 # tree = Tree.new(array)
 # puts tree.pretty_print
