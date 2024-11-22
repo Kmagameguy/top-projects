@@ -1,5 +1,6 @@
 html {
   box-sizing: border-box;
+  user-select: none;
 }
 
 *,
@@ -63,6 +64,7 @@ button:active {
   font-family: 'Fira Code', monospace;
   background-color: #E5E9F0;
   border: 1px solid #4C566A;
+  user-select: text;
 }
 
 #btn-clear,
