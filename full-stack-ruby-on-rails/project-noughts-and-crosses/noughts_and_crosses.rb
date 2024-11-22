@@ -40,9 +40,14 @@ class NoughtsAndCrossesGame
   def prompt_for_input
     valid_cells = (1..9).to_a - (@player.moves + @computer.moves)
 
-    puts "#{@current_player.name}, make your move!  Valid options are: #{valid_cells}"
-    selection = gets.chomp.to_s.to_i
-    return selection if valid_cells.include?(selection)
+    loop do
+      puts "#{@current_player.name}, make your move! Valid options are: #{valid_cells}"
+
+      selection = gets.chomp.to_s.to_i
+      break selection if valid_cells.include?(selection)
+
+      puts 'Invalid input. Try again.'
+    end
   end
 
   def winning_move?
