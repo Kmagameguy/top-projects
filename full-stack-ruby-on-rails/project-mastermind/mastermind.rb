@@ -84,8 +84,8 @@ class Row
 
   MAX_ROW_SIZE = 4
 
-  def initialize(*colors)
-    @colors = colors.empty? ? random_colors : colors.map(&:to_sym)
+  def initialize(colors = nil)
+    @colors = colors.nil? ? random_colors : colors.map(&:to_sym)
     @results = []
   end
 
@@ -124,7 +124,7 @@ class Player
 
       puts 'Invalid selection.  Try again.'
     end
-    Row.new(*input)
+    Row.new(input)
   end
 
   private
