@@ -1,8 +1,4 @@
-console.log('ready!');
-
 const BUTTONS = document.querySelectorAll('button');
-const DECIMAL_BUTTON = document.querySelector('#btn-decimal');
-const CALCULATOR_DISPLAY = document.querySelector('#calculator-text');
 const DIVIDE_BY_ZERO_MESSAGE = 'Divide by Zero Error';
 
 class Memory {
@@ -14,19 +10,19 @@ class Memory {
 
     equals() {
         if (this.firstNum !== null && this.operator !== null) {
-            this.secondNum = display.getDisplayAsFloat();
+            this.secondNum = display.getFloat();
             this.shift(this.#calculate());
         }
     }
 
     operate(operator) {
         if (this.firstNum === null) {
-            this.firstNum = display.getDisplayAsFloat();
+            this.firstNum = display.getFloat();
             this.operator = operator;
         } else if (this.operator === null) {
             this.operator = operator;
         } else {
-            this.secondNum = display.getDisplayAsFloat();
+            this.secondNum = display.getFloat();
             this.shift(this.#calculate(), operator);
         }
     }
@@ -78,59 +74,77 @@ class Memory {
     }
 };
 
-let display = {
-    frozen: false,
+class Display {
+    constructor() {
+        this.frozen = false;
+        this.calculatorDisplay = document.querySelector('#calculator-text');
+    }
+
     update(text) {
-        CALCULATOR_DISPLAY.innerText = text;
-    },
+        this.calculatorDisplay.innerText = text;
+    }
+
     freeze() {
         this.frozen = true;
-    },
-    thaw() {
-        this.frozen = false;
-    },
+    }
+
     clear() {
-        CALCULATOR_DISPLAY.innerText = '0';
+        this.update('0');
         memory.shift();
-    },
-    getDisplayAsFloat() {
-        return parseFloat(CALCULATOR_DISPLAY.innerText);
-    },
-    insertNumber(num) {
-        if (this.isNotShowingError() && !this.frozen) {
-            const currentDisplay = CALCULATOR_DISPLAY.innerText;
-            currentDisplay === '0' ? this.update(num) : this.update(currentDisplay + num);
-        } else {
-            this.update(num);
-            this.thaw();
+    }
+
+    getFloat() {
+        return parseFloat(this.#getText());
+    }
+
+    invert() {
+        if (this.#isNotShowingError()) {
+            this.update(-this.getFloat());
         }
-    },
+    }
+
+    convertToDecimalPercentage() {
+        if (this.#isNotShowingError()) {
+            this.update(this.getFloat() / 100);
+        }
+    }
+
     insertDecimal() {
-        if(this.isNotShowingError() && !this.hasDecimal()) {
-            const currentDisplay = CALCULATOR_DISPLAY.innerText;
+        if(this.#isNotShowingError() && !this.#hasDecimal()) {
+            const currentDisplay = this.#getText();
             if (this.frozen || currentDisplay === 0) {
-                this.thaw();
+                this.#thaw();
                 this.update('0.');
             } else {
                 this.update(currentDisplay + '.');
             }
         }
-    },
-    hasDecimal() {
-        return CALCULATOR_DISPLAY.innerText.indexOf('.') > -1
-    },
-    isNotShowingError() {
-        return CALCULATOR_DISPLAY.innerText !== DIVIDE_BY_ZERO_MESSAGE;
-    },
-    invert() {
-        if (this.isNotShowingError()) {
-            this.update(-this.getDisplayAsFloat());
+    }
+
+    insertNumber(num) {
+        if (this.#isNotShowingError() && !this.frozen) {
+            const currentDisplay = this.#getText();
+            currentDisplay === '0' ? this.update(num) : this.update(currentDisplay + num);
+        } else {
+            this.#thaw();
+            this.update(num);
         }
-    },
-    convertToDecimalPercentage() {
-        if (this.isNotShowingError()) {
-            this.update(this.getDisplayAsFloat() / 100);
-        }
+    }
+
+    #getText() {
+        return this.calculatorDisplay.innerText;
+    }
+
+    #thaw() {
+        this.frozen = false;
+    }
+
+    #hasDecimal() {
+        return this.#getText().indexOf('.') > -1
+    }
+
+    #isNotShowingError() {
+        return this.#getText() !== DIVIDE_BY_ZERO_MESSAGE;
     }
 }
 
@@ -168,4 +182,5 @@ function handleInput(e) {
 }
 
 let memory = new Memory();
+let display = new Display();
 BUTTONS.forEach(button => button.addEventListener('click', handleInput));
