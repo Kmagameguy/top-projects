@@ -90,30 +90,28 @@ class Row
   end
 
   def to_s
-    pegs = @colors.map { |color| "#{Peg.new(color)}"} +
-           @results.map { |peg_type| "#{ResultPeg.new(peg_type)}"}
+    pegs = @colors.map { |color| Peg.new(color).to_s } +
+           @results.map { |peg_type| ResultPeg.new(peg_type).to_s }
     pegs.join(' ')
   end
 
   private
 
   def random_colors
-    row = []
-    MAX_ROW_SIZE.times do
-      row.push(Peg::COLORS.keys.sample)
+    (1..MAX_ROW_SIZE).each_with_object([]) do |_i, row|
+      row.push(Peg::COLORS.keys.sample).to_sym
     end
-    row.map(&:to_sym)
   end
 end
 
 # A class which has knowledge about the player (role, valid movements, etc)
 class Player
-  def initialize(is_codemaker = false)
-    @is_codemaker = is_codemaker
+  def initialize(codemaker: false)
+    @codemaker = codemaker
   end
 
   def codemaker?
-    !!@is_codemaker
+    !!@codemaker
   end
 
   def pick_colors
@@ -156,8 +154,8 @@ class MastermindGame
 
   def initialize
     @rounds = MAX_ROUNDS
-    @player = Player.new(choose_role)
-    @computer = Computer.new(!@player.codemaker?)
+    @player = Player.new(codemaker: choose_role)
+    @computer = Computer.new(codemaker: !@player.codemaker?)
     @codebreaker = @player.codemaker? ? @computer : @player
     @codemaker = @player.codemaker? ? @player : @computer
     @coded_message = Row.new(*@codemaker.pick_colors)
