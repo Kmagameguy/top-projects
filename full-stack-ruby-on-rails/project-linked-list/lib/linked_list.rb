@@ -121,13 +121,11 @@ class LinkedList
 
     string = ''
     pointer = ' -> '
-    reference = @head
+    node = @head
 
-    loop do
-      string += "( #{reference.data} )#{pointer}"
-      break if reference.next.nil?
-
-      reference = reference.next
+    size.times do
+      string += "( #{node.data} )#{pointer}"
+      node = node.next
     end
 
     "#{string}nil"
