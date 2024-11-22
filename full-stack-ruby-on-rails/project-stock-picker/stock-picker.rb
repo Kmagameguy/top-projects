@@ -31,7 +31,9 @@ def stock_picker(prices)
   # found Array#combination from here:
   # https://ruby-doc.org/3.2.1/Array.html#method-i-combination
   # Ruby seems to have a method for everything
-  p prices.combination(2).to_a
+  stonks = prices.combination(2).reduce(Hash.new({})) do |hash, price_group|
+    p price_group
+  end
 end
 
 stock_picker([17, 3, 6, 9, 15, 8, 6, 1, 10])
