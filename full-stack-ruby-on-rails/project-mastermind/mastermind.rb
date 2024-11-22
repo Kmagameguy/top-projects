@@ -7,8 +7,10 @@ class Peg
   COLORS = {
     red: 31,
     green: 32,
-    brown: 33,
-    blue: 34
+    yellow: 33,
+    blue: 34,
+    purple: 35,
+    cyan: 36
   }.freeze
 
   def initialize(color)
@@ -82,7 +84,7 @@ class MastermindGame
 
   def initialize
     @rounds = MAX_ROUNDS
-    @code = create_row(:red, :red, :blue, :brown)
+    @code = create_row(:red, :red, :blue, :cyan)
     @user_guesses = []
   end
 
@@ -130,6 +132,13 @@ class MastermindGame
     game_lost
   end
 
+  # This method is awful
+  # I've never played mastermind so this is my interpretation of the rules:
+  # 1. First, figure out how many black pegs we owe (aka exact matches)
+  # Then, to figure out the white pegs we owe:
+  # 1. Strip out those matches from the source & guess arrays
+  # 2. Remove duplicates from source and guess arrays
+  # 3. Increase white peg count if a guessed color exists in the remainder of the code array
   def calculate_matches_and_near_hits
     black_pegs = 0
     white_pegs = 0
