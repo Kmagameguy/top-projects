@@ -7,3 +7,38 @@ html {
 *::after {
   box-sizing: inherit;
 }
+
+body {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+}
+
+button {
+  font-size: 24px;
+  width: 6rem;
+  height: 6rem;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 3px solid black;
+}
+
+.row {
+  display: flex;
+}
+
+#calculator-display {
+  display: flex;
+  justify-content: flex-end;
+  border: 1px solid black;
+  padding: 0.2rem 0.7rem;
+  margin-bottom: 1rem;
+}
+
+#btn-zero {
+  width: 12rem;
+}
