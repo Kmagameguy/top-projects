@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# A player character
+class Player
+  attr_accessor :moves
+
+  def initialize
+    @moves = []
+  end
+end
+
 # This is our main class which will instantiate a game of Noughts & Crosses.
 class NoughtsAndCrossesGame
   WIN_CONDITIONS = [
@@ -14,10 +23,11 @@ class NoughtsAndCrossesGame
   ].freeze
 
   def initialize
-    player_choices = [2, 1, 3]
+    player = Player.new
+    player.moves = [1, 2, 3]
 
     WIN_CONDITIONS.any? do |line|
-      puts 'You won!' if line == player_choices.sort
+      puts 'You won!' if line == player.moves.sort
     end
   end
 end
