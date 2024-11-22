@@ -88,6 +88,10 @@ class Display {
     }
 
     update(text) {
+        this.calculatorDisplay.classList.add('blink-text');
+        setTimeout(() => {
+            this.calculatorDisplay.classList.remove('blink-text');
+        }, 25);
         this.calculatorDisplay.innerText = text;
     }
 
