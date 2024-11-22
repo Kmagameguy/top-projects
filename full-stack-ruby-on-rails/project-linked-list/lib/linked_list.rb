@@ -37,7 +37,7 @@ class LinkedList
     @size.times do |list_index|
       return node if index_to_find == list_index
 
-      node = node.next || nil
+      node = node.next
     end
     node
   end
@@ -125,7 +125,7 @@ class LinkedList
 
     @size.times do |list_index|
       if list_index == index
-        next_node = current_node.next ||= nil
+        next_node = current_node.next
         previous_node.next = next_node
         break
       else
@@ -151,6 +151,8 @@ class LinkedList
   end
 
   def tail
+    return nil if empty?
+
     current_node = @head
     current_node = current_node.next while current_node.next
     current_node
