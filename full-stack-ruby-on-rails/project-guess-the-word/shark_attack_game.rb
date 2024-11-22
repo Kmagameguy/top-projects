@@ -14,8 +14,6 @@ class SharkAttackGame
   def play
     # Debugging line:
     puts @word_to_guess.word
-    p "Incorrect List: #{@word_to_guess.incorrect_guesses}"
-    p "Correct List: #{@word_to_guess.correct_guesses}"
 
     choose_letter
     @display.shark_position = @word_to_guess.incorrect_guesses.size

@@ -22,6 +22,7 @@ class Display
     clear_screen
     draw_waves_shark_and_swimmer
     show_revealed_characters(word.correct_guesses, word.word)
+    show_incorrectly_guessed_characters(word.incorrect_guesses)
   end
 
   def game_over(word, won: false)
@@ -57,5 +58,9 @@ class Display
     puts ''
     print word.chars.map { |char| characters_to_display.include?(char) ? char : '_' }.join(' ')
     puts ''
+  end
+
+  def show_incorrectly_guessed_characters(characters)
+    puts "Incorrect Guesses: #{characters.join(', ')}" unless characters.empty?
   end
 end
