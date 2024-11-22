@@ -2,9 +2,10 @@
 
 # A player character
 class Player
-  attr_accessor :moves
+  attr_accessor :name, :moves
 
-  def initialize
+  def initialize(name = 'Computer')
+    @name = name
     @moves = []
   end
 end
@@ -23,22 +24,33 @@ class NoughtsAndCrossesGame
   ].freeze
 
   def initialize
-    @player = Player.new
+    @player = Player.new('Vin Diesel')
     @computer = Player.new
+    @current_player = @computer
   end
 
   def play
-    @player.moves = [1, 5, 8, 9]
-
-    p winning_move?(@player)
+    @current_player = @current_player == @player ? @computer : @player
+    p @current_player.moves << prompt_for_input
+    play unless winning_move?
   end
 
   private
 
-  def winning_move?(player)
-    WIN_CONDITIONS.any? do |win_path|
-      win_path.all? { |cell| player.moves.include?(cell) }
+  def prompt_for_input
+    valid_cells = (1..9).to_a - (@player.moves + @computer.moves)
+
+    puts "#{@current_player.name}, make your move!  Valid options are: #{valid_cells}"
+    selection = gets.chomp.to_s.to_i
+    return selection if valid_cells.include?(selection)
+  end
+
+  def winning_move?
+    game_won = WIN_CONDITIONS.any? do |win_path|
+      win_path.all? { |cell| @current_player.moves.include?(cell) }
     end
+    puts "#{@current_player.name} wins!" if game_won
+    game_won
   end
 end
 
