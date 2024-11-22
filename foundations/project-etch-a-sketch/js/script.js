@@ -1,11 +1,19 @@
 const GAME_BOARD = document.querySelector('#grid-container');
 const GRID_SIZE_BTN = document.querySelector('#change-grid');
-// 256 cells divides nicely into a 16x16 grid
-const CELL_COUNT = 256;
+const GRID_MAX_SIZE = 512;
 const CELL_THRESHOLDS = [1, 100];
 
-function isBetween(num, min, max) {
-    return (num >= min && num <= max);
+
+function drawGrid(numCellsPerSide=16) {
+    resetGameBoard();
+    let totalCells = calculateNumberOfCells(numCellsPerSide);
+    for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+            cell.classList.add('grid-box');
+            cell.addEventListener('mouseover', highlightBox);
+            cell.style.width = cell.style.height = setCellSize(numCellsPerSide);
+        GAME_BOARD.appendChild(cell);
+    }
 }
 
 function changeGridSize() {
@@ -14,17 +22,31 @@ function changeGridSize() {
         alert('Invalid option.  Input only accepts numbers between 1 and 100');
         return
     }
+
+    drawGrid(userInput);
+}
+
+function resetGameBoard() {
+    while (GAME_BOARD.firstChild) {
+        GAME_BOARD.removeChild(GAME_BOARD.firstChild);
+    }
+}
+
+function isBetween(num, min, max) {
+    return (num >= min && num <= max);
+}
+
+function setCellSize(numBoxes) {
+    return `${GRID_MAX_SIZE/numBoxes}px`;
+}
+
+function calculateNumberOfCells(width) {
+    return width ** 2;
 }
 
 function highlightBox(e) {
     e.target.classList.toggle('marked');
 }
 
-for (let i = 0; i < CELL_COUNT; i++) {
-    const pixel = document.createElement('div');
-        pixel.classList.add('grid-box');
-        pixel.addEventListener('mouseover', highlightBox);
-    GAME_BOARD.appendChild(pixel);
-}
-
+drawGrid();
 GRID_SIZE_BTN.addEventListener('click', changeGridSize);
