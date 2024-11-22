@@ -8,6 +8,15 @@ class LinkedList
     @head = nil
   end
 
+  def prefix(value)
+    if @head.nil?
+      @head = Node.new(value)
+    else
+      current_head = @head
+      @head = Node.new(value, current_head)
+    end
+  end
+
   def append(value)
     if @head.nil?
       @head = Node.new(value)
@@ -24,9 +33,10 @@ class LinkedList
 end
 
 list = LinkedList.new
-list.append(10) # 0
-list.append(20) # 1
-list.append(30) # 2
+list.append(10)
+list.append(20)
+list.append(30)
+list.prefix(100)
 
 p list
 
