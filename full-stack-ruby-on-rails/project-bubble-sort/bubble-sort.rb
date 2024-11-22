@@ -33,16 +33,21 @@
 
 
 def bubble_sort(sequence)
-  index = 0
-  while index < sequence.length - 1 do
-    current_position = sequence[index]
-    next_position = sequence[index + 1]
+  max_iterations = sequence.length
 
-    if current_position > next_position
-      sequence[index] = next_position
-      sequence[index + 1] = current_position
+  while max_iterations > 1 do
+    index = 0
+    while index < sequence.length - 1 do
+      current_position = sequence[index]
+      next_position = sequence[index + 1]
+
+      if current_position > next_position
+        sequence[index] = next_position
+        sequence[index + 1] = current_position
+      end
+      index += 1
     end
-    index += 1
+    max_iterations -= 1
   end
   p sequence
 end
