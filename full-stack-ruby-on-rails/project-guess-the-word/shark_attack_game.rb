@@ -97,7 +97,8 @@ class SharkAttackGame
   def invalid_input?
     (@input.length > 1 ||
       @correct_guesses.include?(@input) ||
-      @incorrect_guesses.include?(@input))
+      @incorrect_guesses.include?(@input) ||
+      @input =~ /[^a-z]/)
   end
 
   def save_input
