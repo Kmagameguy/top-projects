@@ -47,6 +47,10 @@ class Board
     (1..@board.size).to_a - indexes_of_marked_cells
   end
 
+  def blank?
+    available_cells.count == @board.size
+  end
+
   private
 
   def show_board
@@ -91,13 +95,13 @@ class NoughtsAndCrossesGame
   def initialize(name)
     @player = Player.new('x', name)
     @computer = Computer.new('o')
-    @current_player = @computer
+    @current_player = @player
     @board = Board.new(WIN_CONDITIONS.flatten.uniq.size)
     @board.update_cells
   end
 
   def play
-    change_players
+    change_players unless @board.blank?
     player_pick_cell
     show_turn_results
     play unless game_over?
