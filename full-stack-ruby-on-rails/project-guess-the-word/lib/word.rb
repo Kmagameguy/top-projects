@@ -5,7 +5,7 @@ class Word
   attr_accessor :correct_guesses, :incorrect_guesses
   attr_reader :word
 
-  WORD_LIST = './assets/google-10000-english-no-swears.txt'.freeze
+  WORD_LIST = './assets/google-10000-english-no-swears.txt'
 
   def initialize
     @word = pick_word
