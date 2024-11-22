@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
-require './lib/wordable'
+require './lib/dictionary'
 require './lib/displayable'
 require './lib/game_file'
 
 # A class to manage our game's state
 class SharkAttackGame
-  include Wordable
   include Displayable
 
-  def initialize
+  def initialize(dictionary = Dictionary.new)
     @correct_guesses = []
     @incorrect_guesses = []
-    @word_to_guess = setup_game
+    @word_to_guess = load_game? ? load : dictionary.random_word
     @saved_and_quit = false
     @input = ''
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
@@ -27,10 +26,6 @@ class SharkAttackGame
   end
 
   private
-
-  def setup_game
-    load_game? ? load : pick_word
-  end
 
   def ask_for_player_input
     puts 'Guess a letter or type "quit game" to quit:'
