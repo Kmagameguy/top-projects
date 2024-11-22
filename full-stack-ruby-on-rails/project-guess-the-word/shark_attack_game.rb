@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
 require './lib/word'
+require './lib/display'
 
 # A class to manage our game's state
 class SharkAttackGame
   def initialize
     @word_to_guess = Word.new
+    @display = Display.new
+    @display.draw
   end
 
   def play
+    # Debugging line:
     puts @word_to_guess.word
   end
 end
