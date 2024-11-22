@@ -48,7 +48,6 @@ class Memory {
 
     #divide() {
         if (this.secondNum === 0) {
-            this.shift();
             return DIVIDE_BY_ZERO_MESSAGE
         } else {
             return this.firstNum / this.secondNum
@@ -148,6 +147,10 @@ class Display {
 
 function handleInput(e) {
     let selectedButton = e.target.innerText;
+
+    if (isNaN(display.getFloat())) {
+        display.clear();
+    }
 
     switch(selectedButton) {
         case 'AC':
