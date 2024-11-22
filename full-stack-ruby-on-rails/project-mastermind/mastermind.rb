@@ -106,7 +106,7 @@ class Row
 
   def random_colors
     row = []
-    4.times do
+    MAX_ROW_SIZE.times do
       row.push(Peg::COLORS.keys.sample)
     end
     row.map(&:to_sym)
