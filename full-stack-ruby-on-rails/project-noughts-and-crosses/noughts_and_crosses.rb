@@ -3,8 +3,10 @@
 # A player character
 class Player
   attr_accessor :name, :moves
+  attr_reader :character
 
-  def initialize(name = 'Computer')
+  def initialize(character, name = 'Computer')
+    @character = character
     @name = name
     @moves = []
   end
@@ -23,21 +25,23 @@ class NoughtsAndCrossesGame
     [3, 5, 7]
   ].freeze
 
+  BOARD = Array.new(WIN_CONDITIONS.flatten.uniq.size, ' ')
+
   def initialize
-    @player = Player.new('Vin Diesel')
-    @computer = Player.new
+    @player = Player.new('x', 'Vin Diesel')
+    @computer = Player.new('o')
     @current_player = @computer
+    show_board
   end
 
   def play
     @current_player = @current_player == @player ? @computer : @player
-
     @current_player.moves << if @current_player == @player
                                prompt_for_input
                              else
                                random_move
                              end
-
+    show_board
     play unless game_over?
   end
 
@@ -64,7 +68,7 @@ class NoughtsAndCrossesGame
   end
 
   def game_over?
-    winning_move? || draw?
+    winning_move? || game_draw?
   end
 
   def winning_move?
@@ -75,16 +79,40 @@ class NoughtsAndCrossesGame
     game_won
   end
 
-  def draw?
+  def game_draw?
     no_moves_left = (@player.moves + @computer.moves).count >= 9
     puts "Game over! It's a draw!" if no_moves_left
     no_moves_left
+  end
+
+  def clear_screen
+    system('clear')
+    puts "\n"
+  end
+
+  def update_marked_cells
+    player = @current_player
+    BOARD[player.moves.last - 1] = player.character if player.moves.last
+  end
+
+  def draw_cell(value)
+    print "|#{value}|"
+  end
+
+  def show_board
+    new_rows = [2, 5]
+    clear_screen
+    update_marked_cells
+    BOARD.each_with_index do |cell, index|
+      draw_cell(cell)
+      puts "\n" if new_rows.include?(index)
+    end
+    puts "\n\n"
   end
 end
 
 game = NoughtsAndCrossesGame.new
 game.play
-
 # Essentially have a "grid"
 
 # | 1. | 2. | 3. |
