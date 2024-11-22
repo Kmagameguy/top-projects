@@ -93,6 +93,17 @@ class Tree
     ordered_tree
   end
 
+  def inorder(node = @root)
+    inorder_tree = []
+    return nil if node.nil?
+
+    inorder_tree << inorder(node.left) unless node.left.nil?
+    inorder_tree << node.value
+    inorder_tree << inorder(node.right) unless node.right.nil?
+
+    inorder_tree.compact.flatten
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
@@ -122,7 +133,7 @@ array = [1, 2, 3, 4, 5]
 tree = Tree.new(array)
 puts tree.pretty_print
 p tree.level_order
-
+p tree.inorder
 # array = [1, 2, 3, 5]
 # tree = Tree.new(array)
 # puts tree.pretty_print
