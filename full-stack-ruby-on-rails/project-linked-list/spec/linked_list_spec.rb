@@ -256,4 +256,62 @@ RSpec.describe 'Linked List' do
       expect(list.at(3).data).to be 30
     end
   end
+
+  describe 'removing nodes at a specified index' do
+    it 'does nothing if the list is empty' do
+      list = LinkedList.new
+      original_size = list.size
+      list.remove_at(0)
+      expect(list.size).to eq original_size
+    end
+
+    it 'does nothing if the supplied index is a negative value' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.append(30)
+      original_list_size = list.size
+      list.remove_at(-1)
+      expect(list.size).to eq original_list_size
+    end
+
+    it 'does nothing if the supplied index is greater than the list length' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.append(30)
+      original_list_size = list.size
+      list.remove_at(3000)
+      expect(list.size).to eq original_list_size
+    end
+
+    it 'sets head to nil if head is removed and was only node in list' do
+      list = LinkedList.new
+      list.append(10)
+      list.remove_at(0)
+      expect(list.head).to be nil
+    end
+
+    it 'sets head to the next node if head is removed' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.remove_at(0)
+      expect(list.head.data).to be 20
+    end
+
+    it 'removes the node at the specified index' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.append('Cowabunga')
+      list.append(30)
+      list.append(40)
+      list.remove_at(2)
+      expect(list.at(1).data).to be 20
+      expect(list.at(2).data).to be 30
+      expect(list.contains?('Cowabunga')).to be false
+    end
+
+  end
 end

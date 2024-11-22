@@ -141,6 +141,38 @@ class LinkedList
     end
   end
 
+  def remove_at(index)
+    return if @head.nil? || index.negative? || index > size - 1
+
+    if index.zero?
+      @head = @head.next_node.nil? ? nil : @head.next_node
+      return
+    end
+
+    if @head.next_node.nil?
+      @head = nil
+      return
+    end
+
+    counter = 1
+    n_previous = @head
+    n_current = @head.next_node
+
+    loop do
+      if counter == index
+        n_next = n_current.next_node.nil? ? nil : n_current.next_node
+        n_previous.next_node = n_next
+        break
+      else
+        break if n_current.next_node.nil?
+
+        n_previous = n_current
+        n_current = n_current.next_node
+        counter += 1
+      end
+    end
+  end
+
   def to_s
     return nil if @head.nil?
 
