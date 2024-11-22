@@ -12,8 +12,8 @@ class Peg
   }.freeze
 
   def initialize(color, location)
-    @symbol = "\u2022"
-    @color = COLORS[color.to_sym]
+    @symbol = "\u25CF"
+    @color = COLORS[color]
     @location = location
   end
 
@@ -28,15 +28,35 @@ class Peg
   end
 end
 
+# A class which represents the correctness of a pin's color & location
+class ResultPeg
+  attr_reader :symbol
+
+  SYMBOLS = {
+    full_match: "\u25A0",
+    partial_match: "\u25A1"
+  }.freeze
+
+  def initialize(symbol)
+    @symbol = SYMBOLS[symbol]
+  end
+
+  def to_s
+    symbol.to_s
+  end
+end
+
 # class Guess; end
 # class Player; end
 # class Codemaker; end
 # class MastermindGame; end
 
-print Peg.new('red', 1)
-print Peg.new('green', 2)
-print Peg.new('brown', 3)
-print Peg.new('blue', 4)
+print Peg.new(:red, 1)
+print Peg.new(:green, 2)
+print Peg.new(:brown, 3)
+print Peg.new(:blue, 4)
+print ResultPeg.new(:full_match)
+print ResultPeg.new(:partial_match)
 puts ''
 # Mastermind Components
 
