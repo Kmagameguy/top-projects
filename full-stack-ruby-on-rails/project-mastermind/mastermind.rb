@@ -166,7 +166,7 @@ class MastermindGame
       color != computer_colors[index]
     end.uniq
 
-    unmatched_computer.each do |color, index|
+    unmatched_computer.each do |color|
       white_pegs += 1 if unmatched_user.include?(color)
     end
 
