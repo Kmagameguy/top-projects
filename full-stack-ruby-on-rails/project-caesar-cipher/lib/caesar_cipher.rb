@@ -5,30 +5,31 @@ class CaesarCipher
   def initialize(text:, key: 1)
     @text = text
     @key = key
+    @cipher = create_cipher
   end
 
   def encode
-    upcase_alphabet = ('A'..'Z').to_a
-    upcase_ciphered_alphabet = upcase_alphabet.rotate(@key)
-    downcase_alphabet = ('a'..'z').to_a
-    downcase_ciphered_alphabet = downcase_alphabet.rotate(@key)
-
-    cipher_upcase_hash = create_hash(upcase_alphabet, upcase_ciphered_alphabet)
-    cipher_downcase_hash = create_hash(downcase_alphabet, downcase_ciphered_alphabet)
-
-    cipher = cipher_upcase_hash.merge(cipher_downcase_hash)
-
-    @text.split('').map { |char| cipher.fetch(char, char) }.join
+    @text.split('').map { |char| @cipher.fetch(char, char) }.join
   end
 
   private
 
-  def create_hash(alphabet, rotated_alphabet)
+  def create_cipher
+    upcase_alphabet = ('A'..'Z').to_a
+    downcase_alphabet = upcase_alphabet.map(&:downcase)
+
+    create_hash(upcase_alphabet).merge(create_hash(downcase_alphabet))
+  end
+
+  def create_hash(alphabet)
+    rotated_alphabet = rotate_alphabet_by_key(alphabet)
+
     alphabet.each_with_object({}).with_index do |(key, hash), index|
       hash[key] = rotated_alphabet[index]
     end
   end
-end
 
-c = CaesarCipher.new(text: 'What a string!', key: 5)
-p c.encode
+  def rotate_alphabet_by_key(alphabet)
+    alphabet.rotate(@key)
+  end
+end
