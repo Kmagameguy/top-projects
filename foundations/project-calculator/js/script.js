@@ -10,7 +10,7 @@ let memory = {
     operator: null,
     secondNum: null,
     shift() {
-        this.firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
+        this.firstNum = display.getDisplayAsFloat();
         this.operator = null;
         this.secondNum = null;
     },
@@ -20,6 +20,35 @@ let memory = {
         this.secondNum = null;
     }
 };
+
+let display = {
+    update(text) {
+        CALCULATOR_DISPLAY.innerText = text;
+    },
+    clear() {
+        CALCULATOR_DISPLAY.innerText = '0';
+        memory.reset();
+    },
+    getDisplayAsFloat() {
+        return parseFloat(CALCULATOR_DISPLAY.innerText);
+    },
+    hasDecimal() {
+        return CALCULATOR_DISPLAY.innerText.indexOf('.') > -1
+    },
+    isNotShowingError() {
+        return CALCULATOR_DISPLAY.innerText !== DIVIDE_BY_ZERO_MESSAGE;
+    },
+    invert() {
+        if (this.isNotShowingError()) {
+            this.update(-this.getDisplayAsFloat());
+        }
+    },
+    convertToDecimalPercentage() {
+        if (this.isNotShowingError()) {
+            this.update(this.getDisplayAsFloat() / 100);
+        }
+    }
+}
 
 function addNumbers(num1, num2) {
     return num1 + num2;
@@ -44,46 +73,19 @@ function isNumber(value) {
     return !isNaN(parseFloat(value));
 }
 
-function updateDisplay(text) {
-    CALCULATOR_DISPLAY.innerText = text;
-}
-
 function updateOrAppendToDisplay(text) {
     let currentDisplay = CALCULATOR_DISPLAY.innerText;
-    if (currentDisplay === DIVIDE_BY_ZERO_MESSAGE) {
-        updateDisplay(text);
-    } else if (currentDisplay == '0' && text != '.') {
-        updateDisplay(text);
+    if (!display.isNotShowingError()) {
+        display.update(text);
+    } else if (currentDisplay === '0' && text != '.') {
+        display.update(text);
     } else {
-        updateDisplay(currentDisplay + text)
+        display.update(currentDisplay + text)
     }
-}
-
-function clearDisplay() {
-    CALCULATOR_DISPLAY.innerText = '0';
-    memory.reset();
-}
-
-function invertDisplay() {
-    let currentDisplay = CALCULATOR_DISPLAY.innerText;
-    if (currentDisplay !== DIVIDE_BY_ZERO_MESSAGE) {
-        CALCULATOR_DISPLAY.innerText = -parseFloat(currentDisplay);
-    }
-}
-
-function convertDisplayToDecimalPercentage() {
-    let currentDisplay = CALCULATOR_DISPLAY.innerText;
-    if (currentDisplay !== DIVIDE_BY_ZERO_MESSAGE) {
-        CALCULATOR_DISPLAY.innerText = parseFloat(currentDisplay) / 100;
-    }
-}
-
-function displayHasDecimal() {
-    return CALCULATOR_DISPLAY.innerText.indexOf('.') > -1;
 }
 
 function toggleDecimalButtonState() {
-    DECIMAL_BUTTON.disabled = displayHasDecimal();
+    DECIMAL_BUTTON.disabled = display.hasDecimal();
 }
 
 function operate(num1, operator, num2) {
@@ -109,28 +111,28 @@ function handleInput(e) {
     let selectedButton = e.target.innerText;
 
     if (selectedButton === 'AC') {
-        clearDisplay();
+        display.clear();
     } else if (selectedButton === '+/-') {
-        invertDisplay();
+        display.invert();
     } else if (selectedButton === '%') {
-        convertDisplayToDecimalPercentage();
+        display.convertToDecimalPercentage();
     } else if (selectedButton === '=') {
         // We have to handle = separately since it can't be chained like other operators
         if (memory.firstNum !== null && memory.operator !== null && memory.secondNum !== null) {
-            memory.secondNum = parseFloat(CALCULATOR_DISPLAY.innerText);
-            updateDisplay(operate(memory.firstNum, memory.operator, memory.secondNum));
+            memory.secondNum = display.getDisplayAsFloat();
+            display.update(operate(memory.firstNum, memory.operator, memory.secondNum));
             memory.reset();
         }
     } else if (memory.firstNum === null && memory.operator === null && memory.secondNum === null) {
         if (isNumber(selectedButton)) {
             updateOrAppendToDisplay(selectedButton);
         } else if (selectedButton === '.') {
-            if (CALCULATOR_DISPLAY.innerText.indexOf('.') === -1) {
+            if (!display.hasDecimal()) {
                 updateOrAppendToDisplay(selectedButton);
             }
         }
         else {
-            memory.firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
+            memory.firstNum = display.getDisplayAsFloat();
             memory.operator = selectedButton;
         }
     // this condition is really only here to handle the display.  We want to show the previously
@@ -140,7 +142,7 @@ function handleInput(e) {
     // continues to the third else if statement in this chain
     } else if (memory.firstNum !== null && memory.operator !== null && memory.secondNum === null) {
         if (isNumber(selectedButton)) {
-            updateDisplay(selectedButton);
+            display.update(selectedButton);
             memory.secondNum = parseFloat(selectedButton);
         }
     // this condition is what helps us chain operators together.  if the list of operations is full
@@ -149,8 +151,8 @@ function handleInput(e) {
         if (isNumber(selectedButton) || selectedButton === '.') {
             updateOrAppendToDisplay(selectedButton);
         } else {
-            memory.secondNum = parseFloat(CALCULATOR_DISPLAY.innerText);
-            updateDisplay(operate(memory.firstNum, memory.operator, memory.secondNum));
+            memory.secondNum = display.getDisplayAsFloat();
+            display.update(operate(memory.firstNum, memory.operator, memory.secondNum));
             memory.shift();
             memory.operator = selectedButton;
         }
