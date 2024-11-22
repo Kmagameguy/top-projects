@@ -213,4 +213,47 @@ RSpec.describe 'Linked List' do
       expect(list.to_s).to eq '( 100 ) -> ( bob ) -> ( 10 ) -> ( 20 ) -> ( 30 ) -> nil'
     end
   end
+
+  describe 'inserting nodes at a specified index' do
+    it 'creates a node at HEAD regardless of index if list is empty' do
+      list = LinkedList.new
+      list.insert_at('bob', 20)
+      expect(list.head.data).to eq 'bob'
+      expect(list.size).to be 1
+    end
+
+    it 'creates a node at HEAD if index is negative' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.append(30)
+      list.insert_at('bob', -7)
+      expect(list.head.data).to eq 'bob'
+      expect(list.at(1).data).to be 10
+    end
+
+    it 'creates a node at TAIL if positive index is out of range' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.append(30)
+      list.append(40)
+      list.insert_at('bob', 300)
+      expect(list.find_tail.data).to eq 'bob'
+      expect(list.size).to be 5
+    end
+
+    it 'creates a node at the specified index if index is between HEAD and TAIL' do
+      list = LinkedList.new
+      list.append(10)
+      list.append(20)
+      list.append(30)
+      list.append(40)
+      list.append(50)
+      list.insert_at('hello', 2)
+      expect(list.at(2).data).to eq 'hello'
+      expect(list.at(1).data).to be 20
+      expect(list.at(3).data).to be 30
+    end
+  end
 end
