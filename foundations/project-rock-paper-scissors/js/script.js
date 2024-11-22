@@ -9,8 +9,21 @@ const WIN_CONDITIONS = {
     "scissors": "paper"
 }
 
-function RoundResult(resultText, incrementScore) {
-    this.resultText = resultText;
+const VERBS = {
+    "rock": "smashes",
+    "paper": "covers",
+    "scissors": "cuts"
+}
+
+function RoundResult(incrementScore, winningChoice=null, losingChoice=null) {
+    let playerWinOrLose = incrementScore ? "You win!" : "You lose!";
+
+    if (!winningChoice) {
+        this.resultText = "It's a draw!";
+    } else {
+        this.resultText = `${playerWinOrLose} ${winningChoice} ${VERBS[winningChoice]} ${losingChoice}.`
+    }
+
     this.incrementScore = incrementScore;
 }
 
@@ -20,11 +33,11 @@ function getComputerChoice() {
 
 function playRound(playerChoice, computerChoice) {
     if (playerChoice === computerChoice) {
-        return new RoundResult("It's a draw!", false);
+        return new RoundResult(false);
     } else if (WIN_CONDITIONS[playerChoice] === computerChoice) {
-        return new RoundResult("You win!", true);
+        return new RoundResult(true, playerChoice, computerChoice);
     } else {
-        return new RoundResult("You lose!", false);
+        return new RoundResult(false, computerChoice, playerChoice);
     }
 }
 
