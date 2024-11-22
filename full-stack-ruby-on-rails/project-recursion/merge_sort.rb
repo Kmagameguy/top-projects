@@ -8,8 +8,41 @@ def merge_sort(array)
   sort_left = merge_sort(left)
   sort_right = merge_sort(right)
 
-  p sort_left
-  p sort_right
+  merge(sort_left, sort_right)
+end
+
+def merge(left_array, right_array)
+  temp_array = []
+  left_index = 0
+  right_index = 0
+  array_index = 0
+
+  while left_index < left_array.size && right_index < right_array.size
+    if left_array[left_index] < right_array[right_index]
+      temp_array[array_index] = left_array[left_index]
+      left_index += 1
+    else
+      temp_array[array_index] = right_array[right_index]
+      right_index += 1
+    end
+    array_index += 1
+  end
+
+  if left_index == left_array.size
+    while right_index < right_array.size
+      temp_array[array_index] = right_array[right_index]
+      array_index += 1
+      right_index += 1
+    end
+  else
+    while left_index < left_array.size
+      temp_array[array_index] = left_array[left_index]
+      array_index += 1
+      left_index += 1
+    end
+  end
+  p temp_array
+  temp_array
 end
 
 array = [4, 8, 6, 2, 1, 7, 5, 3]
