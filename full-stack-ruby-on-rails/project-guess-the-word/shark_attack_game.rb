@@ -2,27 +2,28 @@
 
 require 'yaml'
 require './lib/wordable'
-require './lib/display'
+require './lib/displayable'
 
 # A class to manage our game's state
 class SharkAttackGame
   include Wordable
+  include Displayable
 
   def initialize
     @word_to_guess = pick_word
     @correct_guesses = []
     @incorrect_guesses = []
-    @display = Display.new
-    @display.draw(@word_to_guess)
+    @shark_position = 0
+    draw_round(@word_to_guess)
   end
 
   def play
     puts @word_to_guess
     choose_letter
-    @display.shark_position = @incorrect_guesses.size
-    @display.draw(@word_to_guess, @correct_guesses, @incorrect_guesses)
+    @shark_position = @incorrect_guesses.size
+    draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
     if game_over?
-      @display.game_over(@word_to_guess, won: game_won)
+      draw_game_over(@word_to_guess, won: game_won)
     else
       play
     end
@@ -39,7 +40,7 @@ class SharkAttackGame
   end
 
   def game_lost
-    @display.shark_position >= Display::WAVE_COUNT
+    @shark_position >= WAVE_COUNT
   end
 
   def choose_letter

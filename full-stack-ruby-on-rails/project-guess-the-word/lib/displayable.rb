@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-# A class which shows the player feedback as the game progresses
-class Display
-  attr_accessor :shark_position
-
+# A module which helps to show the player feedback as the game progresses
+module Displayable
   WAVE_TOP = '.--.'
   WAVE_SPACER = ' '
   SHARK_FIN = '𓂄'
@@ -14,18 +12,14 @@ class Display
   # .--.\s
   EMPTY_LINE = "#{WAVE_TOP}#{WAVE_SPACER}"
 
-  def initialize
-    @shark_position = 0
-  end
-
-  def draw(word, correct_guesses = [], incorrect_guesses = [])
+  def draw_round(word, correct_guesses = [], incorrect_guesses = [])
     clear_screen
     draw_waves_shark_and_swimmer
     show_revealed_characters(correct_guesses, word)
     show_incorrectly_guessed_characters(incorrect_guesses)
   end
 
-  def game_over(word, won: false)
+  def draw_game_over(word, won: false)
     clear_screen
     if won
       puts '🏊'
