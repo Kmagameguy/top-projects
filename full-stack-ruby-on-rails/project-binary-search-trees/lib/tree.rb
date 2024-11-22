@@ -42,7 +42,27 @@ class Tree
     when  1 then node.right = insert(value, node.right)
     end
 
-    return node
+    node
+  end
+
+  def delete(value, node = @root)
+    return node if node.nil?
+
+    case value <=> node.value
+    when -1 then node.left = delete(value, node.left)
+    when  1 then node.right = delete(value, node.right)
+    when  0
+      if only_one_child?(node)
+        new_node = node.left.nil? ? node.right : node.left
+        node = nil
+        return new_node
+      end
+
+      node.value = find_min_value(node.right)
+      node.right = delete(node.value, node.right)
+    end
+
+    node
   end
 
   # Not mine -- The odin assignment provided this method
@@ -53,6 +73,16 @@ class Tree
   end
 
   private
+
+  def only_one_child?(node)
+    node.left.nil? || node.right.nil?
+  end
+
+  def find_min_value(node)
+    current = node
+    current = current.left until current.left.nil?
+    current.value
+  end
 
   def sanitize_array(array)
     array.uniq!
@@ -66,6 +96,14 @@ puts tree.pretty_print
 print "\n\n-------\n\n"
 
 tree.insert(4)
+puts tree.pretty_print
+print "\n\n-------\n\n"
+
+tree.delete(3)
+puts tree.pretty_print
+print "\n\n-------\n\n"
+
+tree.delete(2)
 puts tree.pretty_print
 print "\n\n-------\n\n"
 
