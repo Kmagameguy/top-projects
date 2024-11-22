@@ -5,57 +5,20 @@ const DECIMAL_BUTTON = document.querySelector('#btn-decimal');
 const CALCULATOR_DISPLAY = document.querySelector('#calculator-text');
 const DIVIDE_BY_ZERO_MESSAGE = 'Divide by Zero Error';
 
-let memory = {
-    firstNum: null,
-    operator: null,
-    secondNum: null,
-    shift(answer=null, operator=null) {
-        this.firstNum = answer;
-        this.operator = operator;
+class Memory {
+    constructor() {
+        this.firstNum  = null;
+        this.operator  = null;
         this.secondNum = null;
-    },
-    add() {
-        return this.firstNum + this.secondNum;
-    },
-    subtract() {
-        return this.firstNum - this.secondNum;
-    },
-    multiply() {
-        return this.firstNum * this.secondNum;
-    },
-    divide() {
-        if (this.secondNum === 0) {
-            this.shift();
-            return DIVIDE_BY_ZERO_MESSAGE
-        } else {
-            return this.firstNum / this.secondNum
-        }
-    },
-    calculate() {
-        let result = '';
-        switch(this.operator) {
-            case '+':
-                result = this.add();
-                break;
-            case '-':
-                result = this.subtract();
-                break;
-            case '*':
-                result = this.multiply();
-                break;
-            case '/':
-                result = this.divide();
-                break;
-        }
-        return result;
-    },
+    }
+
     equals() {
         if (this.firstNum !== null && this.operator !== null) {
             this.secondNum = display.getDisplayAsFloat();
-            this.shift(this.calculate());
-            display.update(this.firstNum);
+            this.shift(this.#calculate());
         }
-    },
+    }
+
     operate(operator) {
         if (this.firstNum === null) {
             this.firstNum = display.getDisplayAsFloat();
@@ -64,9 +27,54 @@ let memory = {
             this.operator = operator;
         } else {
             this.secondNum = display.getDisplayAsFloat();
-            this.shift(this.calculate(), operator);
-            display.update(this.firstNum);
+            this.shift(this.#calculate(), operator);
         }
+    }
+
+    shift(answer=null, operator=null) {
+        this.firstNum = answer;
+        this.operator = operator;
+        this.secondNum = null;
+    }
+
+    #add() {
+        return this.firstNum + this.secondNum;
+    }
+
+    #subtract() {
+        return this.firstNum - this.secondNum;
+    }
+
+    #multiply() {
+        return this.firstNum * this.secondNum;
+    }
+
+    #divide() {
+        if (this.secondNum === 0) {
+            this.shift();
+            return DIVIDE_BY_ZERO_MESSAGE
+        } else {
+            return this.firstNum / this.secondNum
+        }
+    }
+
+    #calculate() {
+        let result = '';
+        switch(this.operator) {
+            case '+':
+                result = this.#add();
+                break;
+            case '-':
+                result = this.#subtract();
+                break;
+            case '*':
+                result = this.#multiply();
+                break;
+            case '/':
+                result = this.#divide();
+                break;
+        }
+        return result;
     }
 };
 
@@ -144,6 +152,7 @@ function handleInput(e) {
             break;
         case '=':
             memory.equals();
+            display.update(memory.firstNum);
             break;
         case '/':
         case '*':
@@ -151,10 +160,12 @@ function handleInput(e) {
         case '+':
             display.freeze();
             memory.operate(selectedButton);
+            display.update(memory.firstNum);
             break;
         default:
             display.insertNumber(selectedButton);
     }
 }
 
+let memory = new Memory();
 BUTTONS.forEach(button => button.addEventListener('click', handleInput));
