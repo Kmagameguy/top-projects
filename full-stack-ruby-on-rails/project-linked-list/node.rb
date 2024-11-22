@@ -2,7 +2,8 @@
 
 # A class which holds some data and a reference to another node
 class Node
-  attr_accessor :data, :next_node
+  attr_accessor :next_node
+  attr_reader :data
 
   def initialize(data = nil)
     @data = data

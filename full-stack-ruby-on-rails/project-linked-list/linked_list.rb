@@ -1,6 +1,34 @@
 # frozen_string_literal: true
 
-class LinkedList; end
+require './node'
+
+# A class to manage relationships between nodes
+class LinkedList
+  def initialize
+    @head = nil
+  end
+
+  def append(value)
+    if @head.nil?
+      @head = Node.new(value)
+    else
+      find_tail.next_node = Node.new(value)
+    end
+  end
+
+  def find_tail
+    current_node = @head
+    current_node = current_node.next_node while current_node.next_node
+    current_node
+  end
+end
+
+list = LinkedList.new
+list.append(10) # 0
+list.append(20) # 1
+list.append(30) # 2
+
+p list
 
 # Build the following methods in your linked list class:
 #   1. append(value) adds a new node containing value to the end of the list
