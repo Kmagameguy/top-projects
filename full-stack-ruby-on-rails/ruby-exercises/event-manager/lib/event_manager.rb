@@ -12,5 +12,6 @@ contents = CSV.open(
 
 contents.each do |row|
   name = row[:first_name]
-  puts name
+  zipcode = row[:zipcode]
+  puts "#{name} #{zipcode}"
 end
