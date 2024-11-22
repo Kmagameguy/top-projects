@@ -81,8 +81,12 @@ class NoughtsAndCrossesGame
 
   private
 
+  def all_moves
+    @player.moves + @computer.moves
+  end
+
   def prompt_for_input
-    valid_cells = (1..9).to_a - (@player.moves + @computer.moves)
+    valid_cells = (1..9).to_a - all_moves
 
     loop do
       puts "#{@current_player.name}, make your move! Valid options are: #{valid_cells}"
@@ -95,7 +99,7 @@ class NoughtsAndCrossesGame
   end
 
   def random_move
-    valid_cells = (1..9).to_a - (@player.moves + @computer.moves)
+    valid_cells = (1..9).to_a - all_moves
     selection = valid_cells.sample
     puts "#{@current_player.name} selected #{selection}."
     selection
@@ -114,7 +118,7 @@ class NoughtsAndCrossesGame
   end
 
   def game_draw?
-    no_moves_left = (@player.moves + @computer.moves).count >= 9
+    no_moves_left = all_moves.count >= 9
     puts "Game over! It's a draw!" if no_moves_left
     no_moves_left
   end
