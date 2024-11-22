@@ -4,12 +4,12 @@ def bubble_sort(array)
   while max_iterations > 1 do
     index = 0
     while index < array.length - 1 do
-      current_position = array[index]
-      next_position = array[index + 1]
+      current_value = array[index]
+      next_value = array[index + 1]
 
-      if current_position > next_position
-        array[index] = next_position
-        array[index + 1] = current_position
+      if current_value > next_value
+        array[index] = next_value
+        array[index + 1] = current_value
       end
       index += 1
     end
