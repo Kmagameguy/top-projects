@@ -32,6 +32,9 @@ end
 
 # A game board which displays the current open and marked cells to the player
 class Board
+  attr_accessor :board
+  private :board
+
   def initialize(size)
     @board = Array.new(size, ' ')
     draw_board
