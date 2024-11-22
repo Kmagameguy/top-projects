@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require 'yaml'
+
 # This class serializes & deserializes game data to YAML on disk
 class GameFile
-
   DEFAULT_SAVE_LOCATION = './saves'
   DEFAULT_SAVE_FILE = 'saved.yml'
 

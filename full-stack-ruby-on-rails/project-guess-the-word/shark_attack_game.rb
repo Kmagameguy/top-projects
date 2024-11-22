@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'yaml'
 require './lib/wordable'
 require './lib/displayable'
 require './lib/game_file'
