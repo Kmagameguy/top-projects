@@ -10,6 +10,24 @@ class Player
     @name = name
     @moves = []
   end
+
+  def move(available_cells)
+    loop do
+      puts "#{@name}, make your move! Valid options are: #{available_cells}"
+
+      selection = gets.chomp.to_s.to_i
+      break selection if available_cells.include?(selection)
+
+      puts 'Invalid input. Try again.'
+    end
+  end
+end
+
+# A computer character with alternative guessing methods
+class Computer < Player
+  def move(available_cells)
+    available_cells.sample
+  end
 end
 
 # A game board which displays the current open and marked cells to the player
@@ -72,7 +90,7 @@ class NoughtsAndCrossesGame
 
   def initialize(name)
     @player = Player.new('x', name)
-    @computer = Player.new('o')
+    @computer = Computer.new('o')
     @current_player = @computer
     @board = Board.new(WIN_CONDITIONS.flatten.uniq.size)
     @board.update_cells
@@ -80,33 +98,14 @@ class NoughtsAndCrossesGame
 
   def play
     @current_player = @current_player == @player ? @computer : @player
-    @current_player.moves << if @current_player == @player
-                               prompt_for_input
-                             else
-                               random_move
-                             end
+    @current_player.moves << @current_player.move(@board.available_cells)
     @board.update_cells(@current_player.moves, @current_player.marker)
     play unless game_over?
   end
 
   private
 
-  def prompt_for_input
-    valid_cells = @board.available_cells
 
-    loop do
-      puts "#{@current_player.name}, make your move! Valid options are: #{valid_cells}"
-
-      selection = gets.chomp.to_s.to_i
-      break selection if valid_cells.include?(selection)
-
-      puts 'Invalid input. Try again.'
-    end
-  end
-
-  def random_move
-    @board.available_cells.sample
-  end
 
   def game_over?
     winning_move? || game_draw?
