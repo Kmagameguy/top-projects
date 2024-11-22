@@ -28,7 +28,10 @@
 # => [1, 4]
 
 def stock_picker(prices)
-  p prices
+  # found Array#combination from here:
+  # https://ruby-doc.org/3.2.1/Array.html#method-i-combination
+  # Ruby seems to have a method for everything
+  p prices.combination(2).to_a
 end
 
 stock_picker([17, 3, 6, 9, 15, 8, 6, 1, 10])
