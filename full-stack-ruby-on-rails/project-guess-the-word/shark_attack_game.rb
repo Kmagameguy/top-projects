@@ -6,7 +6,8 @@ require './lib/game_file'
 
 # A class to manage our game's state
 class SharkAttackGame
-  def initialize(dictionary = Dictionary.new, display = Display.new)
+  def initialize(dictionary = Dictionary.new, display = Display.new, save_file = GameFile.new)
+    @save_file = save_file
     @correct_guesses = []
     @incorrect_guesses = []
     @word_to_guess = load_game? ? load! : dictionary.random_word
@@ -41,14 +42,14 @@ class SharkAttackGame
   end
 
   def load_game?
-    return false unless GameFile.save_exists?
+    return false unless @save_file.exists?
 
     puts 'Load saved game? (y/n)'
     yes_response?
   end
 
   def load!
-    data = GameFile.load
+    data = @save_file.load!
     @correct_guesses = data[:correct_guesses]
     @incorrect_guesses = data[:incorrect_guesses]
     @word_to_guess = data[:word_to_guess]
@@ -75,7 +76,7 @@ class SharkAttackGame
       word_to_guess: @word_to_guess
     }
 
-    GameFile.new(data)
+    @save_file.save!(data)
   end
 
   def game_over?
