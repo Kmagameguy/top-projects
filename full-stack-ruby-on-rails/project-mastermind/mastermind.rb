@@ -46,7 +46,7 @@ class ResultPeg
 end
 
 # Helper module to generate rows of pegs ('codes')
-module Codable
+module Rowable
   def create_row(*colors)
     colors.empty? ? random_code : submit_code(colors)
   end
@@ -72,20 +72,32 @@ end
 
 # Our main class which controls the game state
 class MastermindGame
-  include Codable
+  include Rowable
+
+  MAX_ROUNDS = 12
+
+  def initialize
+    @rounds = MAX_ROUNDS
+    @code = create_row(:red, :red, :blue, :brown)
+    @user_guesses = []
+  end
+
+  def play
+    puts ''
+    @user_guesses = create_row(:red, :blue, :red, :green)
+
+    print @code.join(' ')
+    puts ''
+    print @user_guesses.join(' ')
+  end
 end
+
+game = MastermindGame.new
+game.play
+
 # class Guess; end
 # class Player; end
 # class Codemaker; end
-
-game = MastermindGame.new
-game.create_row.each { |peg| print peg }
-print ResultPeg.new(:full_match)
-print ResultPeg.new(:partial_match)
-puts ''
-game.create_row(:red, :red, :green, :blue).each { |peg| print peg }
-puts ''
-# Mastermind Components
 
 # A guess
 # Consists of:
