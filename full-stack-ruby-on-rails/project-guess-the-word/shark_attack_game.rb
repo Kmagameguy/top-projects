@@ -12,9 +12,6 @@ class SharkAttackGame
   end
 
   def play
-    # Debugging line:
-    puts @word_to_guess.word
-
     choose_letter
     @display.shark_position = @word_to_guess.incorrect_guesses.size
     @display.draw(@word_to_guess)
