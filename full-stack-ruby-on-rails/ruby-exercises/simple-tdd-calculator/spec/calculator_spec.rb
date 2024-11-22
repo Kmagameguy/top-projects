@@ -38,4 +38,16 @@ describe Calculator do
       expect(calculator.subtract(10, 5, 2)).to eql(3)
     end
   end
+
+  describe '#divide' do
+    it 'returns the quotient of two numbers' do
+      calculator = Calculator.new
+      expect(calculator.divide(20, 10)).to eql(2)
+    end
+
+    it 'returns the quotient of more than two numbers' do
+      calculator = Calculator.new
+      expect(calculator.divide(20, 10, 2)).to eql(1)
+    end
+  end
 end
