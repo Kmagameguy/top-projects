@@ -85,7 +85,7 @@ class Row
   MAX_ROW_SIZE = 4
 
   def initialize(*colors)
-    @colors = colors.empty? ? random_code : colors.map(&:to_sym)
+    @colors = colors.empty? ? random_colors : colors.map(&:to_sym)
     @results = []
   end
 
@@ -104,7 +104,7 @@ class Row
 
   private
 
-  def random_code
+  def random_colors
     row = []
     4.times do
       row.push(Peg::COLORS.keys.sample)
@@ -236,21 +236,21 @@ class MastermindGame
   def count_near_hits
     pegs = []
 
-    unmatched_user_pegs.intersection(unmatched_code_pegs).count.times do
+    unique_unmatched_user_pegs.intersection(unique_unmatched_code_pegs).count.times do
       pegs << :partial_match
     end
 
     pegs
   end
 
-  def unmatched_code_pegs
+  def unique_unmatched_code_pegs
     @coded_message.colors.select.with_index do |color, index|
       user_color = @user_guesses.colors[index]
       user_color != color
     end.uniq
   end
 
-  def unmatched_user_pegs
+  def unique_unmatched_user_pegs
     @user_guesses.colors.select.with_index do |color, index|
       color != @coded_message.colors[index]
     end.uniq
