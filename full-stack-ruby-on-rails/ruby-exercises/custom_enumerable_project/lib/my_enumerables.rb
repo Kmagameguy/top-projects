@@ -57,6 +57,14 @@ module Enumerable
       match
     end
   end
+
+  def my_select
+    if block_given?
+      arr = []
+      my_each { |item| arr << item if yield(item) }
+      arr
+    end
+  end
 end
 
 # You will first have to define my_each
