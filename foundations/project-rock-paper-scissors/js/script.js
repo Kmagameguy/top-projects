@@ -7,13 +7,13 @@ const WIN_CONDITIONS = {
     "rock": "scissors",
     "paper": "rock",
     "scissors": "paper"
-}
+};
 
 const VERBS = {
     "rock": "smashes",
     "paper": "covers",
     "scissors": "cuts"
-}
+};
 
 function RoundResult(incrementScore, winningChoice=null, losingChoice=null) {
     let playerWinOrLose = incrementScore ? "You win!" : "You lose!";
@@ -21,7 +21,7 @@ function RoundResult(incrementScore, winningChoice=null, losingChoice=null) {
     if (!winningChoice) {
         this.resultText = "It's a draw!";
     } else {
-        this.resultText = `${playerWinOrLose} ${winningChoice} ${VERBS[winningChoice]} ${losingChoice}.`
+        this.resultText = `${playerWinOrLose} ${winningChoice} ${VERBS[winningChoice]} ${losingChoice}.`;
     }
 
     this.incrementScore = incrementScore;
