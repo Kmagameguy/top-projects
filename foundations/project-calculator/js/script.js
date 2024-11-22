@@ -62,6 +62,13 @@ function invertDisplay() {
     }
 }
 
+function convertDisplayToDecimalPercentage() {
+    let currentDisplay = CALCULATOR_DISPLAY.innerText;
+    if (currentDisplay !== DIVIDE_BY_ZERO_MESSAGE) {
+        CALCULATOR_DISPLAY.innerText = parseFloat(currentDisplay) / 100;
+    }
+}
+
 function shiftMemory() {
     firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
     operator = null;
@@ -94,6 +101,8 @@ function handleInput(e) {
         clearDisplay();
     } else if (selectedButton === '+/-') {
         invertDisplay();
+    } else if (selectedButton === '%') {
+        convertDisplayToDecimalPercentage();
     } else if (selectedButton === '=') {
         // We have to handle = separately since it can't be chained like other operators
         if (firstNum !== null && operator !== null && secondNum !== null) {
