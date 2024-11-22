@@ -35,8 +35,11 @@ def stock_picker(prices)
     purchase_price = price_group[0]
     sale_price = price_group[1]
     profit = sale_price - purchase_price
-    p profit
+    hash[profit] = [purchase_price, sale_price]
+
+    hash
   end
+  p stonks
 end
 
 stock_picker([17, 3, 6, 9, 15, 8, 6, 1, 10])
