@@ -24,18 +24,25 @@ function playRound(playerChoice, computerChoice) {
   } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
     return "You win!  Scissors cut through paper.";
   } else {
-    return "Something else happened...";
+    return "We didn't understand your guess.  Try again.";
   }
 }
 
-const playerChoice = 'rock';
 function game() {
   for (let i = 0; i < NUM_ROUNDS; i++) {
-    let computerChoice = getComputerChoice();
+    let playerChoice = prompt('Choose between rock, paper, or scissors:', 'rock');
 
-    console.log(`Computer chose: ${computerChoice}`);
-    console.log(`You chose: ${playerChoice}`);
-    console.log(`=> ${playRound(playerChoice, computerChoice)}`);
+    if (playerChoice !== null) {
+      playerChoice = playerChoice.toLowerCase().trim();
+      let computerChoice = getComputerChoice();
+
+      console.log(`Computer chose: ${computerChoice}`);
+      console.log(`You chose: ${playerChoice}`);
+      console.log(`=> ${playRound(playerChoice, computerChoice)}`);
+    } else {
+      console.log("Game canceled!");
+      break;
+    }
   }
 }
 
