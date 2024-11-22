@@ -84,7 +84,11 @@ class Tree
 
     until queue.empty?
       node = queue[0]
-      ordered_tree << node.value
+      ordered_tree << if block_given?
+                        yield(node.value)
+                      else
+                        node.value
+                      end
       queue.shift
       queue << node.left unless node.left.nil?
       queue << node.right unless node.right.nil?
@@ -154,7 +158,7 @@ end
 array = [1, 2, 3, 4, 5]
 tree = Tree.new(array)
 puts tree.pretty_print
-p tree.level_order
+p (tree.level_order { |node| node * 2 })
 p tree.inorder
 p tree.preorder
 p tree.postorder
