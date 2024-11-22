@@ -28,8 +28,9 @@ class GameFile
     ensure_save_directory_exists
 
     save_file = File.open(@save_path, 'w')
-    puts 'Game saved.' if save_file.puts YAML.dump(@data)
+    save_file.puts YAML.dump(@data)
     save_file.close
+    puts 'Game saved.'
   end
 
   def ensure_save_directory_exists
