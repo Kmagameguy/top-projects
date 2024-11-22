@@ -78,7 +78,15 @@ def caesar_cipher2(text, offset)
   alphabet = ('A'..'Z').to_a
   rotatabet = alphabet.rotate(offset)
 
-  puts rotatabet
+  index = 0;
+
+  cipher_hash = alphabet.reduce(Hash.new({})) do |hash, key|
+    hash[key] = rotatabet[index]
+    index += 1
+    hash
+  end
+
+  puts cipher_hash
 end
 
 caesar_cipher2('What a string!', 5)
