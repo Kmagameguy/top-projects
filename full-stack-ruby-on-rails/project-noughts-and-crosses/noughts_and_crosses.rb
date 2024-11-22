@@ -34,13 +34,13 @@ end
 class Board
   def initialize(size)
     @board = Array.new(size, ' ')
-    show_board
+    draw_board
   end
 
   def update_cells(move_list = [], marker = ' ')
     # Offset by 1 to map back from 1-indexed array to @board's 0-indexed array
     @board[move_list.last - 1] = marker unless move_list.empty?
-    show_board
+    draw_board
   end
 
   def available_cells
@@ -53,7 +53,7 @@ class Board
 
   private
 
-  def show_board
+  def draw_board
     new_rows = [2, 5]
     clear_screen
     @board.each_with_index do |cell, index|
