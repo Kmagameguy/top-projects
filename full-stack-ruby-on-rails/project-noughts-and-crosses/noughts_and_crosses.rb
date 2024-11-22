@@ -27,8 +27,8 @@ class NoughtsAndCrossesGame
 
   BOARD = Array.new(WIN_CONDITIONS.flatten.uniq.size, ' ')
 
-  def initialize
-    @player = Player.new('x', 'Vin Diesel')
+  def initialize(name)
+    @player = Player.new('x', name)
     @computer = Player.new('o')
     @current_player = @computer
     show_board
@@ -111,7 +111,10 @@ class NoughtsAndCrossesGame
   end
 end
 
-game = NoughtsAndCrossesGame.new
+puts 'Get ready to play!  Enter your name:'
+name = gets.chomp.to_s
+
+game = NoughtsAndCrossesGame.new(name)
 game.play
 # Essentially have a "grid"
 
