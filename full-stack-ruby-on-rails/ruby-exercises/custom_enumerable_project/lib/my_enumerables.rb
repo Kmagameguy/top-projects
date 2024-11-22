@@ -1,4 +1,13 @@
 module Enumerable
+  def my_all?
+    if block_given?
+      all_match = true
+      my_each { |index| all_match = false if yield(index) == false }
+      all_match
+    else
+      self
+    end
+  end
 end
 
 # You will first have to define my_each
