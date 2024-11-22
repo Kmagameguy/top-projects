@@ -47,14 +47,14 @@ class ResultPeg
   end
 end
 
-# Displays stuff
+# Used to manage output to the screen (terminal)
 class Display
   def initialize
     @saved_rows = []
   end
 
-  def save_row(row, row_results)
-    @saved_rows << { row: row, results: row_results }
+  def save_row(row)
+    @saved_rows << row
     show_history
   end
 
@@ -63,16 +63,13 @@ class Display
     puts ''
   end
 
-
   private
 
   def show_history
     spacer = ' '
     @saved_rows.each_with_index do |row, index|
       spacer = '' if (index + 1) > 9
-      print "#{index + 1}. #{spacer} #{row[:row].join(' ')}"
-      row[:results][:black_pegs].times { print ResultPeg.new(:full_match) }
-      row[:results][:white_pegs].times { print ResultPeg.new(:partial_match) }
+      print "#{index + 1}. #{spacer} #{row.join(' ')}"
       puts ''
     end
     puts ''
@@ -131,7 +128,7 @@ class MastermindGame
 
     print @code.join(' ')
     puts ''
-    @display.save_row(@user_guesses, result)
+    @display.save_row(@user_guesses + result)
 
     @rounds -= 1
     play unless game_over?
@@ -180,14 +177,12 @@ class MastermindGame
   # 2. Remove duplicates from source and guess arrays
   # 3. Increase white peg count if a guessed color exists in the remainder of the code array
   def calculate_matches_and_near_hits
-    black_pegs = 0
-    white_pegs = 0
-
+    pegs = []
     computer_colors = color_list(@code)
 
     computer_colors.each_with_index do |color, index|
       user_color = color_list(@user_guesses)[index]
-      black_pegs += 1 if user_color == color
+      pegs << ResultPeg.new(:full_match) if user_color == color
     end
 
     unmatched_computer = computer_colors.select.with_index do |color, index|
@@ -200,10 +195,10 @@ class MastermindGame
     end.uniq
 
     unmatched_computer.each do |color|
-      white_pegs += 1 if unmatched_user.include?(color)
+      pegs << ResultPeg.new(:partial_match) if unmatched_user.include?(color)
     end
 
-    { black_pegs: black_pegs, white_pegs: white_pegs }
+    pegs
   end
 end
 
