@@ -9,14 +9,9 @@ let memory = {
     firstNum: null,
     operator: null,
     secondNum: null,
-    shift(answer, operator) {
+    shift(answer=null, operator=null) {
         this.firstNum = answer;
         this.operator = operator;
-        this.secondNum = null;
-    },
-    reset() {
-        this.firstNum = null;
-        this.operator = null;
         this.secondNum = null;
     },
     add() {
@@ -30,7 +25,7 @@ let memory = {
     },
     divide() {
         if (this.secondNum === 0) {
-            this.reset();
+            this.shift();
             return DIVIDE_BY_ZERO_MESSAGE
         } else {
             return this.firstNum / this.secondNum
@@ -104,7 +99,7 @@ let display = {
     },
     clear() {
         CALCULATOR_DISPLAY.innerText = '0';
-        memory.reset();
+        memory.shift();
     },
     getDisplayAsFloat() {
         return parseFloat(CALCULATOR_DISPLAY.innerText);
