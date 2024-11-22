@@ -107,6 +107,37 @@ module Rowable
   end
 end
 
+# A class which has knowledge about the player (role, valid movements, etc)
+class Player
+  def initialize(is_codemaker = false)
+    @is_codemaker = is_codemaker
+  end
+
+  def codemaker?
+    !!@is_codemaker
+  end
+
+  def pick_colors
+    input = ''
+    loop do
+      puts 'Type a color sequence (separated by spaces).'
+      puts "Color options are: (#{Peg::COLORS.keys.join(', ')})."
+      input = gets.chomp.strip.split(' ')
+      break unless invalid_input?(input)
+    end
+    input.map(&:to_sym)
+  end
+
+  private
+
+  def invalid_input?(input)
+    error = (input.any? { |color| !Peg::COLORS.keys.include?(color.to_sym) } ||
+    input.length != Rowable::MAX_ROW_SIZE)
+    puts 'Invalid selection.  Try again.' if error
+    error
+  end
+end
+
 # Our main class which controls the game state
 class MastermindGame
   include Rowable
@@ -115,15 +146,15 @@ class MastermindGame
 
   def initialize
     @rounds = MAX_ROUNDS
-    @player_is_codemaker = codemaker?
-    @code = @player_is_codemaker ? create_row(*pick_a_code) : create_row(:red, :red, :blue, :green)
+    @player = Player.new(choose_role)
+    @code = @player.codemaker? ? create_row(*@player.pick_colors) : create_row(*random_code)
     @user_guesses = []
     @display = Display.new
     @display.clear
   end
 
   def play
-    @user_guesses = @player_is_codemaker ? create_row(*random_code) : create_row(*pick_a_code)
+    @user_guesses = @player.codemaker? ? guess : create_row(*@player.pick_colors)
     result = calculate_matches_and_near_hits
     @display.clear
 
@@ -137,29 +168,15 @@ class MastermindGame
 
   private
 
-  def codemaker?
+  def choose_role
     puts 'Would you like to play as the Codemaker (0) or Codebreaker (1)?'
     gets.chomp.to_i.zero?
   end
 
   def guess
-    create_row(Peg::COLORS.keys.sample,
-               Peg::COLORS.keys.sample,
-               Peg::COLORS.keys.sample,
-               Peg::COLORS.keys.sample)
-  end
-
-  def pick_a_code
-    input = ''
-    loop do
-      puts 'Type a color sequence (separated by spaces).'
-      puts "#{@rounds} rounds left." unless @player_is_codemaker
-      puts "Color options are: (#{Peg::COLORS.keys.join(', ')})."
-      input = gets.chomp.strip.split(' ')
-      break unless invalid_input(input)
-    end
-
-    input.map(&:to_sym)
+    puts 'Computer is thinking...'
+    sleep 1
+    create_row(*random_code)
   end
 
   def game_over?
@@ -169,8 +186,8 @@ class MastermindGame
   def game_won?
     game_won = color_list(@code).eql?(color_list(@user_guesses))
     if game_won
-      puts 'You won!  You are great.' unless @player_is_codemaker
-      puts 'You lose!  The computer cracked your code.' if @player_is_codemaker
+      puts 'You won!  You are great.' unless @player.codemaker?
+      puts 'You lose!  The computer cracked your code.' if @player.codemaker?
     end
     game_won
   end
@@ -178,17 +195,10 @@ class MastermindGame
   def game_lost?
     game_lost = @rounds <= 0
     if game_lost
-      puts 'You lose!  Try again sometime.' unless @player_is_codemaker
-      puts "You win! The computer couldn't crack your code." if @player_is_codemaker
+      puts 'You lose!  Try again sometime.' unless @player.codemaker?
+      puts "You win! The computer couldn't crack your code." if @player.codemaker?
     end
     game_lost
-  end
-
-  def invalid_input(input)
-    error = (input.any? { |color| !Peg::COLORS.keys.include?(color.to_sym) } ||
-             input.length != MAX_ROW_SIZE)
-    puts 'Invalid selection.  Try again.' if error
-    error
   end
 
   # This method is awful
@@ -226,4 +236,3 @@ end
 
 game = MastermindGame.new
 game.play
-
