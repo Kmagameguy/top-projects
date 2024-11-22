@@ -64,7 +64,7 @@ function playGame(e) {
 
     computerChoiceDisplay.textContent = `Computer chose: ${computerChoice}`;
     playerChoiceDisplay.textContent = `You chose: ${playerChoice}`;
-    roundResultDisplay.textContent = `=> ${roundResult.resultText}`;
+    roundResultDisplay.textContent = `Result: ${roundResult.resultText}`;
 
     if(roundResult.incrementScore) {
         updateScore(++playerScore);
