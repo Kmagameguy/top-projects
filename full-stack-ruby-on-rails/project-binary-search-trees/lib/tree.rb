@@ -6,12 +6,11 @@ require_relative './node'
 class Tree
   attr_reader :root
 
-  def initialize(array)
+  def initialize(array = [])
     @root = build_tree(array)
   end
 
   def build_tree(array)
-    # Return level-0 root node
     array = sanitize_array(array)
     build_branches(array, start_index: 0, end_index: array.size-1)
   end
@@ -175,98 +174,3 @@ class Tree
     array.sort!
   end
 end
-
-array = [1, 2, 3, 4, 5]
-tree = Tree.new(array)
-puts tree.pretty_print
-print "\n\n-------\n\n"
-
-p tree.level_order
-puts "level order: #{tree.level_order}"
-puts "w/ n * 2 block: #{tree.level_order { |node| node * 2 }}"
-print "\n\n-------\n\n"
-
-p tree.inorder
-puts "inorder: #{tree.inorder}"
-puts "w/ n * 2 block: #{tree.inorder { |node| node * 2 }}"
-print "\n\n-------\n\n"
-
-p tree.preorder
-puts "preorder: #{tree.preorder}"
-puts "w/ n * 2 block: #{tree.preorder { |node| node * 2 }}"
-print "\n\n-------\n\n"
-
-p tree.postorder
-puts "postorder: #{tree.postorder}"
-puts "w/ n * 2 block: #{tree.postorder { |node| node * 2 }}"
-print "\n\n-------\n\n"
-
-array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-tree = Tree.new(array)
-puts tree.pretty_print
-puts "tree height: #{tree.height}"
-puts "node 9 height: #{tree.height(tree.find(9))}"
-print "\n\n-------\n\n"
-
-# array = [1, 2, 3, 5]
-# tree = Tree.new(array)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# tree.insert(4)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# tree.delete(3)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# tree.delete(2)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# tree.insert(7)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# p tree.find(5)
-# print "\n\n-------\n\n"
-
-# array = [1, 2, 3, 4, 5, 6, 7]
-# tree = Tree.new(array)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-# tree = Tree.new(array)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# array = [1]
-# tree = Tree.new(array)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# array = [1, 1, 1, 2, 1, 1]
-# tree = Tree.new(array)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# array = [-200, 22, 100, 12, 74, -3, 12]
-# tree = Tree.new(array)
-# puts tree.pretty_print
-# print "\n\n-------\n\n"
-
-# Initialize start = 0, end = length of array - 1
-# mid = (start + end) / 2
-# Create node with mid as root
-
-# left_subtree = start..mid
-#   l_mid = l_start + l_end / 2
-#   l_left_subtree = l_start..l_mid
-#   l_right_subtree = l_mid..l_end
-#      ...
-# right_subtree = mid..end
-#   r_mid = r_start + r_end / 2
-#   l_right_subtree = r_start..r_mid
-#   r_right_subtree = r_mid..r_end

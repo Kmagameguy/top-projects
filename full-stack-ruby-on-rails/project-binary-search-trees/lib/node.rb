@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A class which holds a value and links to sub-nodes
 class Node
   include Comparable
 
