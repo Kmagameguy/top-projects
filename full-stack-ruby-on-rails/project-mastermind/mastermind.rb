@@ -205,8 +205,12 @@ class MastermindGame
   def game_lost?
     game_lost = @rounds <= 0
     if game_lost
-      puts 'You lose!  Try again sometime.' unless @player.codemaker?
-      puts "You win! The computer couldn't crack your code." if @player.codemaker?
+      if @computer.codemaker?
+        puts 'You lose!  Try again sometime.'
+        puts "Computer's code was: #{@coded_message}"
+      else
+        puts "You win! The computer couldn't crack your code."
+      end
     end
     game_lost
   end
