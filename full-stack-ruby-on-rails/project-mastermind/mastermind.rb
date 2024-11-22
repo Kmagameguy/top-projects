@@ -43,7 +43,7 @@ class ResultPeg
   end
 
   def to_s
-    " #{symbol}"
+    symbol.to_s
   end
 end
 
@@ -101,9 +101,9 @@ module Rowable
   def random_code
     row = []
     4.times do
-      row.push(Peg.new(Peg::COLORS.keys.sample))
+      row.push(Peg::COLORS.keys.sample)
     end
-    row
+    row.map(&:to_sym)
   end
 end
 
@@ -115,14 +115,15 @@ class MastermindGame
 
   def initialize
     @rounds = MAX_ROUNDS
-    @code = create_row(:red, :red, :blue, :cyan)
+    @player_is_codemaker = codemaker?
+    @code = @player_is_codemaker ? create_row(*pick_a_code) : create_row(:red, :red, :blue, :green)
     @user_guesses = []
     @display = Display.new
     @display.clear
   end
 
   def play
-    @user_guesses = create_row(*pick_a_code)
+    @user_guesses = @player_is_codemaker ? create_row(*random_code) : create_row(*pick_a_code)
     result = calculate_matches_and_near_hits
     @display.clear
 
@@ -134,10 +135,25 @@ class MastermindGame
     play unless game_over?
   end
 
+  private
+
+  def codemaker?
+    puts 'Would you like to play as the Codemaker (0) or Codebreaker (1)?'
+    gets.chomp.to_i.zero?
+  end
+
+  def guess
+    create_row(Peg::COLORS.keys.sample,
+               Peg::COLORS.keys.sample,
+               Peg::COLORS.keys.sample,
+               Peg::COLORS.keys.sample)
+  end
+
   def pick_a_code
     input = ''
     loop do
-      puts "Type a color sequence (separated by spaces). #{@rounds} rounds left."
+      puts 'Type a color sequence (separated by spaces).'
+      puts "#{@rounds} rounds left." unless @player_is_codemaker
       puts "Color options are: (#{Peg::COLORS.keys.join(', ')})."
       input = gets.chomp.strip.split(' ')
       break unless invalid_input(input)
@@ -152,13 +168,19 @@ class MastermindGame
 
   def game_won?
     game_won = color_list(@code).eql?(color_list(@user_guesses))
-    puts 'You won!  You are great.' if game_won
+    if game_won
+      puts 'You won!  You are great.' unless @player_is_codemaker
+      puts 'You lose!  The computer cracked your code.' if @player_is_codemaker
+    end
     game_won
   end
 
   def game_lost?
     game_lost = @rounds <= 0
-    puts 'You lose!  Try again sometime.' if game_lost
+    if game_lost
+      puts 'You lose!  Try again sometime.' unless @player_is_codemaker
+      puts "You win! The computer couldn't crack your code." if @player_is_codemaker
+    end
     game_lost
   end
 
@@ -204,3 +226,4 @@ end
 
 game = MastermindGame.new
 game.play
+
