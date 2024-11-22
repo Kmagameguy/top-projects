@@ -147,17 +147,13 @@ end
 # An elevated player class which controls an AI opponent
 class Computer < Player
   def pick_colors
+    puts 'Computer is thinking...'
+    sleep 1
     row = []
     4.times do
       row.push(Peg::COLORS.keys.sample)
     end
     row.map(&:to_sym)
-  end
-
-  def guess
-    puts 'Computer is thinking...'
-    sleep 1
-    pick_colors
   end
 end
 
@@ -169,17 +165,17 @@ class MastermindGame
     @rounds = MAX_ROUNDS
     @player = Player.new(choose_role)
     @computer = Computer.new(!@player.codemaker?)
-    @code = @player.codemaker? ? Row.new(*@player.pick_colors) : Row.new(*@computer.pick_colors)
+    @codebreaker = @player.codemaker? ? @computer : @player
+    @codemaker = @player.codemaker? ? @player : @computer
+    @coded_message = Row.new(*@codemaker.pick_colors)
     @user_guesses = []
     @display = Display.new
     @display.clear
   end
 
   def play
-    @user_guesses = @player.codemaker? ? Row.new(*@computer.guess) : Row.new(*@player.pick_colors)
+    @user_guesses = Row.new(*@codebreaker.pick_colors)
     @user_guesses.results = calculate_matches_and_near_hits
-    print @code
-    puts ''
     @display.save_row(@user_guesses)
 
     @rounds -= 1
@@ -198,7 +194,7 @@ class MastermindGame
   end
 
   def game_won?
-    game_won = @code.colors.eql?(@user_guesses.colors)
+    game_won = @coded_message.colors.eql?(@user_guesses.colors)
     if game_won
       puts 'You won!  You are great.' unless @player.codemaker?
       puts 'You lose!  The computer cracked your code.' if @player.codemaker?
@@ -224,7 +220,7 @@ class MastermindGame
   # 3. Increase white peg count if a guessed color exists in the remainder of the code array
   def calculate_matches_and_near_hits
     pegs = []
-    computer_colors = @code.colors
+    computer_colors = @coded_message.colors
 
     computer_colors.each_with_index do |color, index|
       user_color = @user_guesses.colors[index]
