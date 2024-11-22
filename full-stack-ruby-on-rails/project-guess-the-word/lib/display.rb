@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A class which shows the player feedback as the game progresses
 class Display
   attr_accessor :shark_position
 
@@ -17,9 +18,10 @@ class Display
     @shark_position = 0
   end
 
-  def draw
+  def draw(word)
     clear_screen
     draw_waves_shark_and_swimmer
+    show_revealed_characters(word.correct_guesses, word.word)
   end
 
   private
@@ -38,5 +40,11 @@ class Display
       end
     end
     print "#{SWIMMER}\n"
+  end
+
+  def show_revealed_characters(characters_to_display, word)
+    puts ''
+    print word.chars.map { |char| characters_to_display.include?(char) ? char : '_' }.join(' ')
+    puts ''
   end
 end

@@ -8,7 +8,7 @@ class SharkAttackGame
   def initialize
     @word_to_guess = Word.new
     @display = Display.new
-    @display.draw
+    @display.draw(@word_to_guess)
   end
 
   def play
@@ -19,7 +19,7 @@ class SharkAttackGame
 
     choose_letter
     @display.shark_position = @word_to_guess.incorrect_guesses.size
-    @display.draw
+    @display.draw(@word_to_guess)
     play unless game_over?
   end
 
