@@ -47,6 +47,38 @@ class ResultPeg
   end
 end
 
+# Displays stuff
+class Display
+  def initialize
+    @saved_rows = []
+  end
+
+  def save_row(row, row_results)
+    @saved_rows << { row: row, results: row_results }
+    show_history
+  end
+
+  def clear
+    system('clear')
+    puts ''
+  end
+
+
+  private
+
+  def show_history
+    spacer = ' '
+    @saved_rows.each_with_index do |row, index|
+      spacer = '' if (index + 1) > 9
+      print "#{index + 1}. #{spacer} #{row[:row].join(' ')}"
+      row[:results][:black_pegs].times { print ResultPeg.new(:full_match) }
+      row[:results][:white_pegs].times { print ResultPeg.new(:partial_match) }
+      puts ''
+    end
+    puts ''
+  end
+end
+
 # Helper module to generate rows of pegs ('codes')
 module Rowable
   MAX_ROW_SIZE = 4
@@ -88,18 +120,19 @@ class MastermindGame
     @rounds = MAX_ROUNDS
     @code = create_row(:red, :red, :blue, :cyan)
     @user_guesses = []
+    @display = Display.new
+    @display.clear
   end
 
   def play
     @user_guesses = create_row(*pick_a_code)
     result = calculate_matches_and_near_hits
+    @display.clear
 
     print @code.join(' ')
     puts ''
-    print @user_guesses.join(' ')
-    result[:black_pegs].times { print ResultPeg.new(:full_match) }
-    result[:white_pegs].times { print ResultPeg.new(:partial_match) }
-    puts ''
+    @display.save_row(@user_guesses, result)
+
     @rounds -= 1
     play unless game_over?
   end
@@ -107,7 +140,7 @@ class MastermindGame
   def pick_a_code
     input = ''
     loop do
-      puts 'Type a color sequence (separated by spaces).'
+      puts "Type a color sequence (separated by spaces). #{@rounds} rounds left."
       puts "Color options are: (#{Peg::COLORS.keys.join(', ')})."
       input = gets.chomp.strip.split(' ')
       break unless invalid_input(input)
