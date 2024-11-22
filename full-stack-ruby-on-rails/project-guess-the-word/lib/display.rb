@@ -18,11 +18,11 @@ class Display
     @shark_position = 0
   end
 
-  def draw(word)
+  def draw(word, correct_guesses = [], incorrect_guesses = [])
     clear_screen
     draw_waves_shark_and_swimmer
-    show_revealed_characters(word.correct_guesses, word.word)
-    show_incorrectly_guessed_characters(word.incorrect_guesses)
+    show_revealed_characters(correct_guesses, word)
+    show_incorrectly_guessed_characters(incorrect_guesses)
   end
 
   def game_over(word, won: false)

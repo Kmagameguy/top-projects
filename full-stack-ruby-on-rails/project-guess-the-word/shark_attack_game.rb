@@ -1,22 +1,28 @@
 # frozen_string_literal: true
 
-require './lib/word'
+require 'yaml'
+require './lib/wordable'
 require './lib/display'
 
 # A class to manage our game's state
 class SharkAttackGame
+  include Wordable
+
   def initialize
-    @word_to_guess = Word.new
+    @word_to_guess = pick_word
+    @correct_guesses = []
+    @incorrect_guesses = []
     @display = Display.new
     @display.draw(@word_to_guess)
   end
 
   def play
+    puts @word_to_guess
     choose_letter
-    @display.shark_position = @word_to_guess.incorrect_guesses.size
-    @display.draw(@word_to_guess)
+    @display.shark_position = @incorrect_guesses.size
+    @display.draw(@word_to_guess, @correct_guesses, @incorrect_guesses)
     if game_over?
-      @display.game_over(@word_to_guess.word, won: game_won)
+      @display.game_over(@word_to_guess, won: game_won)
     else
       play
     end
@@ -29,7 +35,7 @@ class SharkAttackGame
   end
 
   def game_won
-    @word_to_guess.correct_guesses.length == @word_to_guess.word.chars.uniq.length
+    @correct_guesses.length == @word_to_guess.chars.uniq.length
   end
 
   def game_lost
@@ -44,14 +50,18 @@ class SharkAttackGame
       puts 'Try again:'
       choose_letter
     else
-      @word_to_guess.save_input(input)
+      save_input(input)
     end
   end
 
   def invalid_input?(input)
     (input.length > 1 ||
-      @word_to_guess.correct_guesses.include?(input) ||
-      @word_to_guess.incorrect_guesses.include?(input))
+      @correct_guesses.include?(input) ||
+      @incorrect_guesses.include?(input))
+  end
+
+  def save_input(letter)
+    @word_to_guess.chars.include?(letter) ? @correct_guesses << letter : @incorrect_guesses << letter
   end
 end
 
