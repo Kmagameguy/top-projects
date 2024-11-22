@@ -13,4 +13,8 @@ class Calculator
   def subtract(*args)
     args.reduce(:-)
   end
+
+  def divide(*args)
+    args.reduce(:/)
+  end
 end
