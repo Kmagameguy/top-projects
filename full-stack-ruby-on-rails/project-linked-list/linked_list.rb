@@ -55,6 +55,23 @@ class LinkedList
     reference
   end
 
+  def pop
+    return if @head.nil?
+
+    counter = 0
+    index = (self.size - 2)
+    new_tail = @head
+    while new_tail.next_node
+      break if counter == index
+
+      counter += 1
+      new_tail = new_tail.next_node
+    end
+
+    new_tail.next_node = nil
+    new_tail
+  end
+
   def find_tail
     current_node = @head
     current_node = current_node.next_node while current_node.next_node
@@ -71,6 +88,8 @@ list.prefix(100)
 p list
 p list.size
 p list.at(3).data
+p list.pop
+p list
 
 # Build the following methods in your linked list class:
 #   1. append(value) adds a new node containing value to the end of the list
