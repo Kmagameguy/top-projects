@@ -5,8 +5,9 @@
 # 15  16  17  18  19  20  21  22  23  24  25  26 =>
 
 # Need to:
-# Take text input and convert it to an array of characters
-# Map each character to its position in the alphabet (ignoring special characters)
+# X - Take text input and convert it to an array of characters
+# X - Map each character to its position in the alphabet
+#    X - (ignoring special characters)
 # Add the offset to each character (and wrap if above 26)
 # Map each number back to its corresponding character
 # Join back into a string
@@ -15,17 +16,14 @@
 def map_to_num(char)
   # Upcase and subtract 65 to shift the ordinal number index
   # to 'A' = 0 through 'Z' = 25
-  return char.upcase.ord - 65
-end
-
-def test_alphabet_assignment()
-  alphabet = ('a'..'z').to_a
-  alphabet.each { |char| puts "Character #{char} is: #{map_to_num(char)}"}
+  return char.between?('A', 'z') ? char.upcase.ord - 65 : char
 end
 
 def caesar_cipher(text, offset)
   arr = text.split('')
-  test_alphabet_assignment()
+  arr.map do |char|
+      puts "Character #{char} is: #{map_to_num(char)}"
+  end
 end
 
 caesar_cipher('What a string!', 5)
