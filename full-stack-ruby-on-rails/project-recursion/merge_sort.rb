@@ -1,3 +1,16 @@
+def merge_sort(array)
+  return array if array.size < 2
+
+  half = array.size/2.0
+
+  left, right = array.each_slice(half).to_a
+  p left
+  p right
+end
+
+array = [4, 8, 6, 2, 1, 7, 5, 3]
+merge_sort(array)
+
 # Given an array:
 # on input of n elements
 # if n < 2, return n
