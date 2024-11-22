@@ -1,7 +1,20 @@
 # frozen_string_literal: true
 
-class SharkAttackGame; end
+require './lib/word'
 
+# A class to manage our game's state
+class SharkAttackGame
+  def initialize
+    @word_to_guess = Word.new
+  end
+
+  def play
+    puts @word_to_guess.word
+  end
+end
+
+game = SharkAttackGame.new
+game.play
 
 # How the game works:
 # A list of words is provided to the system, from which one is randomly selected.
@@ -14,7 +27,7 @@ class SharkAttackGame; end
 # Additional notes & constraints:
 # 1. Odin wants the word selection to be between 5 and 12 characters
 #    - Need to read-in the Google 1000 words list and filter anything less than 5 char and larger than 12 char
-# 2. Need to display the number of remaining guesses (do this with a printout of the shark's progress towards the swimmer)
+# 2. Need to display the number of remaining guesses (show the shark's progress towards the swimmer)
 # 3. Display the word
 #    - Start by replacing the word's letters with underscores
 #    - Whenever a letter is revealed, make sure that's printed instead of the underscores
