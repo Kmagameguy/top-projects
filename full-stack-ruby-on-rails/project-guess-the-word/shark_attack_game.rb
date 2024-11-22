@@ -12,7 +12,6 @@ class SharkAttackGame
   def initialize
     @correct_guesses = []
     @incorrect_guesses = []
-    @shark_position = 0
     @word_to_guess = setup_game
     @saved_and_quit = false
     @input = ''
@@ -58,7 +57,6 @@ class SharkAttackGame
     data = GameFile.load
     @correct_guesses = data[:correct_guesses]
     @incorrect_guesses = data[:incorrect_guesses]
-    @shark_position = data[:shark_position]
     @word_to_guess = data[:word_to_guess]
   end
 
@@ -80,7 +78,6 @@ class SharkAttackGame
     data = {
       correct_guesses: @correct_guesses,
       incorrect_guesses: @incorrect_guesses,
-      shark_position: @shark_position,
       word_to_guess: @word_to_guess
     }
 
@@ -96,7 +93,7 @@ class SharkAttackGame
   end
 
   def game_lost?
-    @shark_position >= WAVE_COUNT
+    @incorrect_guesses.size >= WAVE_COUNT
   end
 
   def invalid_input?
@@ -111,7 +108,6 @@ class SharkAttackGame
   end
 
   def show_round_results
-    @shark_position = @incorrect_guesses.size
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 

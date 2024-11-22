@@ -14,7 +14,7 @@ module Displayable
 
   def draw_round(word, correct_guesses = [], incorrect_guesses = [])
     clear_screen
-    draw_waves_shark_and_swimmer
+    draw_waves_shark_and_swimmer(incorrect_guesses)
     show_revealed_characters(correct_guesses, word)
     show_incorrectly_guessed_characters(incorrect_guesses)
   end
@@ -37,9 +37,10 @@ module Displayable
     puts ''
   end
 
-  def draw_waves_shark_and_swimmer
+  def draw_waves_shark_and_swimmer(incorrect_guesses)
+    shark_position = incorrect_guesses.size
     WAVE_COUNT.times do |index|
-      if index == @shark_position
+      if index == shark_position
         print SHARK_LINE
       else
         print EMPTY_LINE
