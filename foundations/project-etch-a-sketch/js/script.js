@@ -4,45 +4,49 @@ const GRID_MAX_SIZE = 512;
 const CELL_THRESHOLDS = [1, 100];
 const RGB_MAX_VALUE = 255;
 
+const Grid = class {
+    constructor(size) {
+        this.width = size || 16;
+        this.height = this.width;
+        this.totalCells = this.width ** 2;
+        this.cellSize = `${GRID_MAX_SIZE/this.width}px`;
+    }
 
-function drawGrid(numCellsPerSide=16) {
-    resetGameBoard();
-    let totalCells = calculateNumberOfCells(numCellsPerSide);
-    for (let i = 0; i < totalCells; i++) {
+    isValidGridSize(num,min,max) {
+        return (num >= min && num <= max);
+    }
+
+    drawGrid() {
+        for (let i = 0; i < this.totalCells; i++) {
+            this.addCell();
+        }
+    }
+
+    addCell() {
         const cell = document.createElement('div');
-            cell.classList.add('grid-box');
-            cell.addEventListener('mouseover', highlightBox);
-            cell.style.width = cell.style.height = setCellSize(numCellsPerSide);
+        cell.classList.add('grid-box');
+        cell.addEventListener('mouseover', highlightBox);
+        cell.style.width = cell.style.height = this.cellSize;
         GAME_BOARD.appendChild(cell);
+    }
+
+    resetGrid() {
+        while (GAME_BOARD.firstChild) {
+            GAME_BOARD.removeChild(GAME_BOARD.firstChild);
+        }
     }
 }
 
 function changeGridSize() {
     let userInput = parseInt(prompt('Set a new grid size:', 16));
-    if (!userInput || !isBetween(userInput, ...CELL_THRESHOLDS)) {
-        alert('Invalid option.  Input only accepts numbers between 1 and 100');
+    if (!userInput || !grid.isValidGridSize(userInput, ...CELL_THRESHOLDS)) {
+        alert('Invalid option. Input only accepts numbers between 1 and 100');
         return
     }
 
-    drawGrid(userInput);
-}
-
-function resetGameBoard() {
-    while (GAME_BOARD.firstChild) {
-        GAME_BOARD.removeChild(GAME_BOARD.firstChild);
-    }
-}
-
-function isBetween(num, min, max) {
-    return (num >= min && num <= max);
-}
-
-function setCellSize(numBoxes) {
-    return `${GRID_MAX_SIZE/numBoxes}px`;
-}
-
-function calculateNumberOfCells(width) {
-    return width ** 2;
+    grid.resetGrid();
+    grid = new Grid(userInput);
+    grid.drawGrid();
 }
 
 function highlightBox(e) {
@@ -56,5 +60,7 @@ function randValueOnRGBScale() {
     return Math.floor(Math.random() * RGB_MAX_VALUE);
 }
 
-drawGrid();
+let grid = new Grid(16);
+grid.drawGrid();
+
 GRID_SIZE_BTN.addEventListener('click', changeGridSize);
