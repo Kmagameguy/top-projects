@@ -54,6 +54,7 @@ class Display
   end
 
   def save_row(row)
+    clear
     @saved_rows << row
     show_history
   end
@@ -177,8 +178,6 @@ class MastermindGame
   def play
     @user_guesses = @player.codemaker? ? Row.new(*@computer.guess) : Row.new(*@player.pick_colors)
     @user_guesses.results = calculate_matches_and_near_hits
-    @display.clear
-
     print @code
     puts ''
     @display.save_row(@user_guesses)
