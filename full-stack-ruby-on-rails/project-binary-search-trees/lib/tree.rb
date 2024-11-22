@@ -33,6 +33,18 @@ class Tree
     root
   end
 
+  def insert(value, node = @root)
+    return Node.new(value) if node.nil?
+
+    case value <=> node.value
+    when -1 then node.left = insert(value, node.left)
+    when  0 then return node
+    when  1 then node.right = insert(value, node.right)
+    end
+
+    return node
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
@@ -48,35 +60,39 @@ class Tree
   end
 end
 
-array = [1, 2, 3, 4]
+array = [1, 2, 3, 5]
 tree = Tree.new(array)
 puts tree.pretty_print
 print "\n\n-------\n\n"
 
-array = [1, 2, 3, 4, 5, 6, 7]
-tree = Tree.new(array)
+tree.insert(4)
 puts tree.pretty_print
 print "\n\n-------\n\n"
 
-array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-tree = Tree.new(array)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# array = [1, 2, 3, 4, 5, 6, 7]
+# tree = Tree.new(array)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-array = [1]
-tree = Tree.new(array)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+# tree = Tree.new(array)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-array = [1, 1, 1, 2, 1, 1]
-tree = Tree.new(array)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# array = [1]
+# tree = Tree.new(array)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-array = [-200, 22, 100, 12, 74, -3, 12]
-tree = Tree.new(array)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# array = [1, 1, 1, 2, 1, 1]
+# tree = Tree.new(array)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
+
+# array = [-200, 22, 100, 12, 74, -3, 12]
+# tree = Tree.new(array)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
 # Initialize start = 0, end = length of array - 1
 # mid = (start + end) / 2
