@@ -11,7 +11,7 @@ class SharkAttackGame
   def initialize(dictionary = Dictionary.new)
     @correct_guesses = []
     @incorrect_guesses = []
-    @word_to_guess = load_game? ? load : dictionary.random_word
+    @word_to_guess = load_game? ? load! : dictionary.random_word
     @saved_and_quit = false
     @input = ''
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
@@ -48,7 +48,7 @@ class SharkAttackGame
     yes_response?
   end
 
-  def load
+  def load!
     data = GameFile.load
     @correct_guesses = data[:correct_guesses]
     @incorrect_guesses = data[:incorrect_guesses]
