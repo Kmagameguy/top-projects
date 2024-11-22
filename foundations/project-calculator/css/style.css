@@ -9,7 +9,6 @@ html {
 }
 
 body {
-  font-family: 'Fira Code', monospace;
   display: flex;
   justify-content: center;
   font-size: 24px;
@@ -17,31 +16,83 @@ body {
 
 button {
   font-size: 24px;
+  font-family: 'Lato', sans-serif;
   width: 6rem;
   height: 6rem;
+  background-color: #4c566a;
+  border: 1px solid #3b4252;
+  color: #D8DEE9;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:active {
+  opacity: 0.5;
 }
 
 .main-container {
   display: flex;
   flex-direction: column;
   width: 421px;
+  margin-top: 10rem;
   padding: 1rem;
-  border: 3px solid black;
+  background-color: #ECEFF4;
+  border: 3px solid #4C566A;
+  border-radius: 0.4rem;
 }
 
 .row {
   display: flex;
 }
 
+#label {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.25rem;
+  padding: 0;
+  margin: 0;
+}
+
 #calculator-text {
   display: flex;
   justify-content: flex-end;
-  border: 1px solid black;
   padding: 1rem;
   margin-bottom: 1rem;
   overflow: hidden;
+  font-family: 'Fira Code', monospace;
+  background-color: #E5E9F0;
+  border: 1px solid #4C566A;
+}
+
+#btn-clear,
+#btn-invert,
+#btn-percent {
+  background-color: #81A1C1;
+}
+
+#btn-divide,
+#btn-multiply,
+#btn-subtract,
+#btn-addition,
+#btn-equals {
+  background-color: #EBCB8B;
+  color: #2E3440;
+}
+
+#btn-clear {
+  border-radius: 0.4rem 0 0 0;
+}
+
+#btn-divide {
+  border-radius: 0 0.4rem 0 0;
+}
+
+#btn-equals {
+  border-radius: 0 0 0.4rem 0;
 }
 
 #btn-zero {
   width: 12rem;
+  border-radius: 0 0 0 0.4rem;
 }
