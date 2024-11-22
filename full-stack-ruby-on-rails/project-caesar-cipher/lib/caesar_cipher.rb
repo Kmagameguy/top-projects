@@ -16,10 +16,9 @@ end
 
 def create_hash(alphabet, rotated_alphabet)
   index = 0
-  alphabet.reduce(Hash.new({})) do |hash, key|
+  alphabet.each_with_object({}) do |key, hash|
     hash[key] = rotated_alphabet[index]
     index += 1
-    hash
   end
 end
 
