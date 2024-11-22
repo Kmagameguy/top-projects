@@ -7,11 +7,11 @@ require './lib/game_file'
 # A class to manage our game's state
 class SharkAttackGame
   def initialize(dictionary = Dictionary.new, display = Display.new, save_file = GameFile.new)
+    @display = display
     @save_file = save_file
     @correct_guesses = []
     @incorrect_guesses = []
     @word_to_guess = load_game? ? load! : dictionary.random_word
-    @display = display
     @saved_and_quit = false
     @input = ''
     @display.update(@word_to_guess, @correct_guesses, @incorrect_guesses)
@@ -99,7 +99,11 @@ class SharkAttackGame
   end
 
   def record_input
-    @word_to_guess.chars.include?(@input) ? @correct_guesses << @input : @incorrect_guesses << @input
+    if @word_to_guess.chars.include?(@input)
+      @correct_guesses << @input
+    else
+      @incorrect_guesses << @input
+    end
   end
 
   def show_round_results
@@ -107,7 +111,11 @@ class SharkAttackGame
   end
 
   def advance_round_or_end
-    game_over? ? @display.update(@word_to_guess, @correct_guesses, @incorrect_guesses, game_won: game_won?) : play
+    if game_over?
+      @display.update(@word_to_guess, @correct_guesses, @incorrect_guesses, game_won: game_won?)
+    else
+      play
+    end
   end
 
   def yes_response?

@@ -13,7 +13,11 @@ class Display
   EMPTY_LINE = "#{WAVE_TOP}#{WAVE_SPACER}"
 
   def update(word, correct_guesses, incorrect_guesses, game_won: nil)
-    game_won.nil? ? draw_round(word, correct_guesses, incorrect_guesses) : draw_game_over(word, game_won)
+    if game_won.nil?
+      draw_round(word, correct_guesses, incorrect_guesses)
+    else
+      draw_game_over(word, game_won)
+    end
   end
 
   private
