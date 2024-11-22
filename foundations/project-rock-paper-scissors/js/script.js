@@ -41,14 +41,23 @@ function playRound(playerChoice, computerChoice) {
     }
 }
 
+function promptForPlayerHand() {
+    let userInput = prompt('Choose between rock, paper, or scissors:', 'rock');
+    return userInput !== null ? userInput.toLowerCase().trim() : userInput;
+}
+
 function playGame() {
     let playerScore = 0;
 
     for (let i = 0; i < NUM_ROUNDS; i++) {
-        let playerChoice = prompt('Choose between rock, paper, or scissors:', 'rock');
+        let playerChoice = promptForPlayerHand();
+
+        while (!CHOICES.includes(playerChoice) && playerChoice !== null) {
+            console.log("We didn't understand your guess.  Try again.");
+            playerChoice = promptForPlayerHand();
+        }
 
         if (playerChoice !== null) {
-            playerChoice = playerChoice.toLowerCase().trim();
             let computerChoice = getComputerChoice();
             let roundResult = playRound(playerChoice, computerChoice);
 
