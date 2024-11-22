@@ -12,6 +12,21 @@ def clean_zipcode(zipcode)
   zipcode.to_s.rjust(5, '0')[0..4]
 end
 
+def remove_country_code?(phone_number)
+  phone_number.length == 11 && phone_number[0] == 1
+end
+
+def clean_phone_number(phone_number)
+  phone_number = phone_number.to_s.delete('^0-9').chars
+  phone_number = phone_number.drop(1) if remove_country_code?(phone_number)
+  if phone_number.size != 10
+    '000-000-0000'
+  else
+    phone_number = phone_number.join('')
+    "#{phone_number[0..2]}-#{phone_number[3..5]}-#{phone_number[6..9]}"
+  end
+end
+
 def legislators_by_zipcode(zipcode)
   civic_info = Google::Apis::CivicinfoV2::CivicInfoService.new
   civic_info.key = 'AIzaSyClRzDqDh5MsXwnCWi0kOiiBivP6JsSyBw'
@@ -22,7 +37,7 @@ def legislators_by_zipcode(zipcode)
       levels: 'country',
       roles: %w[legislatorUpperBody legislatorLowerBody]
     ).officials
-  rescue
+  rescue StandardError
     'You can find your representatives by visiting www.commoncause.org/take-action/find-elected-officials'
   end
 end
@@ -54,6 +69,7 @@ contents.each do |row|
   id = row[0]
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
+  phone = clean_phone_number(row[:homephone])
   legislators = legislators_by_zipcode(zipcode)
 
   form_letter = erb_template.result(binding)
