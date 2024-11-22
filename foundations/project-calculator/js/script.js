@@ -55,6 +55,13 @@ function clearDisplay() {
     secondNum = null;
 }
 
+function invertDisplay() {
+    let currentDisplay = CALCULATOR_DISPLAY.innerText;
+    if (currentDisplay !== DIVIDE_BY_ZERO_MESSAGE) {
+        CALCULATOR_DISPLAY.innerText = -parseFloat(currentDisplay);
+    }
+}
+
 function shiftMemory() {
     firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
     operator = null;
@@ -85,6 +92,8 @@ function handleInput(e) {
 
     if (selectedButton === 'AC') {
         clearDisplay();
+    } else if (selectedButton === '+/-') {
+        invertDisplay();
     } else if (selectedButton === '=') {
         // We have to handle = separately since it can't be chained like other operators
         if (firstNum !== null && operator !== null && secondNum !== null) {
