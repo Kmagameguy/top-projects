@@ -24,10 +24,10 @@ class NoughtsAndCrossesGame
 
   def initialize
     player = Player.new
-    player.moves = [1, 2, 3]
+    player.moves = [1, 5, 8, 9]
 
     WIN_CONDITIONS.any? do |line|
-      puts 'You won!' if line == player.moves.sort
+      puts 'You won!' if line.all? { |cell| player.moves.include?(cell) }
     end
   end
 end
