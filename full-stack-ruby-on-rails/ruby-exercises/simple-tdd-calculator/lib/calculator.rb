@@ -2,7 +2,7 @@
 
 # A class to manage mathematical operations
 class Calculator
-  def add(a, b)
-    a + b
+  def add(*args)
+    args.reduce(:+)
   end
 end
