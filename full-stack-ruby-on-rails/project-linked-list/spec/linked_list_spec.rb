@@ -20,11 +20,13 @@ RSpec.describe 'Linked List' do
       list = LinkedList.new
       list.append(10)
       expect(list.tail.data).to be 10
+      expect(list.size).to be 1
     end
 
     it 'adds several nodes to the end of the linked list' do
       list = create_linked_list_with_several_appended_nodes
       expect(list.tail.data).to be 30
+      expect(list.size).to be 3
     end
   end
 
@@ -33,11 +35,13 @@ RSpec.describe 'Linked List' do
       list = LinkedList.new
       list.prefix(100)
       expect(list.head.data).to be 100
+      expect(list.size).to be 1
     end
 
     it 'adds several nodes to the beginning of the linked list' do
       list = create_linked_list_with_several_prefixed_nodes
       expect(list.head.data).to be 30
+      expect(list.size).to be 3
     end
   end
 
@@ -47,6 +51,7 @@ RSpec.describe 'Linked List' do
       list.prefix(100)
       expect(list.head.data).to be 100
       expect(list.tail.data).to be 30
+      expect(list.size).to be 4
     end
   end
 
@@ -96,6 +101,7 @@ RSpec.describe 'Linked List' do
     it 'does nothing if the linked list is empty when calling pop' do
       list = LinkedList.new
       expect(list.pop).to be nil
+      expect(list.size).to be 0
     end
 
     it 'uses pop to remove the last element from the list' do
@@ -104,6 +110,7 @@ RSpec.describe 'Linked List' do
       tail = list.tail
       expect(tail.data).to be 20
       expect(tail.next).to be nil
+      expect(list.size).to be 2
     end
   end
 
@@ -123,6 +130,7 @@ RSpec.describe 'Linked List' do
       expect(list.at(3).data).to be nil
       expect(list.at(4).data).to eql('i like turtles')
       expect(list.tail.data).to be true
+      expect(list.size).to be 6
     end
   end
 
@@ -188,6 +196,7 @@ RSpec.describe 'Linked List' do
       list.insert_at('bob', -7)
       expect(list.head.data).to eq 'bob'
       expect(list.at(1).data).to be 10
+      expect(list.size).to be 4
     end
 
     it 'creates a node at TAIL if positive index is out of range' do
@@ -205,6 +214,7 @@ RSpec.describe 'Linked List' do
       expect(list.at(2).data).to eq 'hello'
       expect(list.at(1).data).to be 20
       expect(list.at(3).data).to be 30
+      expect(list.size).to be 6
     end
   end
 
@@ -235,12 +245,14 @@ RSpec.describe 'Linked List' do
       list.append(10)
       list.remove_at(0)
       expect(list.head).to be nil
+      expect(list.size).to be 0
     end
 
     it 'sets head to the next node if head is removed' do
       list = create_linked_list_with_several_appended_nodes
       list.remove_at(0)
       expect(list.head.data).to be 20
+      expect(list.size).to be 2
     end
 
     it 'removes the node at the specified index' do
@@ -251,6 +263,7 @@ RSpec.describe 'Linked List' do
       expect(list.at(2).data).to be 30
       expect(list.at(3).data).to be 40
       expect(list.contains?('Cowabunga')).to be false
+      expect(list.size).to be 4
     end
 
   end

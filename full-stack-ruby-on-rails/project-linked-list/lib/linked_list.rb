@@ -4,13 +4,15 @@ require_relative './node'
 
 # A class to manage relationships between nodes
 class LinkedList
-  attr_reader :head
+  attr_reader :head, :size
 
   def initialize
     @head = nil
+    @size = 0
   end
 
   def prefix(value)
+    @size += 1
     @head = if empty?
               Node.new(value)
             else
@@ -19,6 +21,7 @@ class LinkedList
   end
 
   def append(value)
+    @size += 1
     node = Node.new(value)
     if empty?
       @head = node
@@ -27,19 +30,11 @@ class LinkedList
     end
   end
 
-  def size
-    if empty?
-      0
-    else
-      count_all_nodes(node: @head)
-    end
-  end
-
   def at(index_to_find)
     return @head if index_to_find.zero?
 
     node = @head
-    size.times do |list_index|
+    @size.times do |list_index|
       return node if index_to_find == list_index
 
       node = node.next || nil
@@ -50,6 +45,7 @@ class LinkedList
   def pop
     return nil if empty?
 
+    @size -= 1
     new_tail = second_to_last_node
     old_tail = new_tail.next
     new_tail.next = nil
@@ -73,7 +69,7 @@ class LinkedList
     index_of_value = nil
     node = @head
 
-    size.times do |index|
+    @size.times do |index|
       if node.data == value
         index_of_value = index
         break
@@ -92,8 +88,9 @@ class LinkedList
     current_node = @head
     previous_node = nil
 
-    size.times do |list_index|
+    @size.times do |list_index|
       if list_index == index
+        @size += 1
         temp = Node.new(value)
         temp.next = current_node
         previous_node.next = temp
@@ -111,6 +108,8 @@ class LinkedList
   def remove_at(index)
     return if empty? || out_of_range?(index)
 
+    @size -= 1
+
     if @head.next.nil?
       @head = nil
       return
@@ -124,7 +123,7 @@ class LinkedList
     previous_node = nil
     current_node = @head
 
-    size.times do |list_index|
+    @size.times do |list_index|
       if list_index == index
         next_node = current_node.next ||= nil
         previous_node.next = next_node
@@ -143,7 +142,7 @@ class LinkedList
     pointer = ' -> '
     node = @head
 
-    size.times do
+    @size.times do
       string += "( #{node.data} )#{pointer}"
       node = node.next
     end
