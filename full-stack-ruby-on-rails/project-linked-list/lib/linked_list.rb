@@ -31,23 +31,16 @@ class LinkedList
     end
   end
 
-  def at(index)
-    return @head if index.zero?
+  def at(index_to_find)
+    return @head if index_to_find.zero?
 
-    counter = 0
-    list_length = size - 1
-    reference = @head
+    node = @head
+    size.times do |list_index|
+      return node if index_to_find == list_index
 
-    loop do
-      if counter == index
-        return reference
-      elsif counter == list_length
-        return nil
-      else
-        reference = reference.next
-        counter += 1
-      end
+      node = node.next || nil
     end
+    node
   end
 
   def pop
