@@ -90,6 +90,8 @@ class MastermindGame
     @user_guesses = create_row(*pick_a_code)
     result = calculate_matches_and_near_hits
 
+    print @code.join(' ')
+    puts ''
     print @user_guesses.join(' ')
     result[:black_pegs].times { print ResultPeg.new(:full_match) }
     result[:white_pegs].times { print ResultPeg.new(:partial_match) }
@@ -131,16 +133,27 @@ class MastermindGame
   def calculate_matches_and_near_hits
     black_pegs = 0
     white_pegs = 0
+
     computer_colors = color_list(@code)
 
     computer_colors.each_with_index do |color, index|
       user_color = color_list(@user_guesses)[index]
-      if user_color == color
-        black_pegs += 1
-      elsif computer_colors.include?(user_color)
-        white_pegs += 1
-      end
+      black_pegs += 1 if user_color == color
     end
+
+    unmatched_computer = computer_colors.select.with_index do |color, index|
+      user_color = color_list(@user_guesses)[index]
+      user_color != color
+    end.uniq
+
+    unmatched_user = color_list(@user_guesses).select.with_index do |color, index|
+      color != computer_colors[index]
+    end.uniq
+
+    unmatched_computer.each do |color, index|
+      white_pegs += 1 if unmatched_user.include?(color)
+    end
+
     { black_pegs: black_pegs, white_pegs: white_pegs }
   end
 end
