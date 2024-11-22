@@ -3,15 +3,11 @@
 require 'csv'
 
 def clean_zipcode(zipcode)
-  if zipcode.nil?
-    zipcode = '00000'
-  elsif zipcode.length < 5
-    zipcode = zipcode.rjust(5, '0')
-  elsif zipcode.length > 5
-    zipcode = zipcode[0..4]
-  else
-    zipcode
-  end
+  # Ensure all zipcodes a strings,
+  # Then prefix them with zeroes until their length is 5
+  # Otherwise if the length is more than 5, return the first 5 digits only
+  # This handles nils because nil.to_s = ''
+  zipcode.to_s.rjust(5, '0')[0..4]
 end
 
 puts 'Event Manager Initialized!'
