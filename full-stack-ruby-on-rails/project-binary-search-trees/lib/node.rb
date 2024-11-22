@@ -12,5 +12,7 @@ class Node
     @right = right
   end
 
-  def <=>; end
+  def <=>(other)
+    @value <=> other.value
+  end
 end
