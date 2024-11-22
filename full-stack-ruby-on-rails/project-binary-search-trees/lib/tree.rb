@@ -115,6 +115,17 @@ class Tree
     preorder_tree.compact.flatten
   end
 
+  def postorder(node = @root)
+    postorder_tree = []
+    return nil if node.nil?
+
+    postorder_tree << postorder(node.left) unless node.left.nil?
+    postorder_tree << postorder(node.right) unless node.right.nil?
+    postorder_tree << node.value
+
+    postorder_tree.compact.flatten
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
@@ -146,6 +157,7 @@ puts tree.pretty_print
 p tree.level_order
 p tree.inorder
 p tree.preorder
+p tree.postorder
 # array = [1, 2, 3, 5]
 # tree = Tree.new(array)
 # puts tree.pretty_print
