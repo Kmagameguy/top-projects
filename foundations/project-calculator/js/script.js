@@ -2,6 +2,7 @@ console.log('ready!');
 
 const BUTTONS = document.querySelectorAll('button');
 const CALCULATOR_DISPLAY = document.querySelector('#calculator-text');
+const DIVIDE_BY_ZERO_MESSAGE = 'Divide by Zero Error';
 
 let firstNum = null;
 let operator = null;
@@ -20,12 +21,16 @@ function multiplyNumbers(num1, num2) {
 }
 
 function divideNumbers(num1, num2) {
-    if (num2 === 0) { return 'Divide by Zero Error'}
-    else { return num1 / num2 }
+    if (num2 === 0) {
+        firstNum  = null;
+        operator  = null;
+        secondNum = null;
+        return DIVIDE_BY_ZERO_MESSAGE
+    } else { return num1 / num2 }
 }
 
 function isNumber(value) {
-    return !isNaN(parseInt(value));
+    return !isNaN(parseFloat(value));
 }
 
 function updateDisplay(number) {
@@ -34,7 +39,9 @@ function updateDisplay(number) {
 
 function updateOrAppendToDisplay(number) {
     let currentDisplay = CALCULATOR_DISPLAY.innerText;
-    currentDisplay === '0' ? updateDisplay(number) : updateDisplay(currentDisplay + number);
+    if (currentDisplay == '0' || currentDisplay === DIVIDE_BY_ZERO_MESSAGE) {
+        updateDisplay(number)
+    } else {updateDisplay(currentDisplay + number) };
 }
 
 function clearDisplay() {
@@ -45,7 +52,7 @@ function clearDisplay() {
 }
 
 function shiftMemory() {
-    firstNum = parseInt(CALCULATOR_DISPLAY.innerText);
+    firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
     operator = null;
     secondNum = null;
 }
@@ -77,7 +84,7 @@ function handleInput(e) {
     } else if (selectedButton === '=') {
         // We have to handle = separately since it can't be chained like other operators
         if (firstNum !== null && operator !== null && secondNum !== null) {
-            secondNum = parseInt(CALCULATOR_DISPLAY.innerText);
+            secondNum = parseFloat(CALCULATOR_DISPLAY.innerText);
             updateDisplay(operate(firstNum, operator, secondNum));
             firstNum = null;
             operator = null;
@@ -87,7 +94,7 @@ function handleInput(e) {
         if (isNumber(selectedButton)) {
             updateOrAppendToDisplay(selectedButton);
         } else {
-            firstNum = parseInt(CALCULATOR_DISPLAY.innerText);
+            firstNum = parseFloat(CALCULATOR_DISPLAY.innerText);
             operator = selectedButton;
         }
     // this condition is really only here to handle the display.  We want to show the previously
@@ -98,7 +105,7 @@ function handleInput(e) {
     } else if (firstNum !== null && operator !== null && secondNum === null) {
         if (isNumber(selectedButton)) {
             updateDisplay(selectedButton);
-            secondNum = parseInt(selectedButton);
+            secondNum = parseFloat(selectedButton);
         }
     // this condition is what helps us chain operators together.  if the list of operations is full
     // we execute the stored stuff and then shift the values around so we're ready to take the next input
@@ -106,7 +113,7 @@ function handleInput(e) {
         if (isNumber(selectedButton)) {
             updateOrAppendToDisplay(selectedButton);
         } else {
-            secondNum = parseInt(CALCULATOR_DISPLAY.innerText);
+            secondNum = parseFloat(CALCULATOR_DISPLAY.innerText);
             updateDisplay(operate(firstNum, operator, secondNum));
             shiftMemory();
             operator = selectedButton;
