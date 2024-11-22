@@ -25,3 +25,7 @@ body {
   height: 32px;
   border: 1px solid grey;
 }
+
+.marked {
+  background-color: lightgrey;
+}
