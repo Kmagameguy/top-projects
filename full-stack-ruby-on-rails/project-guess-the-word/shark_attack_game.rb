@@ -25,7 +25,7 @@ class SharkAttackGame
     return if @saved_and_quit
 
     show_round_results
-    game_over? ? draw_game_over : play
+    game_over? ? draw_game_over(@word_to_guess, won: game_won?) : play
   end
 
   private
@@ -49,6 +49,8 @@ class SharkAttackGame
   end
 
   def load_game?
+    return false unless GameFile.save_exists?
+
     puts 'Load saved game? (y/n)'
     gets.chomp.to_s.downcase == 'y'
   end
@@ -71,21 +73,21 @@ class SharkAttackGame
       correct_guesses: @correct_guesses,
       incorrect_guesses: @incorrect_guesses,
       shark_position: @shark_position,
-      word_to_guess: @word_to_guess,
+      word_to_guess: @word_to_guess
     }
 
     GameFile.new(data)
   end
 
   def game_over?
-    game_won || game_lost
+    game_won? || game_lost?
   end
 
-  def game_won
+  def game_won?
     @correct_guesses.length == @word_to_guess.chars.uniq.length
   end
 
-  def game_lost
+  def game_lost?
     @shark_position >= WAVE_COUNT
   end
 
