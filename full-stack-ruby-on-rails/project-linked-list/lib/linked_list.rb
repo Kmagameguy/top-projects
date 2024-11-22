@@ -24,16 +24,11 @@ class LinkedList
   end
 
   def size
-    return 0 if empty?
-
-    counter = 1
-    reference = @head
-
-    while reference.next
-      counter += 1
-      reference = reference.next
+    if empty?
+      0
+    else
+      count_all_nodes(node: @head, counter: 1)
     end
-    counter
   end
 
   def at(index)
@@ -194,6 +189,15 @@ class LinkedList
   end
 
   private
+
+  def count_all_nodes(node:, counter:)
+    last_node = tail
+    while node != last_node
+      counter += 1
+      node = node.next
+    end
+    counter
+  end
 
   def second_to_last_node
     node = @head
