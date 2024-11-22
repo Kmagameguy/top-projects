@@ -10,15 +10,14 @@ class SharkAttackGame
   include Displayable
 
   def initialize
-    @word_to_guess = pick_word
     @correct_guesses = []
     @incorrect_guesses = []
     @shark_position = 0
-    draw_round(@word_to_guess)
+    @word_to_guess = load_game? ? load : pick_word
+    draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
   end
 
   def play
-    puts @word_to_guess
     save_game?
     choose_letter
     @shark_position = @incorrect_guesses.size
@@ -30,7 +29,24 @@ class SharkAttackGame
     end
   end
 
+  def load_game?
+    puts 'Load saved game? (y/n)'
+
+    input = gets.chomp.to_s.downcase
+
+    input == 'y'
+  end
+
   private
+
+  def load
+    puts 'Previous game restored.'
+    data = YAML.load(File.open('saved.yaml'))
+    @correct_guesses = data[:correct_guesses]
+    @incorrect_guesses = data[:incorrect_guesses]
+    @shark_position = data[:shark_position]
+    data[:word_to_guess]
+  end
 
   def save_game?
     puts 'Save game? (y/n)'
