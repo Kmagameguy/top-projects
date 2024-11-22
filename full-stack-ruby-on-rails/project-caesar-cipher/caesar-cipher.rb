@@ -95,10 +95,7 @@ def caesar_cipher2(text, offset)
 
   cipher = cipher_upcase_hash.merge(cipher_downcase_hash)
 
-  puts cipher
-
-  #puts text.split('').map { |char| cipher_hash.fetch(char, char)}
-
+  puts text.split('').map { |char| cipher.fetch(char, char)}.join
 end
 
 caesar_cipher2('What a string!', 5)
