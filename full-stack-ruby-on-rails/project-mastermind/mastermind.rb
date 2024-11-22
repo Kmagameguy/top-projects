@@ -87,7 +87,7 @@ class MastermindGame
   end
 
   def play
-    @user_guesses = create_row(:red, :blue, :blue, :brown)
+    @user_guesses = create_row(*pick_a_code)
     result = calculate_matches_and_near_hits
 
     print @code.join(' ')
@@ -98,6 +98,20 @@ class MastermindGame
     puts ''
     @rounds -= 1
     play unless game_over?
+  end
+
+  def pick_a_code
+    code = []
+    while code.length < 4
+      puts "Pick a peg (#{Peg::COLORS.keys.join(', ')}).  #{4 - code.length} pegs left to pick."
+      selection = gets.chomp.strip.to_sym
+      if Peg::COLORS.key?(selection)
+        code.push(selection)
+      else
+        puts 'Invalid selection, try again.'
+      end
+    end
+    code
   end
 
   def game_over?
