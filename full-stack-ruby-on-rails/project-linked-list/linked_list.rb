@@ -4,6 +4,8 @@ require './node'
 
 # A class to manage relationships between nodes
 class LinkedList
+  attr_reader :head
+
   def initialize
     @head = nil
   end
@@ -38,6 +40,21 @@ class LinkedList
     counter
   end
 
+  def at(index)
+    return @head if index.zero?
+
+    counter = 0
+    reference = @head
+
+    while reference.next_node
+      return reference if counter == index
+
+      counter += 1
+      reference = reference.next_node
+    end
+    reference
+  end
+
   def find_tail
     current_node = @head
     current_node = current_node.next_node while current_node.next_node
@@ -53,6 +70,7 @@ list.prefix(100)
 
 p list
 p list.size
+p list.at(3).data
 
 # Build the following methods in your linked list class:
 #   1. append(value) adds a new node containing value to the end of the list
