@@ -19,6 +19,7 @@ class SharkAttackGame
 
   def play
     puts @word_to_guess
+    save_game?
     choose_letter
     @shark_position = @incorrect_guesses.size
     draw_round(@word_to_guess, @correct_guesses, @incorrect_guesses)
@@ -30,6 +31,27 @@ class SharkAttackGame
   end
 
   private
+
+  def save_game?
+    puts 'Save game? (y/n)'
+
+    input = gets.chomp.to_s.downcase
+
+    save if input == 'y'
+  end
+
+  def save
+    puts 'Game saved.'
+    data = {
+      word_to_guess: @word_to_guess,
+      correct_guesses: @correct_guesses,
+      incorrect_guesses: @incorrect_guesses,
+      shark_position: @shark_position
+    }
+    save_file = File.open('saved.yaml', 'w')
+    save_file.puts YAML.dump(data)
+    save_file.close
+  end
 
   def game_over?
     game_won || game_lost
