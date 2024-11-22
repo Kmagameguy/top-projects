@@ -19,20 +19,18 @@ def merge(left_array, right_array)
     end
   end
 
-  if left_array.empty?
-    temp_array << right_array
-  else
-    temp_array << left_array
-  end
-  p temp_array.flatten
+  temp_array << right_array << left_array
   temp_array.flatten
 end
 
 array = [4, 8, 6, 2, 1, 7, 5, 3]
-merge_sort array
+p merge_sort array
 
 array = [1, 7, 5, 3, 2, 6, 4]
-merge_sort array
+p merge_sort array
+
+array = []
+p merge_sort array
 
 # Given an array:
 # on input of n elements
