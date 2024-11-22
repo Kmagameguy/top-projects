@@ -41,7 +41,7 @@ class ResultPeg
   end
 
   def to_s
-    symbol.to_s
+    " #{symbol}"
   end
 end
 
@@ -49,6 +49,10 @@ end
 module Rowable
   def create_row(*colors)
     colors.empty? ? random_code : submit_code(colors)
+  end
+
+  def color_list(colors)
+    colors.map(&:color)
   end
 
   private
@@ -85,10 +89,29 @@ class MastermindGame
   def play
     puts ''
     @user_guesses = create_row(:red, :blue, :red, :green)
+    result = calculate_matches_and_near_hits
 
     print @code.join(' ')
     puts ''
     print @user_guesses.join(' ')
+    result[:black_pegs].times { print ResultPeg.new(:full_match) }
+    result[:white_pegs].times { print ResultPeg.new(:partial_match) }
+  end
+
+  def calculate_matches_and_near_hits
+    black_pegs = 0
+    white_pegs = 0
+    computer_colors = color_list(@code)
+
+    computer_colors.each_with_index do |color, index|
+      user_color = color_list(@user_guesses)[index]
+      if user_color == color
+        black_pegs += 1
+      elsif computer_colors.include?(user_color)
+        white_pegs += 1
+      end
+    end
+    { black_pegs: black_pegs, white_pegs: white_pegs }
   end
 end
 
