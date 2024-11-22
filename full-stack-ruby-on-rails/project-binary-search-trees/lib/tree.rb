@@ -75,6 +75,24 @@ class Tree
     end
   end
 
+  def level_order
+    ordered_tree = []
+    queue = []
+    return ordered_tree unless @root
+
+    queue << @root
+
+    until queue.empty?
+      node = queue[0]
+      ordered_tree << node.value
+      queue.shift
+      queue << node.left unless node.left.nil?
+      queue << node.right unless node.right.nil?
+    end
+
+    ordered_tree
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
@@ -100,29 +118,34 @@ class Tree
   end
 end
 
-array = [1, 2, 3, 5]
+array = [1, 2, 3, 4, 5]
 tree = Tree.new(array)
 puts tree.pretty_print
-print "\n\n-------\n\n"
+p tree.level_order
 
-tree.insert(4)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# array = [1, 2, 3, 5]
+# tree = Tree.new(array)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-tree.delete(3)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# tree.insert(4)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-tree.delete(2)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# tree.delete(3)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-tree.insert(7)
-puts tree.pretty_print
-print "\n\n-------\n\n"
+# tree.delete(2)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
 
-p tree.find(5)
-print "\n\n-------\n\n"
+# tree.insert(7)
+# puts tree.pretty_print
+# print "\n\n-------\n\n"
+
+# p tree.find(5)
+# print "\n\n-------\n\n"
 
 # array = [1, 2, 3, 4, 5, 6, 7]
 # tree = Tree.new(array)
