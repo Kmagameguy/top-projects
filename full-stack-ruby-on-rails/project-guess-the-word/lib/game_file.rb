@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'fileutils'
 
 # This class serializes & deserializes game data to YAML on disk
 class GameFile
@@ -38,6 +39,6 @@ class GameFile
   end
 
   def ensure_save_directory_exists
-    Dir.mkdir(@save_directory) unless Dir.exist?(@save_directory)
+    FileUtils.mkdir_p @save_directory
   end
 end
