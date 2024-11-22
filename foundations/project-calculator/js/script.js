@@ -111,14 +111,11 @@ class Display {
     }
 
     insertDecimal() {
-        if(this.#isNotShowingError() && !this.#hasDecimal()) {
-            const currentDisplay = this.#getText();
-            if (this.frozen || currentDisplay === 0) {
-                this.#thaw();
-                this.update('0.');
-            } else {
-                this.update(currentDisplay + '.');
-            }
+        if (this.frozen || this.#getText() === '0') {
+            this.#thaw();
+            this.update('0.');
+        } else if(this.#isNotShowingError() && !this.#hasDecimal()) {
+            this.update(this.#getText() + '.');
         }
     }
 
