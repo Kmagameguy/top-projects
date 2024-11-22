@@ -8,6 +8,16 @@ module Enumerable
       self
     end
   end
+
+  def my_any?
+    if block_given?
+      some_match = false
+      my_each { |index| some_match = true if yield(index) == true }
+      some_match
+    else
+      self
+    end
+  end
 end
 
 # You will first have to define my_each
