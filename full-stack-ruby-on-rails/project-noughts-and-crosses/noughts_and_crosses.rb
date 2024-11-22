@@ -1,3 +1,27 @@
+# frozen_string_literal: true
+
+# This is our main class which will instantiate a game of Noughts & Crosses.
+class NoughtsAndCrossesGame
+  WIN_CONDITIONS = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 5, 9],
+    [3, 5, 7]
+  ].freeze
+
+  def initialize
+    player_choices = [2, 1, 3]
+
+    WIN_CONDITIONS.any? do |line|
+      puts 'You won!' if line == player_choices.sort
+    end
+  end
+end
+
 # Essentially have a "grid"
 
 # | 1. | 2. | 3. |
@@ -45,3 +69,5 @@
 #   - is either cross (x) or nought (o)
 # - Board
 #   - has many cells (with an ID each?)
+
+NoughtsAndCrossesGame.new
