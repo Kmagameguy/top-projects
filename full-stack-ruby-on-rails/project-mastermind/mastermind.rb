@@ -87,7 +87,7 @@ class MastermindGame
   end
 
   def play
-    @user_guesses = create_row(:red, :red, :blue, :brown)
+    @user_guesses = create_row(:red, :blue, :blue, :brown)
     result = calculate_matches_and_near_hits
 
     print @code.join(' ')
@@ -96,13 +96,24 @@ class MastermindGame
     result[:black_pegs].times { print ResultPeg.new(:full_match) }
     result[:white_pegs].times { print ResultPeg.new(:partial_match) }
     puts ''
-    play unless game_won?
+    @rounds -= 1
+    play unless game_over?
+  end
+
+  def game_over?
+    game_won? || game_lost?
   end
 
   def game_won?
     game_won = color_list(@code).eql?(color_list(@user_guesses))
     puts 'You won!  You are great.' if game_won
     game_won
+  end
+
+  def game_lost?
+    game_lost = @rounds <= 0
+    puts 'You lose!  Try again sometime.' if game_lost
+    game_lost
   end
 
   def calculate_matches_and_near_hits
