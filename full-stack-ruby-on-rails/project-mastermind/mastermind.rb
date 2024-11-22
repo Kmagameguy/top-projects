@@ -219,28 +219,41 @@ class MastermindGame
   # 2. Remove duplicates from source and guess arrays
   # 3. Increase white peg count if a guessed color exists in the remainder of the code array
   def calculate_matches_and_near_hits
-    pegs = []
-    computer_colors = @coded_message.colors
+    count_matches.concat(count_near_hits)
+  end
 
-    computer_colors.each_with_index do |color, index|
+  def count_matches
+    pegs = []
+
+    @coded_message.colors.each_with_index do |color, index|
       user_color = @user_guesses.colors[index]
       pegs << :full_match if user_color == color
     end
 
-    unmatched_computer = computer_colors.select.with_index do |color, index|
-      user_color = @user_guesses.colors[index]
-      user_color != color
-    end.uniq
+    pegs
+  end
 
-    unmatched_user = @user_guesses.colors.select.with_index do |color, index|
-      color != computer_colors[index]
-    end.uniq
+  def count_near_hits
+    pegs = []
 
-    unmatched_computer.each do |color|
-      pegs << :partial_match if unmatched_user.include?(color)
+    unmatched_user_pegs.intersection(unmatched_code_pegs).count.times do
+      pegs << :partial_match
     end
 
     pegs
+  end
+
+  def unmatched_code_pegs
+    @coded_message.colors.select.with_index do |color, index|
+      user_color = @user_guesses.colors[index]
+      user_color != color
+    end.uniq
+  end
+
+  def unmatched_user_pegs
+    @user_guesses.colors.select.with_index do |color, index|
+      color != @coded_message.colors[index]
+    end.uniq
   end
 end
 
