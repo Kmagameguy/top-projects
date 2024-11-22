@@ -3,6 +3,7 @@
 require 'yaml'
 require './lib/wordable'
 require './lib/displayable'
+require './lib/game_file'
 
 # A class to manage our game's state
 class SharkAttackGame
@@ -29,23 +30,22 @@ class SharkAttackGame
     end
   end
 
+  private
+
   def load_game?
     puts 'Load saved game? (y/n)'
 
     input = gets.chomp.to_s.downcase
 
-    input == 'y'
+    load if input == 'y'
   end
 
-  private
-
   def load
-    puts 'Previous game restored.'
-    data = YAML.safe_load(File.open('saved.yaml'), permitted_classes: [Symbol])
+    data = GameFile.load
     @correct_guesses = data[:correct_guesses]
     @incorrect_guesses = data[:incorrect_guesses]
     @shark_position = data[:shark_position]
-    data[:word_to_guess]
+    @word_to_guess = data[:word_to_guess]
   end
 
   def save_game?
@@ -53,20 +53,14 @@ class SharkAttackGame
 
     input = gets.chomp.to_s.downcase
 
-    save if input == 'y'
-  end
-
-  def save
-    puts 'Game saved.'
     data = {
-      word_to_guess: @word_to_guess,
       correct_guesses: @correct_guesses,
       incorrect_guesses: @incorrect_guesses,
-      shark_position: @shark_position
+      shark_position: @shark_position,
+      word_to_guess: @word_to_guess,
     }
-    save_file = File.open('saved.yaml', 'w')
-    save_file.puts YAML.dump(data)
-    save_file.close
+
+    GameFile.new(data) if input == 'y'
   end
 
   def game_over?
