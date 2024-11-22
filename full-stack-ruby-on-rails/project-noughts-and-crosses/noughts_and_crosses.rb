@@ -23,14 +23,27 @@ class NoughtsAndCrossesGame
   ].freeze
 
   def initialize
-    player = Player.new
-    player.moves = [1, 5, 8, 9]
+    @player = Player.new
+    @computer = Player.new
+  end
 
-    WIN_CONDITIONS.any? do |line|
-      puts 'You won!' if line.all? { |cell| player.moves.include?(cell) }
+  def play
+    @player.moves = [1, 5, 8, 9]
+
+    p winning_move?(@player)
+  end
+
+  private
+
+  def winning_move?(player)
+    WIN_CONDITIONS.any? do |win_path|
+      win_path.all? { |cell| player.moves.include?(cell) }
     end
   end
 end
+
+game = NoughtsAndCrossesGame.new
+game.play
 
 # Essentially have a "grid"
 
@@ -79,5 +92,3 @@ end
 #   - is either cross (x) or nought (o)
 # - Board
 #   - has many cells (with an ID each?)
-
-NoughtsAndCrossesGame.new
