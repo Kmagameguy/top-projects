@@ -42,6 +42,13 @@ module Enumerable
     end
   end
 
+  def my_inject(collector = 0)
+    if block_given?
+      my_each { |item| collector = yield(collector, item) }
+      collector
+    end
+  end
+
   def my_map
     if block_given?
       arr = []
