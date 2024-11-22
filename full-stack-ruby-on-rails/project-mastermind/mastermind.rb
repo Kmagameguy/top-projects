@@ -49,6 +49,8 @@ end
 
 # Helper module to generate rows of pegs ('codes')
 module Rowable
+  MAX_ROW_SIZE = 4
+
   def create_row(*colors)
     colors.empty? ? random_code : submit_code(colors)
   end
@@ -103,17 +105,15 @@ class MastermindGame
   end
 
   def pick_a_code
-    code = []
-    while code.length < 4
-      puts "Pick a peg (#{Peg::COLORS.keys.join(', ')}).  #{4 - code.length} pegs left to pick."
-      selection = gets.chomp.strip.to_sym
-      if Peg::COLORS.key?(selection)
-        code.push(selection)
-      else
-        puts 'Invalid selection, try again.'
-      end
+    input = ''
+    loop do
+      puts 'Type a color sequence (separated by spaces).'
+      puts "Color options are: (#{Peg::COLORS.keys.join(', ')})."
+      input = gets.chomp.strip.split(' ')
+      break unless invalid_input(input)
     end
-    code
+
+    input.map(&:to_sym)
   end
 
   def game_over?
@@ -130,6 +130,13 @@ class MastermindGame
     game_lost = @rounds <= 0
     puts 'You lose!  Try again sometime.' if game_lost
     game_lost
+  end
+
+  def invalid_input(input)
+    error = (input.any? { |color| !Peg::COLORS.keys.include?(color.to_sym) } ||
+             input.length != MAX_ROW_SIZE)
+    puts 'Invalid selection.  Try again.' if error
+    error
   end
 
   # This method is awful
