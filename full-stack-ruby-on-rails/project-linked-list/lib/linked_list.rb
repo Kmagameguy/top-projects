@@ -56,20 +56,13 @@ class LinkedList
   end
 
   def pop
-    return if empty?
+    return nil if empty?
 
-    counter = 0
-    index = (self.size - 2)
-    new_tail = @head
-    while new_tail.next
-      break if counter == index
-
-      counter += 1
-      new_tail = new_tail.next
-    end
-
+    new_tail = second_to_last_node
+    old_tail = new_tail.next
     new_tail.next = nil
-    new_tail
+
+    old_tail
   end
 
   def contains?(value)
@@ -201,6 +194,12 @@ class LinkedList
   end
 
   private
+
+  def second_to_last_node
+    node = @head
+    node = node.next until node.next.next.nil?
+    node
+  end
 
   def out_of_range?(index)
     (index.negative? || index > size - 1)

@@ -100,7 +100,7 @@ RSpec.describe 'Linked List' do
 
     it 'uses pop to remove the last element from the list' do
       list = create_linked_list_with_several_appended_nodes
-      list.pop
+      expect(list.pop.data).to be 30
       tail = list.tail
       expect(tail.data).to be 20
       expect(tail.next).to be nil
