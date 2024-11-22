@@ -44,15 +44,19 @@ class LinkedList
     return @head if index.zero?
 
     counter = 0
+    list_length = size - 1
     reference = @head
 
-    while reference.next_node
-      return reference if counter == index
-
-      counter += 1
-      reference = reference.next_node
+    loop do
+      if counter == index
+        return reference
+      elsif counter == list_length
+        return nil
+      else
+        reference = reference.next_node
+        counter += 1
+      end
     end
-    nil
   end
 
   def pop
