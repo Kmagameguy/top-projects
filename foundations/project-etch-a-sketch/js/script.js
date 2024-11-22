@@ -12,11 +12,11 @@ const Grid = class {
         this.cellSize = `${GRID_MAX_SIZE/this.width}px`;
     }
 
-    isValidGridSize(num,min,max) {
+    isValidSize(num, min, max) {
         return (num >= min && num <= max);
     }
 
-    drawGrid() {
+    draw() {
         for (let i = 0; i < this.totalCells; i++) {
             this.addCell();
         }
@@ -30,23 +30,23 @@ const Grid = class {
         GAME_BOARD.appendChild(cell);
     }
 
-    resetGrid() {
+    reset() {
         while (GAME_BOARD.firstChild) {
             GAME_BOARD.removeChild(GAME_BOARD.firstChild);
         }
     }
 }
 
-function changeGridSize() {
+function changeSize() {
     let userInput = parseInt(prompt('Set a new grid size:', 16));
-    if (!userInput || !grid.isValidGridSize(userInput, ...CELL_THRESHOLDS)) {
+    if (!userInput || !grid.isValidSize(userInput, ...CELL_THRESHOLDS)) {
         alert('Invalid option. Input only accepts numbers between 1 and 100');
         return
     }
 
-    grid.resetGrid();
+    grid.reset();
     grid = new Grid(userInput);
-    grid.drawGrid();
+    grid.draw();
 }
 
 function highlightBox(e) {
@@ -61,6 +61,6 @@ function randValueOnRGBScale() {
 }
 
 let grid = new Grid(16);
-grid.drawGrid();
+grid.draw();
 
-GRID_SIZE_BTN.addEventListener('click', changeGridSize);
+GRID_SIZE_BTN.addEventListener('click', changeSize);
