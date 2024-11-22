@@ -10,40 +10,48 @@ function getComputerChoice() {
 function playRound(playerChoice, computerChoice) {
   playerChoice = playerChoice.toLowerCase();
   if (playerChoice === computerChoice) {
-    return "It's a draw!";
+    return { resultText: "It's a draw!", incrementScore: false };
   } else if (playerChoice === 'rock' && computerChoice === 'paper') {
-    return "You lose!  Paper covers rock.";
+    return { resultText: "You lose!  Paper covers rock.", incrementScore: false };
   } else if (playerChoice === 'rock' && computerChoice === 'scissors') {
-    return "You win!  Rock smashes scissors.";
+    return { resultText: "You win!  Rock smashes scissors.", incrementScore: true };
   } else if (playerChoice === 'paper' && computerChoice === 'rock') {
-    return "You win!  Paper covers rock.";
+    return { resultText: "You win!  Paper covers rock.", incrementScore: true };
   } else if (playerChoice === 'paper' && computerChoice === 'scissors') {
-    return "You lose!  Scissors cut through paper.";
+    return { resultText: "You lose!  Scissors cut through paper.", incrementScore: false };
   } else if (playerChoice === 'scissors' && computerChoice === 'rock') {
-    return "You lose!  Rock smashes scissors.";
+    return { resultText: "You lose!  Rock smashes scissors.", incrementScore: false };
   } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
-    return "You win!  Scissors cut through paper.";
+    return { resultText: "You win!  Scissors cut through paper.", incrementScore: true };
   } else {
-    return "We didn't understand your guess.  Try again.";
+    return { resultText: "We didn't understand your guess.  Try again.", incrementScore: false };
   }
 }
 
 function game() {
+  let playerScore = 0;
+
   for (let i = 0; i < NUM_ROUNDS; i++) {
     let playerChoice = prompt('Choose between rock, paper, or scissors:', 'rock');
 
     if (playerChoice !== null) {
       playerChoice = playerChoice.toLowerCase().trim();
       let computerChoice = getComputerChoice();
+      let roundResult = playRound(playerChoice, computerChoice);
 
       console.log(`Computer chose: ${computerChoice}`);
       console.log(`You chose: ${playerChoice}`);
-      console.log(`=> ${playRound(playerChoice, computerChoice)}`);
+      console.log(`=> ${roundResult.resultText}`);
+
+      if(roundResult.incrementScore) {
+        ++playerScore;
+      }
     } else {
       console.log("Game canceled!");
       break;
     }
   }
+  console.log(`You won ${playerScore} rounds.`);
 }
 
 game();
