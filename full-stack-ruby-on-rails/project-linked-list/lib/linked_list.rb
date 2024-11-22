@@ -190,7 +190,7 @@ class LinkedList
     "#{string}nil"
   end
 
-  def find_tail
+  def tail
     current_node = @head
     current_node = current_node.next_node while current_node.next_node
     current_node

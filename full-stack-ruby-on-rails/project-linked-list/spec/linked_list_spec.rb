@@ -19,12 +19,12 @@ RSpec.describe 'Linked List' do
     it 'adds a node to the end of the linked list' do
       list = LinkedList.new
       list.append(10)
-      expect(list.find_tail.data).to be 10
+      expect(list.tail.data).to be 10
     end
 
     it 'adds several nodes to the end of the linked list' do
       list = create_linked_list_with_several_appended_nodes
-      expect(list.find_tail.data).to be 30
+      expect(list.tail.data).to be 30
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe 'Linked List' do
       list = create_linked_list_with_several_appended_nodes
       list.prefix(100)
       expect(list.head.data).to be 100
-      expect(list.find_tail.data).to be 30
+      expect(list.tail.data).to be 30
     end
   end
 
@@ -70,7 +70,7 @@ RSpec.describe 'Linked List' do
 
     it 'returns the value of the tail node' do
       list = create_linked_list_with_several_appended_nodes
-      expect(list.find_tail.data).to be 30
+      expect(list.tail.data).to be 30
     end
   end
 
@@ -101,7 +101,7 @@ RSpec.describe 'Linked List' do
     it 'uses pop to remove the last element from the list' do
       list = create_linked_list_with_several_appended_nodes
       list.pop
-      tail = list.find_tail
+      tail = list.tail
       expect(tail.data).to be 20
       expect(tail.next_node).to be nil
     end
@@ -122,7 +122,7 @@ RSpec.describe 'Linked List' do
       expect(list.at(2).data).to be 12
       expect(list.at(3).data).to be nil
       expect(list.at(4).data).to eql('i like turtles')
-      expect(list.find_tail.data).to be true
+      expect(list.tail.data).to be true
     end
   end
 
@@ -193,7 +193,7 @@ RSpec.describe 'Linked List' do
     it 'creates a node at TAIL if positive index is out of range' do
       list = create_linked_list_with_several_appended_nodes
       list.insert_at('bob', 300)
-      expect(list.find_tail.data).to eq 'bob'
+      expect(list.tail.data).to eq 'bob'
       expect(list.size).to be 4
     end
 
