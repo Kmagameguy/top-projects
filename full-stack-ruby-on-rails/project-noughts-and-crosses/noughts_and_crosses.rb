@@ -31,8 +31,13 @@ class NoughtsAndCrossesGame
 
   def play
     @current_player = @current_player == @player ? @computer : @player
-    p @current_player.moves << prompt_for_input
-    play unless winning_move?
+
+    @current_player.moves << if @current_player == @player
+                               prompt_for_input
+                             else
+                               random_move
+                             end
+
   end
 
   private
@@ -48,6 +53,13 @@ class NoughtsAndCrossesGame
 
       puts 'Invalid input. Try again.'
     end
+  end
+
+  def random_move
+    valid_cells = (1..9).to_a - (@player.moves + @computer.moves)
+    selection = valid_cells.sample
+    puts "#{@current_player.name} selected #{selection}."
+    selection
   end
 
   def winning_move?
