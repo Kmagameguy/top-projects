@@ -18,6 +18,18 @@ module Enumerable
       self
     end
   end
+
+  def my_count
+    if block_given?
+      count = 0
+      my_each { |index| count += 1 if yield(index) == true }
+      count
+    else
+      count = 0
+      my_each { count += 1}
+      count
+    end
+  end
 end
 
 # You will first have to define my_each
