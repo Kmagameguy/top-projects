@@ -2,13 +2,10 @@ def merge_sort(array)
   return array if array.size < 2
 
   half = array.size/2.0
+  left, right, remainder = array.each_slice(half).to_a
+  right += remainder unless remainder.nil?
 
-  left, right = array.each_slice(half).to_a
-
-  sort_left = merge_sort(left)
-  sort_right = merge_sort(right)
-
-  merge(sort_left, sort_right)
+  merge(merge_sort(left), merge_sort(right))
 end
 
 def merge(left_array, right_array)
@@ -36,7 +33,10 @@ def merge(left_array, right_array)
 end
 
 array = [4, 8, 6, 2, 1, 7, 5, 3]
-merge_sort(array)
+merge_sort array
+
+array = [1, 7, 5, 3, 2, 6, 4]
+merge_sort array
 
 # Given an array:
 # on input of n elements
