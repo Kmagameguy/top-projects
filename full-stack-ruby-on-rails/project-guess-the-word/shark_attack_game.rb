@@ -41,7 +41,7 @@ class SharkAttackGame
 
   def load
     puts 'Previous game restored.'
-    data = YAML.load(File.open('saved.yaml'))
+    data = YAML.safe_load(File.open('saved.yaml'), permitted_classes: [Symbol])
     @correct_guesses = data[:correct_guesses]
     @incorrect_guesses = data[:incorrect_guesses]
     @shark_position = data[:shark_position]
