@@ -138,6 +138,23 @@ class Player
   end
 end
 
+# An elevated player class which controls an AI opponent
+class Computer < Player
+  def pick_colors
+    row = []
+    4.times do
+      row.push(Peg::COLORS.keys.sample)
+    end
+    row.map(&:to_sym)
+  end
+
+  def guess
+    puts 'Computer is thinking...'
+    sleep 1
+    pick_colors
+  end
+end
+
 # Our main class which controls the game state
 class MastermindGame
   include Rowable
@@ -147,14 +164,15 @@ class MastermindGame
   def initialize
     @rounds = MAX_ROUNDS
     @player = Player.new(choose_role)
-    @code = @player.codemaker? ? create_row(*@player.pick_colors) : create_row(*random_code)
+    @computer = Computer.new(!@player.codemaker?)
+    @code = @player.codemaker? ? create_row(*@player.pick_colors) : create_row(*@computer.pick_colors)
     @user_guesses = []
     @display = Display.new
     @display.clear
   end
 
   def play
-    @user_guesses = @player.codemaker? ? guess : create_row(*@player.pick_colors)
+    @user_guesses = @player.codemaker? ? create_row(*@computer.guess) : create_row(*@player.pick_colors)
     result = calculate_matches_and_near_hits
     @display.clear
 
@@ -171,12 +189,6 @@ class MastermindGame
   def choose_role
     puts 'Would you like to play as the Codemaker (0) or Codebreaker (1)?'
     gets.chomp.to_i.zero?
-  end
-
-  def guess
-    puts 'Computer is thinking...'
-    sleep 1
-    create_row(*random_code)
   end
 
   def game_over?
