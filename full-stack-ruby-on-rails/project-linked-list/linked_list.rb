@@ -96,15 +96,32 @@ class LinkedList
     counter = 0
     index = nil
 
-    while reference.next_node
+    loop do
       index = counter if reference.data == value
-      break if reference.data == value
+      break if (reference.data == value) || reference.next_node.nil?
 
       reference = reference.next_node
       counter += 1
     end
 
     index
+  end
+
+  def to_s
+    return nil if @head.nil?
+
+    string = ''
+    pointer = ' -> '
+    reference = @head
+
+    loop do
+      string += "#{reference.data}#{pointer}"
+      break if reference.next_node.nil?
+
+      reference = reference.next_node
+    end
+
+    "#{string}nil"
   end
 
   def find_tail
@@ -133,7 +150,16 @@ list.append(30)
 
 p list.contains?(30) # true
 p list.find(20)
+p list.find(30)
 p list.find('Cowabunga')
+p list.to_s
+
+list2 = LinkedList.new
+p list2
+p list2.to_s
+p list2.size
+p list2.pop
+p list2.contains?('f')
 
 # Build the following methods in your linked list class:
 #   1. append(value) adds a new node containing value to the end of the list
