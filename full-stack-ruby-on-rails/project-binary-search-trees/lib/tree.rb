@@ -12,7 +12,7 @@ class Tree
 
   def build_tree(array)
     array = sanitize_array(array)
-    build_branches(array, start_index: 0, end_index: array.size-1)
+    build_branches(array, start_index: 0, end_index: array.size - 1)
   end
 
   def build_branches(array, start_index:, end_index:)
@@ -170,10 +170,10 @@ class Tree
   end
 
   # Not mine -- The odin assignment provided this method
-  def pretty_print(node = @root, prefix = '', left = true)
-    pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
+  def pretty_print(node = @root, prefix = '', left: true)
+    pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", left: false) if node.right
     puts "#{prefix}#{left ? '└── ' : '┌── '}#{node.value}"
-    pretty_print(node.left, "#{prefix}#{left ? '    ' : '│   '}", true) if node.left
+    pretty_print(node.left, "#{prefix}#{left ? '    ' : '│   '}", left: true) if node.left
   end
 
   private

@@ -24,7 +24,7 @@ array = Array.new(15) { rand(1..100) }
 tree = Tree.new(array)
 puts ''
 puts "Source array: #{array}"
-puts "Here is your tree:"
+puts 'Here is your tree:'
 puts tree.pretty_print
 puts "Is the tree balanced?: #{tree.balanced?}"
 puts "\n\n-------\n\n"
@@ -35,13 +35,13 @@ puts "Tree in Post-Order: #{tree.postorder}"
 puts "Tree in Ascending Order: #{tree.inorder}"
 puts "\n\n-------\n\n"
 
-puts "Unbalance the Tree"
+puts 'Unbalance the Tree'
 tree.tap { |t| 4.times { t.insert(rand(101..200)) } }
 puts tree.pretty_print
 puts "Is the tree balanced now?: #{tree.balanced?}"
 puts "\n\n-------\n\n"
 
-puts "Rebalance the Tree"
+puts 'Rebalance the Tree'
 tree.rebalance!
 puts tree.pretty_print
 puts "Is the tree balanced after calling #rebalance! ?: #{tree.balanced?}"
@@ -51,4 +51,3 @@ puts "Tree's new Level Order: #{tree.level_order}"
 puts "Tree's new Pre-Order: #{tree.preorder}"
 puts "Tree's new Post-Order: #{tree.postorder}"
 puts "Tree's new Ascending Order: #{tree.inorder}"
-
