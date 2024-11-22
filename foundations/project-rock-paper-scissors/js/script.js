@@ -33,7 +33,7 @@ function playRound(playerChoice, computerChoice) {
   }
 }
 
-function game() {
+function playGame() {
   let playerScore = 0;
 
   for (let i = 0; i < NUM_ROUNDS; i++) {
@@ -59,4 +59,4 @@ function game() {
   console.log(`You won ${playerScore} rounds.`);
 }
 
-game();
+playGame();
