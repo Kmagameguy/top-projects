@@ -11,24 +11,20 @@ class LinkedList
   end
 
   def prefix(value)
-    if @head.nil?
-      @head = Node.new(value)
-    else
-      current_head = @head
-      @head = Node.new(value, current_head)
-    end
+    @head = if empty?
+              Node.new(value)
+            else
+              Node.new(value, @head)
+            end
   end
 
   def append(value)
-    if @head.nil?
-      @head = Node.new(value)
-    else
-      find_tail.next_node = Node.new(value)
-    end
+    node = Node.new(value)
+    empty? ? @head = node : tail.next_node = node
   end
 
   def size
-    return 0 if @head.nil?
+    return 0 if empty?
 
     counter = 1
     reference = @head
@@ -60,7 +56,7 @@ class LinkedList
   end
 
   def pop
-    return if @head.nil?
+    return if empty?
 
     counter = 0
     index = (self.size - 2)
@@ -77,7 +73,7 @@ class LinkedList
   end
 
   def contains?(value)
-    return false if @head.nil?
+    return false if empty?
 
     reference = @head
     match = false
@@ -94,7 +90,7 @@ class LinkedList
   end
 
   def find(value)
-    return nil if @head.nil?
+    return nil if empty?
 
     reference = @head
     counter = 0
@@ -112,7 +108,7 @@ class LinkedList
   end
 
   def insert_at(value, index)
-    if @head.nil?
+    if empty?
       @head = Node.new(value)
       return
     end
@@ -146,7 +142,7 @@ class LinkedList
   end
 
   def remove_at(index)
-    return if @head.nil? || index.negative? || index > size - 1
+    return if empty? || out_of_range?(index)
 
     if index.zero?
       @head = @head.next_node.nil? ? nil : @head.next_node
@@ -178,7 +174,7 @@ class LinkedList
   end
 
   def to_s
-    return nil if @head.nil?
+    return nil if empty?
 
     string = ''
     pointer = ' -> '
@@ -198,5 +194,15 @@ class LinkedList
     current_node = @head
     current_node = current_node.next_node while current_node.next_node
     current_node
+  end
+
+  def empty?
+    @head.nil?
+  end
+
+  private
+
+  def out_of_range?(index)
+    (index.negative? || index > size - 1)
   end
 end
