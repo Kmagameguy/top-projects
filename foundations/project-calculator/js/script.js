@@ -31,32 +31,32 @@ let memory = {
             return this.firstNum / this.secondNum
         }
     },
+    calculate() {
+        let result = '';
+        switch(this.operator) {
+            case '+':
+                result = this.add();
+                break;
+            case '-':
+                result = this.subtract();
+                break;
+            case '*':
+                result = this.multiply();
+                break;
+            case '/':
+                result = this.divide();
+                break;
+        }
+        return result;
+    },
     equals() {
         if (this.firstNum !== null && this.operator !== null) {
             this.secondNum = display.getDisplayAsFloat();
-            let result = '';
-
-            switch(this.operator) {
-                case '+':
-                    result = this.add();
-                    break;
-                case '-':
-                    result = this.subtract();
-                    break;
-                case '*':
-                    result = this.multiply();
-                    break;
-                case '/':
-                    result = this.divide();
-                    break;
-            }
-            this.firstNum = result;
-            this.operator = null;
-            this.secondNum = null;
-            display.update(result);
+            this.shift(this.calculate());
+            display.update(this.firstNum);
         }
     },
-    calculate(operator) {
+    operate(operator) {
         if (this.firstNum === null) {
             this.firstNum = display.getDisplayAsFloat();
             this.operator = operator;
@@ -64,24 +64,8 @@ let memory = {
             this.operator = operator;
         } else {
             this.secondNum = display.getDisplayAsFloat();
-            let result = '';
-
-            switch(this.operator) {
-                case '+':
-                    result = this.add();
-                    break;
-                case '-':
-                    result = this.subtract();
-                    break;
-                case '*':
-                    result = this.multiply();
-                    break;
-                case '/':
-                    result = this.divide();
-                    break;
-            }
-            this.shift(result, operator);
-            display.update(result);
+            this.shift(this.calculate(), operator);
+            display.update(this.firstNum);
         }
     }
 };
@@ -166,7 +150,7 @@ function handleInput(e) {
         case '-':
         case '+':
             display.freeze();
-            memory.calculate(selectedButton);
+            memory.operate(selectedButton);
             break;
         default:
             display.insertNumber(selectedButton);
