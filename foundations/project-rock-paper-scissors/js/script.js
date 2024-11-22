@@ -3,6 +3,11 @@ console.log('get ready!');
 const CHOICES = ["rock", "paper", "scissors"];
 const NUM_ROUNDS = 5;
 
+function RoundResult(resultText, incrementScore) {
+  this.resultText = resultText;
+  this.incrementScore = incrementScore;
+}
+
 function getComputerChoice() {
   return CHOICES[Math.floor(Math.random() * CHOICES.length )];
 }
@@ -10,21 +15,21 @@ function getComputerChoice() {
 function playRound(playerChoice, computerChoice) {
   playerChoice = playerChoice.toLowerCase();
   if (playerChoice === computerChoice) {
-    return { resultText: "It's a draw!", incrementScore: false };
+    return new RoundResult("It's a draw!", false);
   } else if (playerChoice === 'rock' && computerChoice === 'paper') {
-    return { resultText: "You lose!  Paper covers rock.", incrementScore: false };
+    return new RoundResult("You lose! Paper covers rock.", false);
   } else if (playerChoice === 'rock' && computerChoice === 'scissors') {
-    return { resultText: "You win!  Rock smashes scissors.", incrementScore: true };
+    return new RoundResult("You win! Rock smashes scissors", true);
   } else if (playerChoice === 'paper' && computerChoice === 'rock') {
-    return { resultText: "You win!  Paper covers rock.", incrementScore: true };
+    return new RoundResult("You win! Paper covers rock.", true);
   } else if (playerChoice === 'paper' && computerChoice === 'scissors') {
-    return { resultText: "You lose!  Scissors cut through paper.", incrementScore: false };
+    return new RoundResult("You lose! Scissors cut through paper.", false);
   } else if (playerChoice === 'scissors' && computerChoice === 'rock') {
-    return { resultText: "You lose!  Rock smashes scissors.", incrementScore: false };
+    return new RoundResult("You lose! Rock smashes scissors.", false);
   } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
-    return { resultText: "You win!  Scissors cut through paper.", incrementScore: true };
+    return new RoundResult("You win! Scissors cut through paper.", true);
   } else {
-    return { resultText: "We didn't understand your guess.  Try again.", incrementScore: false };
+    return new RoundResult("We didn't understand your guess. Try again.", false);
   }
 }
 
