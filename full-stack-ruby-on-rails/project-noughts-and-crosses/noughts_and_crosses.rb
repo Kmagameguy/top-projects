@@ -38,6 +38,7 @@ class NoughtsAndCrossesGame
                                random_move
                              end
 
+    play unless game_over?
   end
 
   private
@@ -62,12 +63,22 @@ class NoughtsAndCrossesGame
     selection
   end
 
+  def game_over?
+    winning_move? || draw?
+  end
+
   def winning_move?
     game_won = WIN_CONDITIONS.any? do |win_path|
       win_path.all? { |cell| @current_player.moves.include?(cell) }
     end
     puts "#{@current_player.name} wins!" if game_won
     game_won
+  end
+
+  def draw?
+    no_moves_left = (@player.moves + @computer.moves).count >= 9
+    puts "Game over! It's a draw!" if no_moves_left
+    no_moves_left
   end
 end
 
