@@ -32,7 +32,10 @@ def stock_picker(prices)
   # https://ruby-doc.org/3.2.1/Array.html#method-i-combination
   # Ruby seems to have a method for everything
   stonks = prices.combination(2).reduce(Hash.new({})) do |hash, price_group|
-    p price_group
+    purchase_price = price_group[0]
+    sale_price = price_group[1]
+    profit = sale_price - purchase_price
+    p profit
   end
 end
 
