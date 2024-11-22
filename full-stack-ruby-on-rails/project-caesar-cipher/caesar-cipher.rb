@@ -10,8 +10,8 @@
 #    X - (ignoring special characters)
 # X - Add the offset to each character (and wrap if above 26)
 # X - Map each number back to its corresponding character
-# Join back into a string
-# Keep the casing consistent
+# X - Join back into a string
+# X - Keep the casing consistent
 
 ALPHA_MAP = {
   0 =>  'A',
@@ -73,13 +73,26 @@ def map_to_char(num)
   return ALPHA_MAP[num]
 end
 
+def is_lowercase?(char)
+  return char == char.downcase
+end
+
+def adjust_casing(source_text, shifted_array)
+  source_array = source_text.split('')
+  cased_array = []
+  shifted_array.each_with_index.map do |char, index|
+    is_lowercase?(source_array[index]) ? cased_array.push(char.downcase) : cased_array.push(char)
+  end
+  cased_array
+end
+
 def caesar_cipher(text, offset)
   arr = text.split('')
   shifted_arr = arr.map do |char|
       map_to_char(shift(map_to_num(char), offset))
   end
 
-  p shifted_arr
+  puts adjust_casing(text, shifted_arr).join
 end
 
 caesar_cipher('What a string!', 5)
