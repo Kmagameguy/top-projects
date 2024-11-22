@@ -9,4 +9,8 @@ class Calculator
   def multiply(*args)
     args.reduce(:*)
   end
+
+  def subtract(*args)
+    args.reduce(:-)
+  end
 end
