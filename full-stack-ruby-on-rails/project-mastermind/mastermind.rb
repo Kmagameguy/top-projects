@@ -69,7 +69,7 @@ class Display
     spacer = ' '
     @saved_rows.each_with_index do |row, index|
       spacer = '' if (index + 1) > 9
-      print "#{index + 1}. #{spacer} #{row.join(' ')}"
+      print "#{index + 1}. #{spacer} #{row}"
       puts ''
     end
     puts ''
@@ -77,26 +77,31 @@ class Display
 end
 
 # Helper module to generate rows of pegs ('codes')
-module Rowable
+class Row
+  attr_accessor :results
+  attr_reader :colors
+
   MAX_ROW_SIZE = 4
 
-  def create_row(*colors)
-    colors.empty? ? random_code : submit_code(colors)
+  def initialize(*colors)
+    @colors = colors.empty? ? random_code : colors.map(&:to_sym)
+    @results = []
   end
 
-  def color_list(colors)
-    colors.map(&:color)
+  def to_s
+    string = ''
+    @colors.each do |color|
+      string += "#{Peg.new(color)} "
+    end
+
+    @results.each do |peg_type|
+      string += "#{ResultPeg.new(peg_type)} "
+    end
+
+    string
   end
 
   private
-
-  def submit_code(colors)
-    row = []
-    colors.each do |color|
-      row.push(Peg.new(color))
-    end
-    row
-  end
 
   def random_code
     row = []
@@ -132,7 +137,7 @@ class Player
 
   def invalid_input?(input)
     error = (input.any? { |color| !Peg::COLORS.keys.include?(color.to_sym) } ||
-    input.length != Rowable::MAX_ROW_SIZE)
+    input.length != Row::MAX_ROW_SIZE)
     puts 'Invalid selection.  Try again.' if error
     error
   end
@@ -157,28 +162,26 @@ end
 
 # Our main class which controls the game state
 class MastermindGame
-  include Rowable
-
   MAX_ROUNDS = 12
 
   def initialize
     @rounds = MAX_ROUNDS
     @player = Player.new(choose_role)
     @computer = Computer.new(!@player.codemaker?)
-    @code = @player.codemaker? ? create_row(*@player.pick_colors) : create_row(*@computer.pick_colors)
+    @code = @player.codemaker? ? Row.new(*@player.pick_colors) : Row.new(*@computer.pick_colors)
     @user_guesses = []
     @display = Display.new
     @display.clear
   end
 
   def play
-    @user_guesses = @player.codemaker? ? create_row(*@computer.guess) : create_row(*@player.pick_colors)
-    result = calculate_matches_and_near_hits
+    @user_guesses = @player.codemaker? ? Row.new(*@computer.guess) : Row.new(*@player.pick_colors)
+    @user_guesses.results = calculate_matches_and_near_hits
     @display.clear
 
-    print @code.join(' ')
+    print @code
     puts ''
-    @display.save_row(@user_guesses + result)
+    @display.save_row(@user_guesses)
 
     @rounds -= 1
     play unless game_over?
@@ -196,7 +199,7 @@ class MastermindGame
   end
 
   def game_won?
-    game_won = color_list(@code).eql?(color_list(@user_guesses))
+    game_won = @code.colors.eql?(@user_guesses.colors)
     if game_won
       puts 'You won!  You are great.' unless @player.codemaker?
       puts 'You lose!  The computer cracked your code.' if @player.codemaker?
@@ -222,24 +225,24 @@ class MastermindGame
   # 3. Increase white peg count if a guessed color exists in the remainder of the code array
   def calculate_matches_and_near_hits
     pegs = []
-    computer_colors = color_list(@code)
+    computer_colors = @code.colors
 
     computer_colors.each_with_index do |color, index|
-      user_color = color_list(@user_guesses)[index]
-      pegs << ResultPeg.new(:full_match) if user_color == color
+      user_color = @user_guesses.colors[index]
+      pegs << :full_match if user_color == color
     end
 
     unmatched_computer = computer_colors.select.with_index do |color, index|
-      user_color = color_list(@user_guesses)[index]
+      user_color = @user_guesses.colors[index]
       user_color != color
     end.uniq
 
-    unmatched_user = color_list(@user_guesses).select.with_index do |color, index|
+    unmatched_user = @user_guesses.colors.select.with_index do |color, index|
       color != computer_colors[index]
     end.uniq
 
     unmatched_computer.each do |color|
-      pegs << ResultPeg.new(:partial_match) if unmatched_user.include?(color)
+      pegs << :partial_match if unmatched_user.include?(color)
     end
 
     pegs
