@@ -65,6 +65,16 @@ class Tree
     node
   end
 
+  def find(value, node = @root)
+    return nil if node.nil?
+
+    case value <=> node.value
+    when -1 then node.left = find(value, node.left)
+    when  0 then node
+    when  1 then node.right = find(value, node.right)
+    end
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
@@ -105,6 +115,13 @@ print "\n\n-------\n\n"
 
 tree.delete(2)
 puts tree.pretty_print
+print "\n\n-------\n\n"
+
+tree.insert(7)
+puts tree.pretty_print
+print "\n\n-------\n\n"
+
+p tree.find(5)
 print "\n\n-------\n\n"
 
 # array = [1, 2, 3, 4, 5, 6, 7]
