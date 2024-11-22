@@ -11,12 +11,12 @@ class Tree
   end
 
   def build_tree(array)
-    array = sanitize_array(array)
+    array = sanitize_array!(array)
     build_branches(array, start_index: 0, end_index: array.size - 1)
   end
 
   def build_branches(array, start_index:, end_index:)
-    return nil if start_index > end_index
+    return if start_index > end_index
 
     mid_point = (start_index + end_index) / 2
 
@@ -33,7 +33,7 @@ class Tree
   end
 
   def insert(value, node = @root)
-    return Node.new(value) if node.nil?
+    return Node.new(value) unless node
 
     case value <=> node.value
     when -1 then node.left = insert(value, node.left)
@@ -188,7 +188,7 @@ class Tree
     current.value
   end
 
-  def sanitize_array(array)
+  def sanitize_array!(array)
     array.uniq!
     array.sort!
   end
