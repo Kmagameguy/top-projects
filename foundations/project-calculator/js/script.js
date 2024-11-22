@@ -19,6 +19,7 @@ class Memory {
     }
 
     operate(operator) {
+        display.freeze();
         if (this.firstNum === null) {
             this.firstNum = display.getFloat();
             this.operator = operator;
@@ -28,6 +29,8 @@ class Memory {
             this.secondNum = display.getFloat();
             this.shift(this.#calculate(), operator);
         }
+        display.update(this.firstNum);
+        this.setHistory();
     }
 
     shift(answer=null, operator=null) {
@@ -129,6 +132,7 @@ class Display {
         } else if(this.#isNotShowingError() && !this.#hasDecimal()) {
             this.update(this.#getText() + '.');
         }
+        memory.setHistory();
     }
 
     insertNumber(num) {
@@ -139,6 +143,7 @@ class Display {
             this.#thaw();
             this.update(num);
         }
+        memory.setHistory();
     }
 
     #getText() {
@@ -186,14 +191,10 @@ function handleInput(e) {
         case '*':
         case '-':
         case '+':
-            display.freeze();
             memory.operate(selectedButton);
-            display.update(memory.firstNum);
-            memory.setHistory();
             break;
         default:
             display.insertNumber(selectedButton);
-            memory.setHistory();
     }
 }
 
