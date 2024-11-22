@@ -132,12 +132,24 @@ RSpec.describe 'tree' do
   describe 'determining the height of a node' do
     it 'returns tree height if no node is specified' do
       tree = Tree.new([1,2,3,4,5])
-      expect(tree.height).to eq 3
+      expect(tree.height).to be 3
     end
 
     it 'returns the height of the specified node' do
       tree = Tree.new([1,2,3,4,5])
-      expect(tree.height(tree.find(5))).to eq 1
+      expect(tree.height(tree.find(5))).to be 1
+    end
+  end
+
+  describe "determining a node's distance from root" do
+    it 'returns 0 if the selected node is root' do
+      tree = Tree.new([1,2,3,4,5])
+      expect(tree.depth(3)).to be 0
+    end
+
+    it 'returns the correct depth for a selected node' do
+      tree = Tree.new([1,2,3,4,5])
+      expect(tree.depth(5)).to be 2
     end
   end
 end

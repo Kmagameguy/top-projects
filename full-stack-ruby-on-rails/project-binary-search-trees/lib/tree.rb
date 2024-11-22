@@ -150,6 +150,14 @@ class Tree
     [l_height, r_height].max + 1
   end
 
+  def depth(value, node = @root, depth = 0)
+    case value <=> node.value
+    when -1 then node.left = depth(value, node.left, depth + 1) unless node.left.nil?
+    when  0 then depth
+    when  1 then node.right = depth(value, node.right, depth + 1) unless node.right.nil?
+    end
+  end
+
   # Not mine -- The odin assignment provided this method
   def pretty_print(node = @root, prefix = '', left = true)
     pretty_print(node.right, "#{prefix}#{left ? '│   ' : '    '}", false) if node.right
