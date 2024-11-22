@@ -14,12 +14,28 @@ class SharkAttackGame
   def play
     # Debugging line:
     puts @word_to_guess.word
-    choose_letter
     p "Incorrect List: #{@word_to_guess.incorrect_guesses}"
     p "Correct List: #{@word_to_guess.correct_guesses}"
+
+    choose_letter
+    @display.shark_position = @word_to_guess.incorrect_guesses.size
+    @display.draw
+    play unless game_over?
   end
 
   private
+
+  def game_over?
+    game_won || game_lost
+  end
+
+  def game_won
+    @word_to_guess.correct_guesses.length == @word_to_guess.word.length
+  end
+
+  def game_lost
+    @display.shark_position >= Display::WAVE_COUNT
+  end
 
   def choose_letter
     puts 'Guess a letter:'
