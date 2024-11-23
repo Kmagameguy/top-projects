@@ -18,4 +18,10 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_one  :profile, dependent: :destroy
+
+  private
+
+  def create_profile
+    Profile.create(user_id: self.id, email: self.email)
+  end
 end

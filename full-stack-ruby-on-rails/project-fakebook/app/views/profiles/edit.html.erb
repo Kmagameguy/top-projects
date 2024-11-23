@@ -1,6 +1,6 @@
 <%= form_for([@user, @profile]) do |f| %>
   <div class="profile-form-input">
-    <%= f.label :email %>
+    <%= f.label :email, 'Email: This is the email address displayed on your public profile. You cannot change the email address associated with your login.' %>
     <%= f.text_field :email %>
   </div>
 
