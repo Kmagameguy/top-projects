@@ -12,37 +12,65 @@ class GameBoard
     @size = size
     @knight = Knight.new(board_size: @size)
     @visited_squares = []
+    @start_position = [0, 0]
+    @end_position = [0, 0]
+    @queue = []
   end
 
   def knight_move(source, destination)
-    node = Node.new(source)
-    queue = [node]
-    @visited_squares << node
+    @start_position = source
+    @end_position = destination
+    build_move_tree(Node.new(coordinates: @start_position))
+    print_result(find_shortest_path)
+  end
 
-    until node == destination || queue.empty?
-      @knight.coordinates = node.coordinates
-      moves = @knight.possible_next_moves(@visited_squares)
-      moves.each do |move|
-        new_node = Node.new(move, node)
-        @visited_squares << new_node
-        queue << new_node
-      end
-      node = queue.shift
+  private
+
+  def build_move_tree(path_node)
+    @queue = [path_node]
+    @visited_squares << path_node
+
+    until @queue.empty?
+      return if path_node.coordinates == @end_position
+
+      enqueue_next_possible_moves(path_node)
+      path_node = @queue.shift
     end
+  end
 
-    path = @visited_squares.select { |square| square.coordinates == destination }
-                           .first
+  def enqueue_next_possible_moves(path_node)
+    @knight.coordinates = path_node.coordinates
+    @knight.possible_next_moves(@visited_squares).each do |p_move|
+      next_path_node = Node.new(coordinates: p_move, parent: path_node)
+      @queue << next_path_node
+      @visited_squares << next_path_node
+    end
+  end
 
+  def print_result(result)
+    puts "Knight made it from #{result[:pathway].first} to #{result[:pathway].last} in #{result[:move_count]} moves."
+    result[:pathway].each { |square| p square }
+  end
+
+  def find_shortest_path
     pathway = []
     move_count = 0
-    until path.parent.nil?
-      pathway << path.coordinates
-      path = path.parent
+    node = destination_node
+
+    until node.parent.nil?
+      pathway << node.coordinates
+      node = node.parent
       move_count += 1
     end
-    puts "Knight made it from #{source} to #{destination} in #{move_count} moves:"
-    pathway << source
-    pathway.reverse.each { |square| p square }
+
+    pathway.append(@start_position).reverse!
+
+    { move_count: move_count, pathway: pathway }
+  end
+
+  def destination_node
+    @visited_squares.select { |square| square.coordinates == @end_position }
+                    .first
   end
 end
 

@@ -4,7 +4,7 @@
 class Node
   attr_accessor :coordinates, :parent
 
-  def initialize(coordinates, parent = nil)
+  def initialize(coordinates:, parent: nil)
     @coordinates = coordinates
     @parent = parent
   end
