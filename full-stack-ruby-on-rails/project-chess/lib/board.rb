@@ -5,6 +5,7 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 require_relative './pieces/bishop'
 require_relative './pieces/queen'
+require_relative './pieces/king'
 
 # A class to manage our chess board and its state
 class Board
@@ -22,6 +23,7 @@ class Board
     add_knights
     add_bishops
     add_queens
+    add_kings
     #add_special_pieces
   end
 
@@ -84,6 +86,15 @@ class Board
 
     squares[black_queen_rank][queen_file] = Queen.new(:black, [black_queen_rank, queen_file])
     squares[white_queen_rank][queen_file] = Queen.new(:white, [white_queen_rank, queen_file])
+  end
+
+  def add_kings
+    black_king_rank = 0
+    white_king_rank = 7
+    king_file = 4
+
+    squares[black_king_rank][king_file] = King.new(:black, [black_king_rank, king_file])
+    squares[white_king_rank][king_file] = King.new(:white, [white_king_rank, king_file])
   end
 
   def add_special_pieces

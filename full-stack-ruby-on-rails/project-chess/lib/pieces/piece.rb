@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
+require_relative '../movable'
+
 # A generic playing piece
 class Piece
+  include Movable
+
   attr_accessor :position
   attr_reader :color, :type
-
-  STRING_REPRESENTATION = {
-    black: {
-      king: '♚'
-    },
-    white: {
-      king: '♔'
-    }
-  }
 
   def initialize(color, position)
     @color = color
@@ -27,24 +22,6 @@ class Piece
   def move(coordinates)
     @position = coordinates
     @moved = true
-  end
-
-  def out_of_bounds?(move, board)
-    move.any? { |coordinate| (coordinate.negative? || coordinate > board.size - 1) }
-  end
-
-  def blocked?(move, board)
-    x, y = move
-    !board.dig(x, y).nil?
-  end
-
-  def killing_move?(move, board)
-    x, y = move
-    piece = board.dig(x, y)
-
-    return false if piece.nil?
-
-    piece.color != color
   end
 
   def white?
