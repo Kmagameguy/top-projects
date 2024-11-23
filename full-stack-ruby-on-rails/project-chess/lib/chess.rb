@@ -19,9 +19,11 @@ class Chess
   def play
     loop do
       Display.show(board, @current_player, @turn_count)
+      take_turn
+      break if game_over?
+
       switch_players
       increment_round
-      break if game_over?
     end
   end
 
@@ -31,6 +33,51 @@ class Chess
                       else
                         @white_player
                       end
+  end
+
+  def take_turn
+    piece = choose_piece
+  end
+
+  def choose_piece
+    puts 'Choose a piece to move:'
+    loop do
+      piece = board.square(chess_notation_to_array(choose_square))
+
+      if !own_piece?(piece)
+        puts "That isn't one of your pieces. Select again."
+      elsif trapped?(piece)
+        puts "Your #{piece.class} cannot move. Select again."
+      else
+        return piece
+      end
+    end
+  end
+
+  def choose_square
+    input = user_input
+
+    until chess_notation?(input)
+      puts 'Invalid option. Try [Letter][Number].'
+      input = user_input
+    end
+    input
+  end
+
+  def user_input
+    gets.chomp.strip
+  end
+
+  def chess_notation?(string)
+    string.match(/^([a-h])([1-8])/i)
+  end
+
+  def own_piece?(piece)
+    piece&.color == @current_player.color
+  end
+
+  def trapped?(piece)
+    piece&.possible_moves(board.squares)&.empty?
   end
 
   def increment_round
