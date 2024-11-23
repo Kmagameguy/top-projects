@@ -6,8 +6,7 @@ require_relative '../movable'
 class Piece
   include Movable
 
-  attr_accessor :position
-  attr_reader :color, :type
+  attr_reader :color, :type, :position
 
   def initialize(color, position)
     @color = color
