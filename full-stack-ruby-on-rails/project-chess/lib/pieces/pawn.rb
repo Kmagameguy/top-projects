@@ -4,21 +4,25 @@ require_relative 'piece'
 
 # A Pawn piece in a chess game
 class Pawn < Piece
-  ONE_STEP = [1, 0].freeze
-  TWO_STEP = [2, 0].freeze
+  MOVES_SET = [[1, 0], [2, 0]].freeze
 
   def possible_moves(squares)
-    x, y = position
-    move_set.map { |offset_x, offset_y| [x + offset_x, y + offset_y] }
-            .reject { |move| blocked?(move, squares) }
-            .concat(attackable_squares(squares))
-            .reject { |move| out_of_bounds?(move, squares) }
+    move_set(squares).concat(attackable_squares(squares))
+                     .reject { |move| out_of_bounds?(move, squares) }
   end
 
-  def move_set
-    moves = moved? ? [ONE_STEP] : [TWO_STEP, ONE_STEP]
-    moves = invert(moves) if color == :white
+  def move_set(squares)
+    moves = next_steps
+    return [] if blocked?(moves.first, squares)
+
+    moves.pop if moved? || blocked?(moves.last, squares)
     moves
+  end
+
+  def next_steps
+    x, y = position
+    offsets = white? ? invert(MOVES_SET) : MOVES_SET
+    offsets.map { |offset_x, offset_y| [x + offset_x, y + offset_y] }
   end
 
   def attackable_squares(squares)
@@ -27,8 +31,8 @@ class Pawn < Piece
     l_rank, l_file = left_diag
     r_rank, r_file = right_diag
 
-    attackable_squares << left_diag unless squares[l_rank][l_file].nil?
-    attackable_squares << right_diag unless squares[r_rank][r_file].nil?
+    attackable_squares << left_diag unless squares.dig(l_rank, l_file).nil?
+    attackable_squares << right_diag unless squares.dig(r_rank, r_file).nil?
 
     attackable_squares
   end
