@@ -1,5 +1,3 @@
-<h2>Flight Booking</h2>
-
 <%= form_with url: :flights, method: :get, local: true do |f| %>
   <%= f.label :departure_airport_id %>
   <%= f.collection_select :departure_airport_id, Airport.all, :id, :code %>
@@ -12,10 +10,7 @@
 
 <h2>All Flights</h2>
 <% @all_flights.each do |flight| %>
-  <p>
-    Departing From: <%= flight.departure_airport_id %>,
-    Arriving At: <%= flight.arrival_airport_id %>
-  </p>
+  <%= render "flights/flight_card", flight: flight %>
 <% end %>
 
 <br>
@@ -26,10 +21,7 @@
     <p>Sorry, we couldn't find any flights.</p>
   <% else %>
     <% @search_results.each do |flight| %>
-      <p>
-        Departing From: <%= flight.departure_airport_id %>
-        Arriving At: <%= flight.arrival_airport_id %>
-      </p>
+      <%= render "flights/flight_card", flight: flight %>
     <% end %>
   <% end %>
 <% end %>
