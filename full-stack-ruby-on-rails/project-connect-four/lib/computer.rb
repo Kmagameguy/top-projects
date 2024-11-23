@@ -6,7 +6,7 @@ class Computer
 
   def initialize(max_range = 7)
     @name = 'Computer'
-    @marker = 'o'
+    @marker = '🔵'
     @max_range = max_range
   end
 

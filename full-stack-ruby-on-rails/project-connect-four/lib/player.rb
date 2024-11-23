@@ -6,7 +6,7 @@ class Player
 
   def initialize(name, max_range = 7)
     @name = name
-    @marker = 'x'
+    @marker = '🔴'
     @max_range = max_range
   end
 

@@ -4,8 +4,8 @@ require 'board'
 
 RSpec.describe Board do
   subject(:board) { Board.new }
-  let(:player_marker) { 'x' }
-  let(:computer_marker) { 'o' }
+  let(:player_marker) { '🔴' }
+  let(:computer_marker) { '🔵' }
   let(:chosen_column) { 3 }
 
   describe '#blank?' do

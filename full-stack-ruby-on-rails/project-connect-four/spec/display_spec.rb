@@ -21,7 +21,7 @@ RSpec.describe Display do
     end
 
     context 'when the row only has a player marker' do
-      marker = 'x'
+      marker = '🔴'
 
       it 'shows a red marker' do
         board[0][0] = marker
@@ -32,8 +32,8 @@ RSpec.describe Display do
 
     context 'when the row has a mix of taken and empty slots' do
       it 'shows the empty, player, and computer markers in the right spots' do
-        player_marker = 'x'
-        computer_marker = 'o'
+        player_marker = '🔴'
+        computer_marker = '🔵'
         row = board[0]
         row[0] = player_marker
         row[3] = computer_marker

@@ -4,10 +4,8 @@ require_relative 'board'
 
 # A class to manage screen rendering
 class Display
-  BOARD_ICONS = {
-    nil => "⚪",
-    'x' => "🔴",
-    'o' => "🔵"
+  NIL_ICON = {
+    nil => "⚪"
   }.freeze
 
   KEYCAPS = [
@@ -38,6 +36,8 @@ class Display
   end
 
   def self.emojify(row)
-    row.map { |cell| BOARD_ICONS[cell] }.join(SPACER)
+    row.map do |cell|
+      NIL_ICON[cell] || cell
+    end.join(SPACER)
   end
 end
