@@ -23,4 +23,12 @@ class Pawn < Piece
   def promote?
     (position[0].zero? || position[0] == 7)
   end
+
+  def white?
+    color == :white
+  end
+
+  def to_s
+    white? ? '♙' : '♟︎'
+  end
 end
