@@ -3,23 +3,19 @@
 require_relative './lib/chess'
 
 def setup_game
-  system('clear')
-  system('cls')
+  Display.clear
+  puts Display.introduction
 
-  puts 'Welcome to Chess!'
-  puts 'To get started, please enter your player names.'
-  puts 'The first player to enter their name will be playing as WHITE'
-
-  c = Chess.new(player1, player2)
-  p c
+  chess = Chess.new(first_player, second_player)
+  chess.play
 end
 
-def player1
+def first_player
   puts "Enter player 1's name:"
   create_player
 end
 
-def player2
+def second_player
   puts "Enter player 2's name:"
   create_player
 end
