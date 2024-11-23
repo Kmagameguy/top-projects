@@ -19,6 +19,7 @@ class ConnectFour
   def play
     loop do
       switch_players
+      show_turn_message
       add_chip
       break if game_over?
     end
@@ -37,7 +38,6 @@ class ConnectFour
   end
 
   def add_chip
-    puts "#{@current_player.name} it's your turn.  Next move?"
     board.drop_to_slot(pick_column, @current_player.marker)
   end
 
@@ -47,6 +47,14 @@ class ConnectFour
       return column if column
 
       puts 'That column is full, try another.'
+    end
+  end
+
+  def show_turn_message
+    if @current_player == @player
+      puts "#{@current_player.name} it's your turn.  Next move?"
+    else
+      puts 'Computer is picking a spot...'
     end
   end
 
