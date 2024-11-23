@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="single-event">
+    <p><%= friendly_date(@event) %></p>
+    <h1 class="section-header"><%= @event.title %></h1>
+    <p>Organized by: <%= @event.creator.name %></p>
+    <p><%= @event.description %></p>
+    <p>Where: <%= @event.location %></p>
+    <p>When: <%= friendly_time(@event) %></p>
+    <% if user_attending?(@event) %>
+      <%= button_to "Cancel Attendance", event_attendance_path(@event), method: :delete, data: { turbo_method: :delete } %>
+    <% else %>
+      <%= form_with model: @event_attendance do |f| %>
+        <%= f.hidden_field :attended_event_id, value: @event.id %>
+        <%= f.submit "Attend this event" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
