@@ -1,9 +1,27 @@
 <h1 class="section-header">My Created Events</h1>
-<% @user.created_events.each do |event| %>
-  <div class="card">
-    <h2><%= event.title %></h2>
-    <p><%= event.creator.name %></p>
-    <p><%= event.description %></p>
-    <p><%= event.event_date %> at <%= event.location %></p>
-  </div>
+<% if @user.created_events.any? %>
+  <% @user.created_events.each do |event| %>
+    <div class="card">
+      <h2><%= event.title %></h2>
+      <p><%= event.creator.name %></p>
+      <p><%= event.description %></p>
+      <p><%= event.event_date %> at <%= event.location %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>You have not created any events yet.</p>
+<% end %>
+
+<h1 class="section-header">My Attended Events</h1>
+<% if @user.attended_events.any? %>
+  <% @user.attended_events.each do |event| %>
+    <div class="card">
+      <h2><%= event.title %></h2>
+      <p><%= event.creator.name %></p>
+      <p><%= event.description %></p>
+      <p><%= event.event_date %> at <%= event.location %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>You have not signed up for any events yet.</p>
 <% end %>
