@@ -32,11 +32,6 @@ class Pawn < Piece
     squares
   end
 
-  def blocked?(move, board)
-    x, y = move
-    !board.dig(x, y).nil?
-  end
-
   def left_diag
     rank, file = position
     [rank + 1, file - 1]
@@ -53,6 +48,11 @@ class Pawn < Piece
 
   def promote?
     (position[0].zero? || position[0] == 7)
+  end
+
+  def blocked?(move, board)
+    x, y = move
+    !board.dig(x, y).nil?
   end
 
   def white?

@@ -2,6 +2,7 @@
 
 require_relative 'piece'
 require_relative 'pawn'
+require_relative 'rook'
 
 # A class to manage our chess board and its state
 class Board
@@ -15,7 +16,22 @@ class Board
 
   def setup_board
     add_pawns
+    add_rooks
     #add_special_pieces
+  end
+
+  def add_rooks
+    black_rook_rank = 0
+    white_rook_rank = 7
+
+    rook1_file = 0
+    rook2_file = 7
+
+    squares[black_rook_rank][rook1_file] = Rook.new(:black, [black_rook_rank, rook1_file])
+    squares[black_rook_rank][rook2_file] = Rook.new(:black, [black_rook_rank, rook2_file])
+
+    squares[white_rook_rank][rook1_file] = Rook.new(:white, [white_rook_rank, rook1_file])
+    squares[white_rook_rank][rook2_file] = Rook.new(:white, [white_rook_rank, rook2_file])
   end
 
   def add_pawns
