@@ -32,85 +32,14 @@ class Board
   def any_in_a_row?(marker)
     vertical_in_a_row?(marker) ||
       horizontal_in_a_row?(marker) ||
-      diagonal_right_in_a_row?(marker) ||
-      diagonal_left_in_a_row?(marker)
-  end
-
-  def diagonal_right_in_a_row?(marker)
-    markers_in_a_row = 0
-    aligned_diagonals = rotate_matrix_left
-    @column_count.times do |column|
-      aligned_diagonals.each do |row|
-        if row[column] == marker
-          markers_in_a_row += 1
-        else
-          markers_in_a_row = 0
-        end
-
-        break if markers_in_a_row == 4
-      end
-      break if markers_in_a_row == 4
-    end
-    !!(markers_in_a_row == 4)
-  end
-
-  def rotate_matrix_left
-    matrix = @slots
-    matrix.each_with_index do |row, index|
-      index.times do
-        row.shift
-        row << nil
-      end
-    end
-    matrix
-  end
-
-  def diagonal_left_in_a_row?(marker)
-    markers_in_a_row = 0
-    aligned_diagonals = rotate_matrix_right
-    @column_count.times do |column|
-      aligned_diagonals.each do |row|
-        if row[column] == marker
-          markers_in_a_row += 1
-        else
-          markers_in_a_row = 0
-        end
-
-        break if markers_in_a_row == 4
-      end
-      break if markers_in_a_row == 4
-    end
-    !!(markers_in_a_row == 4)
-  end
-
-  def rotate_matrix_right
-    matrix = @slots
-    matrix.each_with_index do |row, index|
-      index.times do
-        row.pop
-        row.prepend(nil)
-      end
-    end
-    matrix
+      upslope_in_a_row?(marker) ||
+      downslope_in_a_row?(marker)
   end
 
   private
 
   def vertical_in_a_row?(marker)
-    markers_in_a_row = 0
-    @column_count.times do |column|
-      @slots.each do |row|
-        if row[column] == marker
-          markers_in_a_row += 1
-        else
-          markers_in_a_row = 0
-        end
-
-        break if markers_in_a_row == 4
-      end
-      break if markers_in_a_row == 4
-    end
-    !!(markers_in_a_row == 4)
+    four_in_a_row?(@slots, marker)
   end
 
   def horizontal_in_a_row?(marker)
@@ -125,7 +54,55 @@ class Board
 
         break if markers_in_a_row == 4
       end
+      break if markers_in_a_row == 4
     end
     !!(markers_in_a_row == 4)
+  end
+
+  def upslope_in_a_row?(marker)
+    aligned_diagonals = vertically_align_diagonal_cells(check_upslope: true)
+    four_in_a_row?(aligned_diagonals, marker)
+  end
+
+  def downslope_in_a_row?(marker)
+    aligned_diagonals = vertically_align_diagonal_cells
+    four_in_a_row?(aligned_diagonals, marker)
+  end
+
+  def vertically_align_diagonal_cells(check_upslope: false)
+    matrix = deep_copy(@slots)
+    matrix.reverse! if check_upslope
+    matrix.map.with_index do |row, index|
+      index.times do
+        row.shift
+        row.append(nil)
+      end
+    end
+    matrix
+  end
+
+  def four_in_a_row?(rows, marker)
+    markers_in_a_row = 0
+    @column_count.times do |column|
+      rows.each do |row|
+        if row[column] == marker
+          markers_in_a_row += 1
+        else
+          markers_in_a_row = 0
+        end
+
+        break if markers_in_a_row == 4
+      end
+      break if markers_in_a_row == 4
+    end
+    !!(markers_in_a_row == 4)
+  end
+
+  # I couldn't figure out a better way to avoid mutating the @slots
+  # array when rotating its matrix of values.  .dup() and .clone() only
+  # created shallow copies (per the spec) which meant any changes to rows
+  # also mutated the original copy of the matrix, which was stored in @slots
+  def deep_copy(arr)
+    Marshal.load(Marshal.dump(arr))
   end
 end
