@@ -11,8 +11,8 @@ class BookingsController < ApplicationController
       flash[:success] = "Flight booked!"
       redirect_to @booking
     else
-      flash.now[:alert] = "something went wrong"
-      render 'new'
+      flash[:alert] = "something went wrong"
+      render 'new', status: :unprocessable_entity
     end
   end
 
