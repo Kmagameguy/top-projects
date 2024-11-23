@@ -8,10 +8,6 @@ class Rook < Piece
     sliding_straight_moves(position, board)
   end
 
-  def trapped?(board)
-    possible_moves(board).empty?
-  end
-
   def to_s
     white? ? '♖' : '♜'
   end

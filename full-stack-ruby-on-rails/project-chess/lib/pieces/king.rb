@@ -8,10 +8,6 @@ class King < Piece
     single_straight_moves(position, board).concat(single_diagonal_moves(position, board))
   end
 
-  def trapped?(board)
-    possible_moves(board).empty?
-  end
-
   def to_s
     white? ? '♔' : '♚'
   end

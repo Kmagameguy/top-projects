@@ -14,6 +14,14 @@ class Piece
     @moved = false
   end
 
+  def possible_moves(board)
+    []
+  end
+
+  def trapped?(board)
+    possible_moves(board).empty?
+  end
+
   def move!(coordinates)
     @position = coordinates
     @moved = true

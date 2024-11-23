@@ -35,10 +35,6 @@ class Pawn < Piece
     @rushing
   end
 
-  def trapped?(board)
-    possible_moves(board).empty?
-  end
-
   def forward_move?(destination)
     x, y = position
     forward_direction = white? ? [[x - 1, y], [x - 2, y]] : [[x + 1, y], [x + 2, y]]
