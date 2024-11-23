@@ -2,6 +2,7 @@
 
 require_relative 'board'
 require_relative 'player'
+require_relative 'display'
 
 # A class to manage the state of a chess game
 class Chess
@@ -17,6 +18,7 @@ class Chess
 
   def play
     loop do
+      Display.show(board, @current_player, @turn_count)
       switch_players
       increment_round
       break if game_over?
