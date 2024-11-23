@@ -17,20 +17,18 @@
       <p class="event-location"><%= @event.location %>, at <%= friendly_time(@event) %></p>
     </div>
 
-    <% if upcoming?(@event) %>
-      <div class="event-buttons">
-        <% if not_own_event?(@event) && user_attending?(@event) %>
-          <%= button_to "Cancel Attendance", event_attendance_path(@event), method: :delete, data: { turbo_method: :delete }, class: "btn" %>
-        <% elsif not_own_event?(@event) %>
-          <%= form_with model: @event_attendance do |f| %>
-            <%= f.hidden_field :attended_event_id, value: @event.id %>
-            <%= f.submit "Attend this event", class: "btn" %>
-          <% end %>
-        <% else %>
-          <%= button_to "Edit Event", edit_event_path(@event), method: :get, class: "btn" %>
-          <%= button_to "Delete Event", @event, method: :delete, data: { turbo_method: :delete }, class: "btn" %>
+    <div class="event-buttons">
+      <% if not_own_event?(@event) && user_attending?(@event) %>
+        <%= button_to "Cancel Attendance", event_attendance_path(@event), method: :delete, data: { turbo_method: :delete }, class: "btn" %>
+      <% elsif not_own_event?(@event) %>
+        <%= form_with model: @event_attendance do |f| %>
+          <%= f.hidden_field :attended_event_id, value: @event.id %>
+          <%= f.submit "Attend this event", class: "btn" %>
         <% end %>
-      </div>
-    <% end %>
+      <% else %>
+        <%= button_to "Edit Event", edit_event_path(@event), method: :get, class: "btn" %>
+        <%= button_to "Delete Event", @event, method: :delete, data: { turbo_method: :delete }, class: "btn" %>
+      <% end %>
+    </div>
   </div>
 </div>
