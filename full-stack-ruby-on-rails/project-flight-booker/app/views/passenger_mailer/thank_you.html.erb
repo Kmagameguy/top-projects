@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv='Content-Type' />
+</head>
+<body>
+  <h1>Hey, <%= @passenger.name %>!</h1>
+  <p>
+    Thanks for booking your trip with us.
+    This email acknowledges receipt of your reservation.
+  </p>
+  <p>Below are the details of your trip:</p>
+  <ul>
+    <li>Flight Number: <%= @booking.flight.id %></li>
+    <li>Departing From: <%= @booking.flight.departure_airport_id %></li>
+    <li>Departure Time: <%= @booking.flight.friendly_datetime %>
+    <li>Arriving At: <%= @booking.flight.arrival_airport_id %></li>
+    <li>Passenger (that's you!): <%= @passenger.name %></li>
+    <li>Passenger Email: <%= @passenger.email %></li>
+  </ul>
+  <p>
+    We look forward to seeing you soon!
+  </p>
+  <p>
+    Thanks, <br />
+    The Flight Booking Company
+  </p>
+</body>
+</html>

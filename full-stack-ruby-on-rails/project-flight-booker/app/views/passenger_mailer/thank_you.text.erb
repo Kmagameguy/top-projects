@@ -1,0 +1,18 @@
+Hey, <%= @passenger.name %>!
+
+Thanks for booking your trip with us.
+This email acknowledges receipt of your reservation.
+
+Below are the details of your trip:
+
+- Flight Number: <%= @booking.flight.id %>
+- Departing From: <%= @booking.flight.departure_airport_id %>
+- Departure Time: <%= @booking.flight.friendly_datetime %>
+- Arriving At: <%= @booking.flight.arrival_airport_id %>
+- Passenger (that's you!): <%= @passenger.name %>
+- Passenger Email: <%= @passenger.email %>
+
+We look forward to seeing you soon!
+
+Thanks,
+The Flight Booking Company
