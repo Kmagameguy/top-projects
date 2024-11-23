@@ -12,39 +12,61 @@ html {
 
 :root {
   font-family: 'Roboto', sans-serif;
-  --main-green: #B4D455;
-  --main-gold: #FED024;
-  --main-white: #FFF;
+  --main-background-color: #E1E7F0;
+  --main-accent-color: #B4D455;
+  --main-secondary-color: #FED024;
+  --main-card-color: #FFF;
+  --button-hover-color: #D5F180;
+  --button-active-color: #8DAA36;
+  --box-shadow: 5px 5px 5px #CACACA
 }
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #E1E7F0;
+  background-color: var(--main-background-color);
   margin: 0;
 }
 
 button {
-  background-color: var(--main-green);
+  background-color: var(--main-accent-color);
   border: none;
-  color: var(--main-white);
+  color: var(--main-card-color);
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   margin: 4px 2px;
   width: 90px;
-  cursor: pointer;
 
   border-radius: 16px;
 }
 
-h2 {
+button:hover {
+  background-color: var(--button-hover-color);
+}
+
+button:active {
+  background-color: var(--button-active-color);
+}
+
+h2,
+h3,
+p,
+ul {
   margin: 0;
+  padding: 0;
 }
 
 ul {
   list-style-type: none;
-  padding: 0;
-  margin: 0;
+}
+
+span {
+  font-size: 24px;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid var(--main-background-color);
 }
 
 .rounded-img {
@@ -59,6 +81,11 @@ ul {
   width: 128px;
 }
 
+.subtext {
+  font-size: 14px;
+  color: #949494;
+}
+
 .container {
   display: grid;
   grid-template-columns: 1fr 4fr;
@@ -67,8 +94,8 @@ ul {
 
 .header {
   grid-area: 1 / 2 / 1 / span 2;
-  background-color: var(--main-white);
-  box-shadow: 10px 5px 5px #DDD;
+  background-color: var(--main-card-color);
+  box-shadow: var(--box-shadow);
   display: grid;
   padding: 20px 80px;
   grid-template-columns: 2fr auto;
@@ -90,6 +117,11 @@ ul {
 #search input {
   grid-row: span 2;
   align-self: center;
+  outline: none;
+  border: 1px solid #DDD;
+  border-radius: 20px;
+  background-color: var(--main-background-color);
+  padding: 10px;
 }
 
 #welcome-panel {
@@ -105,7 +137,6 @@ ul {
 }
 
 #welcome-panel p {
-  margin: 0;
   align-self: end;
 }
 
@@ -128,8 +159,8 @@ ul {
 }
 
 .sidebar {
-  background-color: var(--main-green);
-  color: var(--main-white);
+  background-color: var(--main-accent-color);
+  color: var(--main-card-color);
   grid-area: 1 / 1 / span 2 / 1;
   display: grid;
   grid-template-rows: auto auto 1fr;
@@ -137,7 +168,15 @@ ul {
 }
 
 #logo {
-  cursor: pointer;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+}
+
+#logo span {
+  font-size: 48px;
 }
 
 #main-list,
@@ -155,15 +194,7 @@ ul {
 
 #main-list p,
 #secondary-list p {
-  margin: 0;
-  padding-left: 10px;
-}
-
-#main-list p,
-#main-list span,
-#secondary-list p,
-#secondary-list span {
-  cursor: pointer;
+  padding-left: 20px;
 }
 
 #main-list p:hover,
@@ -175,10 +206,10 @@ ul {
 
 .content-container {
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 4fr 1.5fr;
   grid-template-rows: auto auto;
   padding: 50px;
-  gap: 40px;
+  gap: 30px;
 }
 
 #projects {
@@ -186,18 +217,37 @@ ul {
   grid-template-rows: auto 1fr;
   grid-auto-rows: 1fr;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 30px;
 }
 
 #projects h2 {
   grid-column: 1 / -1;
 }
 
-.project-card {
-  background-color: var(--main-white);
+.project-card,
+.card {
+  background-color: var(--main-card-color);
   border-radius: 5px;
-  border-left: 12px solid var(--main-gold);
-  padding: 40px;
+  box-shadow: var(--box-shadow);
+}
+
+.project-card {
+  border-left: 12px solid var(--main-secondary-color);
+  padding: 0px 20px 20px 20px;
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+}
+
+.project-card h3 {
+  align-self: end;
+  margin-bottom: 5px;
+}
+
+.project-card-widgets {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  gap: 10px;
 }
 
 .right-sidebar {
@@ -205,25 +255,21 @@ ul {
   grid-template-rows: repeat(2, 1fr);
 }
 
-#announcements,
-#trending {
+.right-sidebar-container {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 15px;
+  gap: 30px;
 }
 
-#announcements ul,
-#trending ul {
-  background-color: var(--main-white);
-  border-radius: 5px;
+.card {
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-#announcements li:nth-last-child(n+2) {
-  border-bottom: var(--main-gold)
+#announcements h3 {
+  margin-bottom: 5px;
 }
 
 #trending {
@@ -237,10 +283,6 @@ ul {
   gap: 10px;
 }
 
-#trending li p {
-  margin: 0;
-}
-
 .user-image {
   grid-row: 1 / 3;
   align-self: end;
@@ -251,5 +293,20 @@ ul {
 }
 
 .user-description {
+  margin-top: -5px;
   align-self: start;
+}
+
+button,
+#user-info span,
+#user-info img,
+#user-info h3,
+#logo,
+#main-list p,
+#main-list span,
+#secondary-list p,
+#secondary-list span,
+.project-card,
+.card-link {
+  cursor: pointer;
 }
