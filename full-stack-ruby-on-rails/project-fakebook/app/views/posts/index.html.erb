@@ -15,6 +15,9 @@
             <div>
               <p><%= comment.commentable.user.name %>
               <p><%= comment.body %>
+              <% if comment_owner?(comment.author) %>
+                <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+              <% end %>
             </div>
           <% end %>
         <% end %>
