@@ -94,6 +94,10 @@ class Display
     puts "Game over! #{winner} wins!"
   end
 
+  def show_promote_message
+    puts 'Type rook, knight, bishop, or queen to promote your pawn:'
+  end
+
   private
 
   def clear

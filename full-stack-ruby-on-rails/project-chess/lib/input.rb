@@ -15,7 +15,7 @@ class Input
 
   def validate_input
     loop do
-      input = self.class.user_input
+      input = self.class.user_input.downcase
       return input if chess_notation?(input) || quit?(input)
 
       puts 'Invalid input.  Try [Letter][Number] [Letter][Number]'
@@ -32,6 +32,20 @@ class Input
 
   def self.yes_response?
     user_input.downcase == 'y'
+  end
+
+  def self.promote_piece
+    puts 'Type "Rook", "Knight", "Bishop" or "Queen" to promote pawn:'
+    loop do
+      input = user_input.downcase
+      return input if valid_piece?(input)
+
+      puts 'Invalid input. Try again.'
+    end
+  end
+
+  def self.valid_piece?(input)
+    %w[rook knight bishop queen].include?(input)
   end
 
   def chess_notation?(input)

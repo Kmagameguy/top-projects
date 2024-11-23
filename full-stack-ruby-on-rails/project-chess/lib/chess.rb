@@ -115,6 +115,7 @@ class Chess
 
         if valid?(piece, destination)
           board.update!(piece, destination)
+          promote(piece) if promote?(piece)
           break
         else
           print_error(piece, destination)
@@ -145,6 +146,17 @@ class Chess
 
   def game_over?
     checkmate?
+  end
+
+  def promote?(piece)
+    piece.is_a?(Pawn) && piece.promote?
+  end
+
+  def promote(pawn)
+    @display.update!(board.squares, @current_player, @turn_count)
+    transformed_pawn = board.special_pieces[Input.promote_piece]
+    x, y = pawn.position
+    board.squares[x][y] = transformed_pawn.new(pawn.color, pawn.position)
   end
 
   def chess_notation_to_array(chess_notation)

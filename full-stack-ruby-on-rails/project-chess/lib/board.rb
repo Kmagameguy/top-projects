@@ -53,6 +53,12 @@ class Board
     squares.flatten.compact.select { |piece| piece.color == color }
   end
 
+  def special_pieces
+    default_special_pieces.each_with_object({}) do |piece, hash|
+      hash[piece.to_s.downcase] = piece
+    end
+  end
+
   private
 
   def default_special_pieces
