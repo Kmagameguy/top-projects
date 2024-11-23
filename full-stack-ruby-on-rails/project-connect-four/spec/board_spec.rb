@@ -55,11 +55,17 @@ RSpec.describe Board do
   end
 
   describe '#any_in_a_row?' do
-    context 'when no player has 4-in-a-row, vertically' do
+    context 'when no player has 4-in-a-row' do
       it 'returns false' do
         chosen_column = 3
         player_marker = 'x'
-        board.drop_to_slot(chosen_column, player_marker)
+        computer_marker = 'o'
+
+        4.times do |index|
+          marker_to_drop = index.even? ? player_marker : computer_marker
+          board.drop_to_slot(chosen_column, marker_to_drop)
+        end
+
         expect(board.any_in_a_row?(player_marker)).to be false
       end
     end
@@ -69,6 +75,43 @@ RSpec.describe Board do
         chosen_column = 3
         player_marker = 'x'
         4.times { board.drop_to_slot(chosen_column, player_marker) }
+        expect(board.any_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4-in-a-row, horizontally' do
+      it 'returns true' do
+        player_marker = 'x'
+        4.times do |column|
+          board.drop_to_slot(column + 1, player_marker)
+        end
+
+        expect(board.any_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4-in-a-row, downslope' do
+      it 'returns true' do
+        player_marker = 'x'
+
+        board.slots[0][0] = player_marker
+        board.slots[1][1] = player_marker
+        board.slots[2][2] = player_marker
+        board.slots[3][3] = player_marker
+
+        expect(board.any_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4-in-a-row, upslope' do
+      it 'returns true' do
+        player_marker = 'x'
+
+        board.slots[0][6] = player_marker
+        board.slots[1][5] = player_marker
+        board.slots[2][4] = player_marker
+        board.slots[3][3] = player_marker
+
         expect(board.any_in_a_row?(player_marker)).to be true
       end
     end
@@ -90,26 +133,6 @@ RSpec.describe Board do
       end
     end
 
-    context 'when no player has 4-in-a-row, horizontally' do
-      it 'returns false' do
-        chosen_column = 3
-        player_marker = 'x'
-        board.drop_to_slot(chosen_column, player_marker)
-        expect(board.any_in_a_row?(player_marker)).to be false
-      end
-    end
-
-    context 'when a player has 4-in-a-row, horizontally' do
-      it 'returns true' do
-        player_marker = 'x'
-        4.times do |column|
-          board.drop_to_slot(column + 1, player_marker)
-        end
-
-        expect(board.any_in_a_row?(player_marker)).to be true
-      end
-    end
-
     context 'when a player has 4 spots within a row, but not in-a-row' do
       it 'returns false' do
         game_row = ['x', nil, 'x', 'x', 'x', nil]
@@ -120,32 +143,8 @@ RSpec.describe Board do
         expect(board.any_in_a_row?('x')).to be false
       end
     end
-  end
 
-  describe '#diagonal_right_in_a_row?' do
-    context 'when no player has 4-in-a-row, diagonally' do
-      it 'returns false' do
-        player_marker = 'x'
-        board.slots[0][0] = player_marker
-
-        expect(board.diagonal_right_in_a_row?(player_marker)).to be false
-      end
-    end
-
-    context 'when a player has 4-in-a-row, diagonally' do
-      it 'returns true' do
-        player_marker = 'x'
-
-        board.slots[0][0] = player_marker
-        board.slots[1][1] = player_marker
-        board.slots[2][2] = player_marker
-        board.slots[3][3] = player_marker
-
-        expect(board.diagonal_right_in_a_row?(player_marker)).to be true
-      end
-    end
-
-    context 'when a player has 4 spots taken, but not in-a-row' do
+    context 'when a player has 4 spots upslope, but not in-a-row' do
       it 'returns false' do
         player_marker = 'x'
 
@@ -154,35 +153,11 @@ RSpec.describe Board do
         board.slots[3][2] = player_marker
         board.slots[1][4] = player_marker
 
-        expect(board.diagonal_right_in_a_row?(player_marker)).to be false
-      end
-    end
-  end
-
-  describe '#diagonal_left_in_a_row?' do
-    context 'when no player has 4-in-a-row, diagonally' do
-      it 'returns false' do
-        player_marker = 'x'
-
-        board.slots[0][0] = player_marker
-        expect(board.diagonal_right_in_a_row?(player_marker)).to be false
+        expect(board.any_in_a_row?(player_marker)).to be false
       end
     end
 
-    context 'when a player has 4-in-a-row, diagonally' do
-      it 'returns true' do
-        player_marker = 'x'
-
-        board.slots[0][6] = player_marker
-        board.slots[1][5] = player_marker
-        board.slots[2][4] = player_marker
-        board.slots[3][3] = player_marker
-
-        expect(board.diagonal_left_in_a_row?(player_marker)).to be true
-      end
-    end
-
-    context 'when a player has 4 spots taken, but not in-a-row' do
+    context 'when a player has 4 spots downslope, but not in-a-row' do
       it 'returns false' do
         player_marker = 'x'
 
@@ -191,7 +166,7 @@ RSpec.describe Board do
         board.slots[2][4] = player_marker
         board.slots[4][4] = player_marker
 
-        expect(board.diagonal_left_in_a_row?(player_marker)).to be false
+        expect(board.any_in_a_row?(player_marker)).to be false
       end
     end
   end
