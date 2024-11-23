@@ -1,6 +1,18 @@
-<h1>Your Flight Information</h1>
-<p>Flight Number: <%= @booking.flight_id %></p>
-<p>Departing From: <%= @booking.flight.departure_airport_id %></p>
-<p>Arriving At:<%= @booking.flight.arrival_airport_id %></p>
-<p>Departure Time: <%= @booking.flight.friendly_datetime %></p>
-<p><%= @booking.passengers.count %></p>
+<div class="booking-container">
+  <div class="booking-info">
+    <h1>Your Flight Information</h1>
+    <p>Flight Number: <%= @booking.flight_id %></p>
+    <p>Departing From: <%= @booking.flight.departure_airport_id %></p>
+    <p>Arriving At:<%= @booking.flight.arrival_airport_id %></p>
+    <p>Departure Time: <%= @booking.flight.friendly_datetime %></p>
+    <h2>Passengers: <%= @booking.passengers.count %></h2>
+    <ul>
+      <% @booking.passengers.each do |passenger| %>
+        <li><%= passenger.name %> (<%= passenger.email %>)</li>
+      <% end %>
+    </ul>
+  </div>
+
+  <%= link_to "Home", root_path, class: "home-link" %>
+  <%= link_to 'Print Confirmation', '/', onclick: 'window.print();return false;', class: "print-link" %>
+</div>

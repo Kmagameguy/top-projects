@@ -1,3 +1,6 @@
+<h3>
+  Search for available flights below.
+</h3>
 <%= form_with url: :flights, method: :get, local: true do |f| %>
   <div class="selections-container">
     <div class="form-row">
@@ -27,22 +30,26 @@
 <% if @search_results %>
   <h2>Search Results</h2>
   <% unless @search_results.present? %>
-    <p>Sorry, we couldn't find any flights.</p>
+    <p class="no-results">Sorry, we couldn't find any flights.</p>
   <% else %>
     <%= form_with url: new_booking_path, method: :get do |f| %>
       <%= f.hidden_field :num_tickets, value: params[:num_tickets] %>
-      <% @search_results.each do |flight| %>
-        <%= f.radio_button :flight_id, flight.id, required: true %>
-        <%= render "flights/flight_card", flight: flight %>
-        <%= f.submit "Book It" %>
-      <% end %>
+      <div class="selections-container">
+        <% @search_results.each do |flight| %>
+          <label class="radio-label">
+            <%= f.radio_button :flight_id, flight.id, required: true %>
+            <%= render "flights/flight_card", flight: flight %>
+          </label>
+        <% end %>
+      </div>
+      <%= f.submit "Book It" %>
     <% end %>
   <% end %>
 <% end %>
 
-<br />
-
-<h2>All Flights</h2>
-<% @all_flights.each do |flight| %>
-  <%= render "flights/flight_card", flight: flight %>
-<% end %>
+<details>
+  <summary>All Flights</summary>
+  <% @all_flights.each do |flight| %>
+    <%= render "flights/flight_card", flight: flight %>
+  <% end %>
+</details>

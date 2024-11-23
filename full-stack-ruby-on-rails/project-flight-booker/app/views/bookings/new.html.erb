@@ -1,21 +1,30 @@
-<h1>Booking Info</h1>
+<div class="booking-container">
+  <div class="booking-info">
+    <h1>Booking Info</h1>
 
-<p>Flight Number: <%= @booking.flight.id %></p>
-<p>Departure Time: <%=@booking.flight.friendly_datetime %></p>
-<p>Departing From: <%= @booking.flight.departure_airport_id %></p>
-<p>Arriving At: <%= @booking.flight.arrival_airport_id %></p>
+    <p>Flight Number: <%= @booking.flight.id %></p>
+    <p>Departure Time: <%=@booking.flight.friendly_datetime %></p>
+    <p>Departing From: <%= @booking.flight.departure_airport_id %></p>
+    <p>Arriving At: <%= @booking.flight.arrival_airport_id %></p>
+  </div>
 
-<%= form_for @booking do |f| %>
-  <%= f.hidden_field :flight_id, value: params[:flight_id] %>
-  <%= f.fields_for :passengers do |passenger| %>
-    <%= passenger.label :name %>
-    <%= passenger.text_field :name %>
+  <%= form_for @booking do |f| %>
+    <%= f.hidden_field :flight_id, value: params[:flight_id] %>
 
-    <%= passenger.label :email %>
-    <%= passenger.text_field :email %>
+    <h2>Please tell us who will be flying:</h2>
+    <div class="form-row">
+    <%= f.fields_for :passengers do |passenger| %>
+      <div class="passenger-fields">
+        <%= passenger.label :name %>
+        <%= passenger.text_field :name %>
+
+        <%= passenger.label :email %>
+        <%= passenger.text_field :email %>
+      </div>
+    <% end %>
+  </div>
+    <%= f.submit %>
   <% end %>
 
-  <%= f.submit %>
-<% end %>
-
-<%= link_to  "Home", root_path %>
+  <%= link_to "Home", root_path, class: "home-link" %>
+</div>

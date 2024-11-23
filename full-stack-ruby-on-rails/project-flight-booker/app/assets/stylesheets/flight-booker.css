@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
 html {
   box-sizing: border-box;
 }
@@ -10,6 +12,8 @@ html {
 
 :root {
   font-size: 1.2rem;
+  --heading-font-family: 'Lato', sans-serif;
+  --paragraph-font-family: 'Merriweather', serif;
 }
 
 header {
@@ -18,10 +22,16 @@ header {
   border-bottom: 0.1rem solid black;
 }
 
+header h1 {
+  cursor: default;
+}
+
 body {
+  width: 100vw;
   margin: 0;
   padding: 0;
-  width: 100vw;
+
+  font-family: var(--paragraph-font-family);
 }
 
 h1,
@@ -32,6 +42,8 @@ h5,
 h6 {
   margin: 0;
   padding: 0;
+
+  font-family: var(--heading-font-family);
 }
 
 h2 {
@@ -44,14 +56,21 @@ p {
 }
 
 .main-container {
+  padding: 1rem 4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
 }
 
-form {
-  margin-bottom: 1rem;
+.main-container form {
+  margin: 0 auto 1.5rem auto;
+}
+
+.main-container h2,
+.main-container h3,
+.main-container .no-results {
+  margin: 1rem auto;
 }
 
 .selections-container {
@@ -66,7 +85,16 @@ form {
   margin-bottom: 0.8rem;
 }
 
+.form-row label {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+}
+
 .form-row select {
+  width: 200px;
+  padding: 0.5rem;
+
+  font-family: var(--paragraph-font-family);
   line-height: inherit;
   font-size: inherit;
 }
@@ -78,24 +106,89 @@ form input[type="submit"] {
   text-align: center;
   text-decoration: none;
 
+  font-size: inherit;
   cursor: pointer;
 }
 
+.main-container details {
+  padding: 1.2rem;
+  background-color: #EEE;
+  border-radius: 0.25rem;
+}
+
+.main-container details div:first-of-type {
+  margin-top: 1rem;
+}
+
+.main-container summary {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
 .flight-card {
-  width: 80%;
   margin-bottom: 1rem;
   padding: 1rem 2rem;
 
   color: black;
+  background-color: white;
   border: 1px solid black;
   border-radius: 0.25rem;
 
   transition: box-shadow 0.2s eas-in-out;
+}
 
-  display: grid;
-  grid-template-rows: 2fr 1fr;
+.booking-info {
+  margin-bottom: 1rem;
+  padding: 1rem 2rem;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+}
+
+.booking-info h1 {
+  margin-bottom: 1rem;
+}
+
+.booking-container form {
+  padding: 1rem 2rem;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+}
+
+.booking-container a {
+  text-decoration: none;
+  font-family: var(--heading-font-family);
+}
+
+.booking-container .home-link:before {
+  content: '< ';
+}
+
+.booking-container .print-link {
+  margin-left: 1rem;
+}
+
+.booking-container form input[type="text"] {
+  font-size: 1.2rem;
+}
+
+.booking-container .passenger-fields {
+  margin-bottom: 1rem;
+}
+
+.flight-header {
+  margin-bottom: 1rem;
 }
 
 .flight-card:hover {
   box-shadow: 0.25rem 0.25rem 0.6rem rgba(0, 0, 0, 0.2);
+}
+
+.radio-label > input[type="radio"] {
+  visibility: hidden;
+  position: absolute;
+}
+
+.radio-label > input:checked + .flight-card {
+  border: 1px solid #3b9be4;
+  box-shadow: 0.25rem 0.25rem 0.6rem rgba(78, 211, 255, 0.2);
 }
