@@ -42,12 +42,16 @@ class Board
     end
   end
 
-  def update(last_square, new_square)
-    l_rank, l_file = last_square
+  def square(coordinates)
+    row, column = coordinates
+    squares[row][column]
+  end
+
+  def update!(piece, new_square)
+    l_rank, l_file = piece.position
     n_rank, n_file = new_square
 
-    piece = squares[l_rank][l_file]
-    piece.move(new_square)
+    piece.move!(new_square)
 
     squares[l_rank][l_file] = nil
     squares[n_rank][n_file] = piece

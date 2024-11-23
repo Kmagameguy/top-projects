@@ -19,7 +19,7 @@ class Piece
     @moved
   end
 
-  def move(coordinates)
+  def move!(coordinates)
     @position = coordinates
     @moved = true
   end

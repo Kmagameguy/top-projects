@@ -37,6 +37,8 @@ class Chess
 
   def take_turn
     piece = choose_piece
+    destination = choose_destination(piece)
+    board.update!(piece, destination)
   end
 
   def choose_piece
@@ -51,6 +53,16 @@ class Chess
       else
         return piece
       end
+    end
+  end
+
+  def choose_destination(piece)
+    puts "Choose a destination for your #{piece.class}:"
+    loop do
+      destination = chess_notation_to_array(choose_square)
+      return destination if valid_move?(piece, destination)
+
+      puts "#{piece.class} cannot move there. Select again."
     end
   end
 
@@ -80,6 +92,10 @@ class Chess
     piece&.possible_moves(board.squares)&.empty?
   end
 
+  def valid_move?(piece, move)
+    piece.possible_moves(board.squares).include?(move)
+  end
+
   def increment_round
     @turn_count += 1
   end
@@ -96,22 +112,6 @@ class Chess
     row, column = array_notation
     row = board.size - row
     "#{indexed_alphabet.key(column)}#{row}"
-  end
-
-  def make_move(from, to)
-    a_from = chess_notation_to_array(from)
-    a_to = chess_notation_to_array(to)
-
-    board.update(a_from, a_to) if valid_move?(a_from, a_to)
-
-    puts "Moving from #{from} to #{to} is illegal. Try again."
-  end
-
-  def valid_move?(square, move)
-    square_rank, square_file = square
-    piece = board.squares[square_rank][square_file]
-
-    piece.possible_moves(board.squares).include?(move)
   end
 
   private
