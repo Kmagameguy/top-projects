@@ -20,26 +20,8 @@ const messageChannel = consumer.subscriptions.create("MessageChannel", {
                     <p>${data.user.email}</p>}
                 </div>
                 <div class="message-body">
-                    <p>${data.message.body}</p>
+                    <p>${data.body}</p>
                 </div>
             </article>`
   }
-});
-
-document.addEventListener("turbo:load", () => {
-    let form = document.querySelector("#message-form");
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const messageInput = document.querySelector("#message-input");
-            if (messageInput.value == '') return;
-
-            const message = {
-                body: messageInput.value
-            }
-
-            messageInput.value = '';
-            messageChannel.send({ message: message });
-        })
-    }
 })

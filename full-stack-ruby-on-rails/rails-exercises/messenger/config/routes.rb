@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root 'hangouts#index'
+
+  resources :messages, only: [:create]
 end
