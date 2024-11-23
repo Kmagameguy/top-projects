@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
     @profile = @user.profile
 
     if @profile.update(profile_params)
-      redirect_to user_profile_path(@user.profile), notice: 'Profile was successfully updated.'
+      redirect_to user_posts_path(@user), notice: 'Profile was successfully updated.'
     else
       flash[:alert] = @profile.errors.full_messages.join(', ')
       render :edit

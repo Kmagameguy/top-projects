@@ -8,10 +8,6 @@
       <% if user_signed_in? %>
         <ul id="nav-links">
           <li>
-            <%= link_to "my profile", user_posts_path(current_user) %>
-          </li>
-
-          <li>
             <%= link_to "find friends", users_path %>
           </li>
 

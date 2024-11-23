@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: user_to_find)
+    redirect_to user_posts_path(@user)
   end
 
   private
