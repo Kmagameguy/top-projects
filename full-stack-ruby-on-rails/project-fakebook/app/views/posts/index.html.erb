@@ -1,6 +1,8 @@
 <div>
+  <% if posts_owner?(@user) %>
+    <%= render "posts/post_form" %>
+  <% end %>
 
-  <%= render "posts/post_form" %>
   <% if @posts&.any? %>
     <div>
       <% @posts.each do |post| %>
@@ -8,6 +10,6 @@
       <% end %>
     </div>
   <% else %>
-    <p>You haven't posted anything yet.</p>
+    <p><%= posts_owner?(@user) ? "You haven't" : "#{@user&.name} hasn't" %> posted anything yet.</p>
   <% end %>
 </div>
