@@ -84,15 +84,6 @@ class Rook < Piece
     moves
   end
 
-  def killing_move?(move, board)
-    x, y = move
-    piece = board.dig(x, y)
-
-    return false if piece.nil?
-
-    piece.color != color
-  end
-
   def to_s
     white? ? '♖' : '♜'
   end

@@ -42,6 +42,15 @@ class Piece
     !board.dig(x, y).nil?
   end
 
+  def killing_move?(move, board)
+    x, y = move
+    piece = board.dig(x, y)
+
+    return false if piece.nil?
+
+    piece.color != color
+  end
+
   def white?
     color == :white
   end

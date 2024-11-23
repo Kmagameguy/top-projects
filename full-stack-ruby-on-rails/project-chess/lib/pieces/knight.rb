@@ -14,15 +14,6 @@ class Knight < Piece
          .reject { |move| blocked?(move, board) && !killing_move?(move, board) }
   end
 
-  def killing_move?(move, board)
-    x, y = move
-    piece = board.dig(x, y)
-
-    return false if piece.nil?
-
-    piece.color != color
-  end
-
   def to_s
     white? ? '♘' : '♞'
   end
