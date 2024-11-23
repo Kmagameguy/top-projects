@@ -1,0 +1,35 @@
+<% if user.errors.any? %>
+  <div>
+    <h2>
+      <%= pluralize(user.errors.count, "error") %>
+      prohibited this user from being saved:
+    </h2>
+    <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+<%= form_with model: user do |f| %>
+  <%= f.label :username, 'User Name:' %>
+  <%= f.text_field :username, placeholder: "Snoopy" %>
+  <% user.errors.full_messages_for(:username).each do |message| %>
+    <p><%= message %></p>
+  <% end %>
+
+  <%= f.label :email, 'E-Mail:' %>
+  <%= f.email_field :email, placeholder: "snoopy@schulzmail.com" %>
+  <% user.errors.full_messages_for(:email).each do |message| %>
+    <p><%= message %></p>
+  <% end %>
+
+  <%= f.label :password, 'Password:' %>
+  <%= f.password_field :password %>
+  <% user.errors.full_messages_for(:password).each do |message| %>
+    <p><%= message %></p>
+  <% end %>
+
+  <%= f.submit "Submit Changes" %>
+<% end %>
