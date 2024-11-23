@@ -6,8 +6,6 @@ require 'pry-byebug'
 
 # A class which contains a knight and a grid of positions onto which it can move
 class GameBoard
-  attr_accessor :knight, :visited_squares
-
   def initialize(size: 8)
     @size = size
     @knight = Knight.new(board_size: @size)
