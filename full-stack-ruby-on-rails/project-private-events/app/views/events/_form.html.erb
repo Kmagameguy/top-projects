@@ -1,0 +1,15 @@
+<%= form_with model: event do |f| %>
+  <%= f.label :title, "Event Title:" %>
+  <%= f.text_field :title, placeholder: "My Cool Event!" %>
+
+  <%= f.label :event_date, "Event Date:" %>
+  <%= f.datetime_field :event_date, value: "#{event_date_placeholder(event)}" %>
+
+  <%= f.label :location, "Event Location:" %>
+  <%= f.text_field :location, placeholder: "Tell everyone where to find your event." %>
+
+  <%= f.label :description, "Event Notes:" %>
+  <%= f.text_area :description, placeholder: "Tell everyone about your event." %>
+
+  <%= f.submit %>
+<% end %>
