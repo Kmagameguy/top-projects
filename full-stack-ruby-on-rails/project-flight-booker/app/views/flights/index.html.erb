@@ -1,0 +1,19 @@
+<h2>Flight Booking</h2>
+
+<%= form_with url: :flights, method: :get, local: true do |f| %>
+  <%= f.label :departure_airport_id %>
+  <%= f.collection_select :departure_airport_id, Airport.all, :id, :code %>
+
+  <%= f.label :arrival_airport_id %>
+  <%= f.collection_select :arrival_airport_id, Airport.all, :id, :code %>
+
+  <%= f.submit "Search" %>
+<% end %>
+
+<h2>All Flights</h2>
+<% @flights.each do |flight| %>
+  <p>
+    Departing From: <%= flight.departure_airport_id %>,
+    Arriving At: <%= flight.arrival_airport_id %>
+  </p>
+<% end %>
