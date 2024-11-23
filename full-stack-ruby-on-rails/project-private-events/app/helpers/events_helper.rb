@@ -21,6 +21,10 @@ module EventsHelper
     Event.past.include?(event)
   end
 
+  def attendees_label(event)
+    "Attendees (#{event.attendee_count})"
+  end
+
   private
 
   def system_timezone

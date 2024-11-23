@@ -32,5 +32,18 @@
         <% end %>
       <% end %>
     </div>
+
+    <div class="event-attendees">
+      <h2><%= attendees_label(@event) %></h2>
+      <ul>
+        <% if @event.attendees.present? %>
+          <% @event.attendees.each do |attendee| %>
+            <li class="attendee-name"><%= attendee.name %></p>
+          <% end %>
+        <% else %>
+          <li>No one has signed up for this event yet.  You could be the first!</li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </div>
