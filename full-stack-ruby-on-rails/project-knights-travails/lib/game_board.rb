@@ -16,12 +16,22 @@ class GameBoard
 
   def knight_move(source, destination)
     puts "Starting position: #{source}"
-    @knight.coordinates = source
-    node = Node.new(@knight.coordinates)
+    node = Node.new(source)
+    queue = [node]
     @visited_squares << node
-    @knight.possible_next_moves(@visited_squares)
 
-    p @visited_squares
+    until node == destination || queue.empty?
+      @knight.coordinates = node.coordinates
+      moves = @knight.possible_next_moves(@visited_squares)
+      moves.each do |move|
+        new_node = Node.new(move, node)
+        @visited_squares << new_node
+        queue << new_node
+      end
+      node = queue.shift
+    end
+
+    p node
   end
 end
 

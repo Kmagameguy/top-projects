@@ -19,8 +19,6 @@ class Knight
     moves.reject { |move| already_visited?(move, visited_squares) }
   end
 
-  def knight_moves; end
-
   private
 
   def out_of_bounds?(move)
