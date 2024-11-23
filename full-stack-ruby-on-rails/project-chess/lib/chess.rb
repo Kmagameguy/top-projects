@@ -7,7 +7,7 @@ require_relative 'input'
 
 # A class to manage the state of a chess game
 class Chess
-  attr_reader :board
+  attr_reader :board, :current_player
 
   def initialize(white_name, black_name)
     @board = Board.new
@@ -20,13 +20,14 @@ class Chess
   def play
     loop do
       Display.show(board, @current_player, @turn_count)
-      take_turn
       break if game_over?
 
-      board.check?(@current_player.color, other_player.color)
+      puts 'Your King is checked!' if board.check?(@current_player.color, other_player.color)
+      take_turn
       switch_players
       increment_round
     end
+    puts "Game over! #{other_player.name} wins!"
   end
 
   def switch_players
@@ -71,6 +72,7 @@ class Chess
   def valid_destination?(piece, destination)
     if in_move_set?(piece, destination)
       return false if hits_king?(destination)
+      return false if moves_into_check?(piece, destination)
 
       true
     else
@@ -94,12 +96,35 @@ class Chess
     move == board.find_king(other_player.color)
   end
 
+  def checkmate?
+    board.check?(@current_player.color, other_player.color) &&
+      !can_break_check?
+  end
+
+  def can_break_check?
+    moves = []
+    pieces = board.find_pieces(@current_player.color)
+    pieces.each do |piece|
+      moves << piece.possible_moves(board.squares).reject do |move|
+        moves_into_check?(piece, move)
+      end
+    end
+    !moves.flatten.empty?
+  end
+
+  def moves_into_check?(piece, move)
+    temp_board = Marshal.load(Marshal.dump(board))
+    piece = temp_board.square(piece.position)
+    temp_board.update!(piece, move)
+    temp_board.check?(@current_player.color, other_player.color)
+  end
+
   def increment_round
     @turn_count += 1
   end
 
   def game_over?
-    @turn_count == 75
+    @turn_count == 75 || checkmate?
   end
 
   def chess_notation_to_array(chess_notation)
