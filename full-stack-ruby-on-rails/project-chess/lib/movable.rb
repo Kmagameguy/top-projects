@@ -2,75 +2,75 @@
 
 # A module which is concerned with movements
 module Movable
-  def sliding_diagonal_moves(position, board)
-    upleft_moves(position, board).concat(upright_moves(position, board))
-                                 .concat(downleft_moves(position, board))
-                                 .concat(downright_moves(position, board))
-                                 .sort
+  def sliding_diagonal_moves(position, squares)
+    upleft_moves(position, squares).concat(upright_moves(position, squares))
+                                   .concat(downleft_moves(position, squares))
+                                   .concat(downright_moves(position, squares))
+                                   .sort
   end
 
-  def sliding_straight_moves(position, board)
-    top_vertical_moves(position, board).concat(bottom_vertical_moves(position, board))
-                                       .concat(left_horizontal_moves(position, board))
-                                       .concat(right_horizontal_moves(position, board))
-                                       .sort
+  def sliding_straight_moves(position, squares)
+    top_vertical_moves(position, squares).concat(bottom_vertical_moves(position, squares))
+                                         .concat(left_horizontal_moves(position, squares))
+                                         .concat(right_horizontal_moves(position, squares))
+                                         .sort
   end
 
-  def single_diagonal_moves(position, board)
-    upleft_move(position, board).concat(upright_move(position, board))
-                                .concat(downleft_move(position, board))
-                                .concat(downright_move(position, board))
-                                .sort
+  def single_diagonal_moves(position, squares)
+    upleft_move(position, squares).concat(upright_move(position, squares))
+                                  .concat(downleft_move(position, squares))
+                                  .concat(downright_move(position, squares))
+                                  .sort
   end
 
-  def single_straight_moves(position, board)
-    top_vertical_move(position, board).concat(bottom_vertical_move(position, board))
-                                      .concat(left_horizontal_move(position, board))
-                                      .concat(right_horizontal_move(position, board))
+  def single_straight_moves(position, squares)
+    top_vertical_move(position, squares).concat(bottom_vertical_move(position, squares))
+                                        .concat(left_horizontal_move(position, squares))
+                                        .concat(right_horizontal_move(position, squares))
   end
 
-  def upleft_move(position, board)
-    [upleft_moves(position, board).first].compact
+  def upleft_move(position, squares)
+    [upleft_moves(position, squares).first].compact
   end
 
-  def top_vertical_move(position, board)
-    [top_vertical_moves(position, board).first].compact
+  def top_vertical_move(position, squares)
+    [top_vertical_moves(position, squares).first].compact
   end
 
-  def upright_move(position, board)
-    [upright_moves(position, board).first].compact
+  def upright_move(position, squares)
+    [upright_moves(position, squares).first].compact
   end
 
-  def right_horizontal_move(position, board)
-    [right_horizontal_moves(position, board).first].compact
+  def right_horizontal_move(position, squares)
+    [right_horizontal_moves(position, squares).first].compact
   end
 
-  def downright_move(position, board)
-    [downright_moves(position, board).first].compact
+  def downright_move(position, squares)
+    [downright_moves(position, squares).first].compact
   end
 
-  def bottom_vertical_move(position, board)
-    [bottom_vertical_moves(position, board).first].compact
+  def bottom_vertical_move(position, squares)
+    [bottom_vertical_moves(position, squares).first].compact
   end
 
-  def downleft_move(position, board)
-    [downleft_moves(position, board).first].compact
+  def downleft_move(position, squares)
+    [downleft_moves(position, squares).first].compact
   end
 
-  def left_horizontal_move(position, board)
-    [downleft_moves(position, board).first].compact
+  def left_horizontal_move(position, squares)
+    [downleft_moves(position, squares).first].compact
   end
 
-  def upleft_moves(position, board)
+  def upleft_moves(position, squares)
     row, column = position
     moves = []
 
-    until row == 0 || column == 0
+    until row.zero? || column.zero?
       row -= 1
       column -= 1
       next_step = [row, column]
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -79,17 +79,17 @@ module Movable
     moves
   end
 
-  def upright_moves(position, board)
+  def upright_moves(position, squares)
     row, column = position
     moves = []
 
-    until row == 0 || column == (board.size - 1)
+    until row.zero? || column == (squares.size - 1)
       row -= 1
       column += 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -98,17 +98,17 @@ module Movable
     moves
   end
 
-  def downleft_moves(position, board)
+  def downleft_moves(position, squares)
     row, column = position
     moves = []
 
-    until row == (board.size - 1) || column == 0
+    until row == (squares.size - 1) || column.zero?
       row += 1
       column -= 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -117,17 +117,17 @@ module Movable
     moves
   end
 
-  def downright_moves(position, board)
+  def downright_moves(position, squares)
     row, column = position
     moves = []
 
-    until row == (board.size - 1) || column == (board.size - 1)
+    until row == (squares.size - 1) || column == (squares.size - 1)
       row += 1
       column += 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -136,16 +136,16 @@ module Movable
     moves
   end
 
-  def top_vertical_moves(position, board)
+  def top_vertical_moves(position, squares)
     row, column = position
     moves = []
 
-    until row == 0
+    until row.zero?
       row -= 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -154,16 +154,16 @@ module Movable
     moves
   end
 
-  def bottom_vertical_moves(position, board)
+  def bottom_vertical_moves(position, squares)
     row, column = position
     moves = []
 
-    until row == (board.size - 1)
+    until row == (squares.size - 1)
       row += 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -172,16 +172,16 @@ module Movable
     moves
   end
 
-  def left_horizontal_moves(position, board)
+  def left_horizontal_moves(position, squares)
     row, column = position
     moves = []
 
-    until column == 0
+    until column.zero?
       column -= 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -190,16 +190,16 @@ module Movable
     moves
   end
 
-  def right_horizontal_moves(position, board)
+  def right_horizontal_moves(position, squares)
     row, column = position
     moves = []
 
-    until column == (board.size - 1)
+    until column == (squares.size - 1)
       column += 1
       next_step = [row, column]
 
-      if blocked?(next_step, board)
-        moves << next_step if killing_move?(next_step, board)
+      if blocked?(next_step, squares)
+        moves << next_step if killing_move?(next_step, squares)
         break
       end
 
@@ -208,21 +208,21 @@ module Movable
     moves
   end
 
-  def blocked?(move, board)
-    x, y = move
-    !board.dig(x, y).nil?
+  def blocked?(move, squares)
+    row, column = move
+    !squares.dig(row, column).nil?
   end
 
-  def killing_move?(move, board)
-    x, y = move
-    piece = board.dig(x, y)
+  def killing_move?(move, squares)
+    row, column = move
+    piece = squares.dig(row, column)
 
     return false if piece.nil?
 
     piece.color != color
   end
 
-  def out_of_bounds?(move, board)
-    move.any? { |coordinate| (coordinate.negative? || coordinate > board.size - 1) }
+  def out_of_bounds?(move, squares)
+    move.any? { |coordinate| (coordinate.negative? || coordinate > squares.size - 1) }
   end
 end
