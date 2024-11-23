@@ -170,8 +170,7 @@ class Chess
     elsif moves_into_check?(piece, destination)
       @display.cannot_move_into_check(piece, destination)
     elsif valid_castle?(piece, destination)
-      destination_piece = board.square(destination)
-      king, rook = identify_rook_and_king(piece, destination_piece)
+      @display.cannot_castle
     end
 
     @display.prompt_for_reselection
