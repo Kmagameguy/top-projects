@@ -1,4 +1,6 @@
 class FriendRequestsController < ApplicationController
+  before_action :set_user, only: [:index]
+
   def create
     @friend_request = FriendRequest.create(user_id: params[:user_id], friend_id: current_user.id)
     if @friend_request.save
@@ -11,7 +13,10 @@ class FriendRequestsController < ApplicationController
   end
 
   def index
-    @friend_requests = current_user.friend_requests
+    unless current_user.id == @user.id
+      flash[:alert] = "You can't see other people's friend requests!"
+      redirect_to root_path
+    end
   end
 
   def destroy

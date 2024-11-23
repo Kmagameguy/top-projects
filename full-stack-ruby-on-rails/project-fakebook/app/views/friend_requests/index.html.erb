@@ -1,9 +1,9 @@
 <div>
   <h1>Your Friend Requests</h1>
-  <% if friend_requests.nil? %>
+  <% if @user.friend_requests.none? %>
     <p>Looks like you don't have any open friend requests.</p>
   <% else %>
-    <% friend_requests.each do |friend_request| %>
+    <% @user.friend_requests.each do |friend_request| %>
       <div>
         <h3><%= friend_request.friend.name %></h3>
         <p><%= button_to "reject friend request", friend_request_path(friend_request), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></p>
