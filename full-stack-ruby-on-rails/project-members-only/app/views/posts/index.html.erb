@@ -2,7 +2,7 @@
   <h1>All Messages</h1>
 
   <% @posts.each do |post| %>
-    <div class="post-card">
+    <div class="card">
       <% if user_signed_in? %>
         <h3 class="post-author"><%= post.user.email %></h3>
       <% end %>
@@ -11,7 +11,10 @@
   <% end %>
 
   <% if user_signed_in? %>
-    <%= button_to "logout", destroy_user_session_path, method: :delete %>
+    <div class="btn-container">
+      <%= button_to "logout", destroy_user_session_path, method: :delete %>
+      <%= button_to "New Post", new_posts_path, method: :get %>
+    </div>
   <% else %>
     <%= button_to "login", new_user_session_path, method: :get %>
   <% end %>
