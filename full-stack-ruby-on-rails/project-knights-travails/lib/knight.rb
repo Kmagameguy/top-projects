@@ -23,13 +23,13 @@ k = Knight.new([3, 4])
 puts "Starting position: #{k.coordinates}"
 p k.possible_next_moves
 
-# Valid moves (Where "0, 0" is current position):
+# Valid moves (Where "x" is current position):
 #       0        1        2        3        4        5        6        7
 # 0 [      ] [      ] [      ] [      ] [      ] [      ] [      ] [      ]
 # 1 [      ] [      ] [      ] [      ] [      ] [      ] [      ] [      ]
 # 2 [      ] [      ] [-1, -2] [      ] [1, -2 ] [      ] [      ] [      ]
 # 3 [      ] [-2, -1] [      ] [      ] [      ] [ 2, -1] [      ] [      ]
-# 4 [      ] [      ] [      ] [ 0, 0 ] [      ] [      ] [      ] [      ]
+# 4 [      ] [      ] [      ] [   x  ] [      ] [      ] [      ] [      ]
 # 5 [      ] [ -2, 1] [      ] [      ] [      ] [ 2, 1 ] [      ] [      ]
 # 6 [      ] [      ] [ -1, 2] [      ] [ 1, 2 ] [      ] [      ] [      ]
 # 7 [      ] [      ] [      ] [      ] [      ] [      ] [      ] [      ]
