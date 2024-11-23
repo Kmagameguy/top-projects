@@ -11,9 +11,25 @@
 <% end %>
 
 <h2>All Flights</h2>
-<% @flights.each do |flight| %>
+<% @all_flights.each do |flight| %>
   <p>
     Departing From: <%= flight.departure_airport_id %>,
     Arriving At: <%= flight.arrival_airport_id %>
   </p>
+<% end %>
+
+<br>
+
+<% if @search_results %>
+  <h2>Search Results</h2>
+  <% unless @search_results.present? %>
+    <p>Sorry, we couldn't find any flights.</p>
+  <% else %>
+    <% @search_results.each do |flight| %>
+      <p>
+        Departing From: <%= flight.departure_airport_id %>
+        Arriving At: <%= flight.arrival_airport_id %>
+      </p>
+    <% end %>
+  <% end %>
 <% end %>
