@@ -27,7 +27,7 @@ class ConnectFour
       break if game_over?
     end
 
-    puts "#{@current_player.name} wins!"
+    show_game_over_message
   end
 
   def switch_players
@@ -54,7 +54,7 @@ class ConnectFour
   end
 
   def game_over?
-    board.any_in_a_row?(@current_player.marker)
+    player_has_four_in_a_row || no_spots_left?
   end
 
   private
@@ -72,10 +72,26 @@ class ConnectFour
   end
 
   def verify_column(column)
-    return column unless board.full?(column)
+    return column unless @board.column_full?(column)
   end
 
   def pick
     @current_player.select_column
+  end
+
+  def player_has_four_in_a_row
+    @board.any_in_a_row?(@current_player.marker)
+  end
+
+  def no_spots_left?
+    @board.full?
+  end
+
+  def show_game_over_message
+    if no_spots_left?
+      puts "It's a draw!"
+    else
+      puts "#{@current_player.name} wins!" unless no_spots_left?
+    end
   end
 end

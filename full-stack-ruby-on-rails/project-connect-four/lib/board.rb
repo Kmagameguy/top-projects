@@ -15,10 +15,14 @@ class Board
     @slots.all? { |row| row.all?(&:nil?) }
   end
 
-  def full?(column)
+  def column_full?(column)
     column_index = column - 1
 
     @slots.all? { |row| !row[column_index].nil? }
+  end
+
+  def full?
+    @slots.all? { |row| row.none?(&:nil?) }
   end
 
   def drop_to_slot(column, marker)

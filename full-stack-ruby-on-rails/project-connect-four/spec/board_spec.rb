@@ -31,18 +31,41 @@ RSpec.describe Board do
     end
   end
 
-  describe '#full?' do
+  describe '#column_full?' do
     context 'when a column has chips in every slot' do
       it 'returns true' do
         6.times { board.drop_to_slot(chosen_column, player_marker) }
-        expect(board.full?(chosen_column)).to be true
+        expect(board.column_full?(chosen_column)).to be true
       end
     end
 
     context 'when a column does not have chips in every slot' do
       it 'returns false' do
         5.times { board.drop_to_slot(chosen_column, player_marker) }
-        expect(board.full?(chosen_column)).to be false
+        expect(board.column_full?(chosen_column)).to be false
+      end
+    end
+  end
+
+  describe '#full?' do
+    context 'when all slots are filled' do
+      it 'returns true' do
+        board.slots.each { |row| row.map! { player_marker } }
+
+        expect(board).to be_full
+      end
+    end
+
+    context 'when board is blank' do
+      it 'returns false' do
+        expect(board).to_not be_full
+      end
+    end
+
+    context 'when some slots are still available' do
+      it 'returns false' do
+        board.drop_to_slot(chosen_column, player_marker)
+        expect(board).to_not be_full
       end
     end
   end
