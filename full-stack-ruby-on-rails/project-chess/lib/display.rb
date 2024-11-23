@@ -17,7 +17,7 @@ class Display
   end
 
   def self.show(board, player, round)
-    #self.clear
+    clear
     puts board.to_s
     puts "Round #{round}: #{player.name}'s turn."
   end
