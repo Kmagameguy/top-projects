@@ -10,19 +10,36 @@ require_relative 'game_file'
 class Chess
   attr_reader :board, :current_player
 
-  def initialize(white_name, black_name, save_file = GameFile.new)
+  def initialize(save_file = GameFile.new)
     @save_file = save_file
     @saved_and_quit = false
     @display = Display.new
-    load_game? ? load! : new_game(white_name, black_name)
+
+    setup_game
   end
 
-  def new_game(white_name, black_name)
-    @white_player = Player.new(white_name, :white)
-    @black_player = Player.new(black_name, :black)
+  def setup_game
+    @display.welcome
+    load_game? ? load! : new_game
+  end
+
+  def new_game
+    @white_player = Player.new(create_player, :white)
+    @black_player = Player.new(create_player, :black)
     @board = Board.new
     @current_player = @white_player
     @turn_count = 1
+  end
+
+  def create_player
+    @white_player.nil? ? @display.player_one_prompt : @display.player_two_prompt
+
+    loop do
+      name = Input.user_input
+      return name if Input.valid_name?(name)
+
+      @display.empty_name_warning
+    end
   end
 
   def load_game?

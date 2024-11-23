@@ -8,18 +8,36 @@ class Display
   NEWLINE = "\n"
   EMPTY_SQUARE = "-#{SPACER}"
 
-  def show_intro
+  def welcome
     clear
+    puts 'Welcome to Chess!'
+  end
+
+  def show_intro
+    welcome
     puts introduction
   end
 
   def introduction
     <<~HEREDOC
-      Welcome to Chess!
       To get started, please enter your player names.
       The first player to enter their name will be playing as WHITE.
 
     HEREDOC
+  end
+
+  def player_one_prompt
+    show_intro
+    puts "Enter player 1's name:"
+  end
+
+  def player_two_prompt
+    show_intro
+    puts "Enter player 2's name:"
+  end
+
+  def empty_name_warning
+    puts 'Name cannot be empty. Try again.'
   end
 
   def update!(board, player, round)

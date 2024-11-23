@@ -3,10 +3,11 @@
 require 'chess'
 
 RSpec.describe Chess do
-  subject(:game) { described_class.new('Freddy Krueger', 'Jason Voorhees') }
+  subject(:game) { described_class.new }
 
   before do
     allow_any_instance_of(Chess).to receive(:load_game?).and_return(false)
+    allow_any_instance_of(Chess).to receive(:create_player).and_return('Freddy Krueger', 'Jason Voorhees')
   end
 
   describe '#switch_players' do

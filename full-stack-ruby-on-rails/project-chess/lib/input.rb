@@ -15,15 +15,23 @@ class Input
 
   def validate_input
     loop do
-      input = user_input
+      input = self.class.user_input
       return input if chess_notation?(input) || quit?(input)
 
       puts 'Invalid input.  Try [Letter][Number] [Letter][Number]'
     end
   end
 
-  def user_input
+  def self.user_input
     gets.chomp.strip
+  end
+
+  def self.valid_name?(name)
+    !name.strip.empty?
+  end
+
+  def self.yes_response?
+    user_input.downcase == 'y'
   end
 
   def chess_notation?(input)
@@ -36,9 +44,5 @@ class Input
 
   def location(range)
     @string.match(CHESS_NOTATION_REGEX)[range].join('')
-  end
-
-  def self.yes_response?
-    user_input.downcase == 'y'
   end
 end
