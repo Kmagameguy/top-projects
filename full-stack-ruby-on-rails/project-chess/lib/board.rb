@@ -2,6 +2,7 @@
 
 require_relative './pieces/pawn'
 require_relative './pieces/rook'
+require_relative './pieces/knight'
 
 
 # A class to manage our chess board and its state
@@ -17,7 +18,18 @@ class Board
   def setup_board
     add_pawns
     add_rooks
+    add_knights
     #add_special_pieces
+  end
+
+  def add_pawns
+    black_pawn_rank = 1
+    white_pawn_rank = 6
+
+    size.times do |file|
+      squares[black_pawn_rank][file] = Pawn.new(:black, [black_pawn_rank, file])
+      squares[white_pawn_rank][file] = Pawn.new(:white, [white_pawn_rank, file])
+    end
   end
 
   def add_rooks
@@ -34,14 +46,18 @@ class Board
     squares[white_rook_rank][rook2_file] = Rook.new(:white, [white_rook_rank, rook2_file])
   end
 
-  def add_pawns
-    black_pawn_rank = 1
-    white_pawn_rank = 6
+  def add_knights
+    black_knight_rank = 0
+    white_knight_rank = 7
 
-    size.times do |file|
-      squares[black_pawn_rank][file] = Pawn.new(:black, [black_pawn_rank, file])
-      squares[white_pawn_rank][file] = Pawn.new(:white, [white_pawn_rank, file])
-    end
+    knight1_file = 1
+    knight2_file = 6
+
+    squares[black_knight_rank][knight1_file] = Knight.new(:black, [black_knight_rank, knight1_file])
+    squares[black_knight_rank][knight2_file] = Knight.new(:black, [black_knight_rank, knight2_file])
+
+    squares[white_knight_rank][knight1_file] = Knight.new(:white, [white_knight_rank, knight1_file])
+    squares[white_knight_rank][knight2_file] = Knight.new(:white, [white_knight_rank, knight2_file])
   end
 
   def add_special_pieces

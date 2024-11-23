@@ -7,13 +7,11 @@ class Piece
 
   STRING_REPRESENTATION = {
     black: {
-      knight: '♞',
       bishop: '♝',
       queen: '♛',
       king: '♚'
     },
     white: {
-      knight: '♘',
       bishop: '♗',
       queen: '♕',
       king: '♔'
@@ -46,9 +44,5 @@ class Piece
 
   def white?
     color == :white
-  end
-
-  def to_s
-    STRING_REPRESENTATION.dig(color, type)
   end
 end
