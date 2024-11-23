@@ -15,7 +15,7 @@ class Input
   def validate_input
     loop do
       input = user_input
-      return input if valid?(input)
+      return input if chess_notation?(input)
 
       puts 'Invalid input.  Try [Letter][Number] [Letter][Number]'
     end
@@ -27,10 +27,6 @@ class Input
 
   def chess_notation?(input)
     input.match?(CHESS_NOTATION_REGEX)
-  end
-
-  def valid?(input)
-    chess_notation?(input)
   end
 
   def location(range)
