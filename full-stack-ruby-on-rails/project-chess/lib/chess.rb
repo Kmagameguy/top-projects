@@ -30,18 +30,6 @@ class Chess
     puts "Game over! #{other_player.name} wins!"
   end
 
-  def switch_players
-    @current_player = other_player
-  end
-
-  def other_player
-    if @current_player == @white_player
-      @black_player
-    else
-      @white_player
-    end
-  end
-
   def take_turn
     puts 'Make your move:'
     loop do
@@ -58,73 +46,28 @@ class Chess
     end
   end
 
-  def valid?(piece, destination)
-    valid_piece?(piece) && valid_destination?(piece, destination)
+  def switch_players
+    @current_player = other_player
   end
 
-  def valid_piece?(piece)
-    return false unless own_piece?(piece)
-    return false if trapped?(piece)
-
-    true
-  end
-
-  def valid_destination?(piece, destination)
-    if in_move_set?(piece, destination)
-      return false if hits_king?(destination)
-      return false if moves_into_check?(piece, destination)
-
-      true
+  def other_player
+    if @current_player == @white_player
+      @black_player
     else
-      false
+      @white_player
     end
-  end
-
-  def own_piece?(piece)
-    piece&.color == @current_player.color
-  end
-
-  def trapped?(piece)
-    piece&.possible_moves(board.squares)&.empty?
-  end
-
-  def in_move_set?(piece, move)
-    piece.possible_moves(board.squares).include?(move) unless hits_king?(move)
-  end
-
-  def hits_king?(move)
-    move == board.find_king(other_player.color)
-  end
-
-  def checkmate?
-    board.check?(@current_player.color, other_player.color) &&
-      !can_break_check?
-  end
-
-  def can_break_check?
-    moves = []
-    pieces = board.find_pieces(@current_player.color)
-    pieces.each do |piece|
-      moves << piece.possible_moves(board.squares).reject do |move|
-        moves_into_check?(piece, move)
-      end
-    end
-    !moves.flatten.empty?
-  end
-
-  def moves_into_check?(piece, move)
-    temp_board = Marshal.load(Marshal.dump(board))
-    piece = temp_board.square(piece.position)
-    temp_board.update!(piece, move)
-    temp_board.check?(@current_player.color, other_player.color)
   end
 
   def increment_round
     @turn_count += 1
   end
 
+  def valid?(piece, destination)
+    valid_piece?(piece) && valid_destination?(piece, destination)
+  end
+
   def game_over?
-    @turn_count == 75 || checkmate?
+    checkmate?
   end
 
   def chess_notation_to_array(chess_notation)
@@ -159,6 +102,64 @@ class Chess
   end
 
   private
+
+  def valid_piece?(piece)
+    return false unless own_piece?(piece)
+    return false if trapped?(piece)
+
+    true
+  end
+
+  def valid_destination?(piece, destination)
+    if in_move_set?(piece, destination)
+      return false if hits_king?(destination)
+      return false if moves_into_check?(piece, destination)
+
+      true
+    else
+      false
+    end
+  end
+
+  def own_piece?(piece)
+    piece&.color == @current_player.color
+  end
+
+  # To Do: Move to Piece class
+  def trapped?(piece)
+    piece&.possible_moves(board.squares)&.empty?
+  end
+
+  def in_move_set?(piece, move)
+    piece.possible_moves(board.squares).include?(move) unless hits_king?(move)
+  end
+
+  def hits_king?(move)
+    move == board.find_king(other_player.color)
+  end
+
+  def checkmate?
+    board.check?(@current_player.color, other_player.color) &&
+      !can_break_check?
+  end
+
+  def can_break_check?
+    moves = []
+    pieces = board.find_pieces(@current_player.color)
+    pieces.each do |piece|
+      moves << piece.possible_moves(board.squares).reject do |move|
+        moves_into_check?(piece, move)
+      end
+    end
+    !moves.flatten.empty?
+  end
+
+  def moves_into_check?(piece, move)
+    temp_board = Marshal.load(Marshal.dump(board))
+    piece = temp_board.square(piece.position)
+    temp_board.update!(piece, move)
+    temp_board.check?(@current_player.color, other_player.color)
+  end
 
   def indexed_alphabet
     ('a'..'h').each_with_object({}).with_index do |(letter, hash), index|
