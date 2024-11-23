@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'piece'
+require_relative 'pawn'
 
 # A class to manage our chess board and its state
 class Board
@@ -18,12 +19,12 @@ class Board
   end
 
   def add_pawns
-    black_pawn_row = squares[1]
-    white_pawn_row = squares[6]
+    black_pawn_rank = 1
+    white_pawn_rank = 6
 
-    size.times do |column|
-      black_pawn_row[column] = Piece.new(:black, :pawn)
-      white_pawn_row[column] = Piece.new(:white, :pawn)
+    size.times do |file|
+      squares[black_pawn_rank][file] = Pawn.new(:black, [black_pawn_rank, file])
+      squares[white_pawn_rank][file] = Pawn.new(:white, [white_pawn_rank, file])
     end
   end
 
