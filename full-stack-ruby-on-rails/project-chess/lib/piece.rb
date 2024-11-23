@@ -4,6 +4,25 @@
 class Piece
   attr_reader :color, :type
 
+  STRING_REPRESENTATION = {
+    black: {
+      pawn: '♟︎',
+      knight: '♞',
+      bishop: '♝',
+      rook: '♜',
+      queen: '♛',
+      king: '♚'
+    },
+    white: {
+      pawn: '♙',
+      knight: '♘',
+      bishop: '♗',
+      rook: '♖',
+      queen: '♕',
+      king: '♔'
+    }
+  }
+
   def initialize(color, type)
     @color = color
     @type = type
@@ -16,5 +35,9 @@ class Piece
 
   def move
     @moved = true
+  end
+
+  def to_s
+    STRING_REPRESENTATION.dig(color, type)
   end
 end
