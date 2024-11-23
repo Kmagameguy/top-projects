@@ -53,7 +53,7 @@ class Chess
         board.update!(piece, destination)
         break
       else
-        puts 'Invalid option(s).  Select again.'
+        print_error(piece, destination)
       end
     end
   end
@@ -135,6 +135,27 @@ class Chess
     row, column = array_notation
     row = board.size - row
     "#{indexed_alphabet.key(column)}#{row}"
+  end
+
+  def print_error(piece, destination)
+    if !valid_piece?(piece)
+      if !own_piece?(piece)
+        puts "That isn't one of your pieces."
+      elsif trapped?(piece)
+        puts "Your #{piece.class} cannot move."
+      end
+    elsif !valid_destination?(piece, destination)
+      if in_move_set?(piece, destination)
+        if hits_king?(destination)
+          puts "You cannot take the opponent's King!"
+        elsif moves_into_check?(piece, destination)
+          puts "Moving #{piece.class} to #{array_to_chess_notation(destination)} would put your King into check!"
+        end
+      else
+        puts "#{piece.class} cannot move to #{array_to_chess_notation(destination) }"
+      end
+    end
+    puts 'Select again.'
   end
 
   private
