@@ -73,7 +73,7 @@ class Chess
       @display.update!(board.squares, @current_player, @turn_count)
       break if game_over?
 
-      puts 'Your King is checked!' if board.check?(@current_player.color, other_player.color)
+      @display.check_warning if board.check?(@current_player.color, other_player.color)
       take_turn
       return if @saved_and_quit
 
@@ -140,23 +140,18 @@ class Chess
   end
 
   def print_error(piece, destination)
-    if !valid_piece?(piece)
-      if !own_piece?(piece)
-        puts "That isn't one of your pieces."
-      elsif trapped?(piece)
-        puts "Your #{piece.class} cannot move."
-      end
-    elsif !valid_destination?(piece, destination)
-      if in_move_set?(piece, destination)
-        if hits_king?(destination)
-          puts "You cannot take the opponent's King!"
-        elsif moves_into_check?(piece, destination)
-          puts "Moving #{piece.class} to #{array_to_chess_notation(destination)} would put your King into check!"
-        end
-      else
-        puts "#{piece.class} cannot move to #{array_to_chess_notation(destination) }"
-      end
+    if !own_piece?(piece)
+      @display.not_piece_owner
+    elsif trapped?(piece)
+      @display.no_eligible_moves(piece.class)
+    elsif !in_move_set(piece, destination)
+      @display.invalid_destination(piece.class, array_to_chess_notation(destination))
+    elsif hits_king?(destination)
+      @display.cannot_take_king
+    elsif moves_into_check?(piece, destination)
+      @display.cannot_move_into_check
     end
+
     puts 'Select again.'
   end
 

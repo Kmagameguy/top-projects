@@ -28,6 +28,30 @@ class Display
     puts "Round #{round}: #{player.name}'s turn."
   end
 
+  def check_warning
+    puts 'Your King is checked!'
+  end
+
+  def not_piece_owner
+    puts 'That is not one of your pieces.'
+  end
+
+  def no_eligible_moves(piece)
+    puts "Your #{piece} cannot move."
+  end
+
+  def invalid_destination(piece, destination)
+    puts "#{piece} cannot move to #{destination}."
+  end
+
+  def cannot_take_king
+    puts "You cannot take the opponent's King!"
+  end
+
+  def cannot_move_into_check(piece, destination)
+    puts "Moving #{piece} to #{destination} would put your King into check!"
+  end
+
   private
 
   def clear
