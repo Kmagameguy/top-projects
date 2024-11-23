@@ -7,11 +7,9 @@ class Piece
 
   STRING_REPRESENTATION = {
     black: {
-      queen: '♛',
       king: '♚'
     },
     white: {
-      queen: '♕',
       king: '♔'
     }
   }
