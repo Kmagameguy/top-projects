@@ -16,6 +16,7 @@ class EventsController < ApplicationController
     @event = current_user.created_events.build(event_params)
 
     if @event.save
+      flash[:notice] = 'Event created successfully.'
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity
@@ -30,8 +31,10 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     if @event.update(event_params)
+      flash[:notice] = 'Event updated successfully.'
       redirect_to @event
     else
+      flash.now[:alert] = 'Event update failed.'
       render :edit, status: :unprocessable_entity
     end
   end
@@ -40,6 +43,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event.destroy
 
+    flash[:notice] = 'Event deleted successfully.'
     redirect_to root_path, status: :see_other
   end
 
