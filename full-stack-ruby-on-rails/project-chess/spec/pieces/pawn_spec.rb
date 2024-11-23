@@ -159,6 +159,48 @@ RSpec.describe Pawn do
     end
   end
 
+  describe '#trapped?' do
+    let(:board) { Array.new(8) { Array.new(8) } }
+    subject(:pawn) { described_class.new(:black, [1, 0]) }
+
+    context 'when it can move to a new square' do
+      it 'returns false' do
+        expect(pawn.trapped?(board)).to be false
+      end
+    end
+
+    context 'when it is blocked by a friend' do
+      before do
+        board[2][0] = Piece.new(:black, [2, 0])
+      end
+
+      it 'returns true' do
+        expect(pawn.trapped?(board)).to be true
+      end
+    end
+
+    context 'when it is blocked by an enemy' do
+      before do
+        board[2][0] = Piece.new(:white, [2, 0])
+      end
+
+      it 'returns true' do
+        expect(pawn.trapped?(board)).to be true
+      end
+    end
+
+    context 'when it is blocked by another piece but can move by attacking' do
+      before do
+        board[2][0] = Piece.new(:white, [2, 0])
+        board[2][1] = Piece.new(:white, [2, 1])
+      end
+
+      it 'returns false' do
+        expect(pawn.trapped?(board)).to be false
+      end
+    end
+  end
+
   describe '#promote?' do
     let(:board) { Array.new(8) { Array.new(8) } }
 

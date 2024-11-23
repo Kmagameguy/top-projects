@@ -61,6 +61,47 @@ RSpec.describe Rook do
     end
   end
 
+  describe '#trapped?' do
+    let(:board) { Array.new(8) { Array.new(8) } }
+    subject(:rook) { described_class.new(:black, [0, 0]) }
+
+    context 'when it can move to a new square' do
+      it 'returns false' do
+        expect(rook.trapped?(board)).to be false
+      end
+    end
+
+    context 'when it is surrounded by friends' do
+      surrounding_squares = [[1, 0], [0, 1]]
+
+      before do
+        surrounding_squares.each do |square|
+          x, y = square
+          board[x][y] = Piece.new(:black, square)
+        end
+      end
+
+      it 'returns true' do
+        expect(rook.trapped?(board)).to be true
+      end
+    end
+
+    context 'when it is surrounded by enemies' do
+      surrounding_squares = [[1, 0], [0, 1]]
+
+      before do
+        surrounding_squares.each do |square|
+          x, y = square
+          board[x][y] = Piece.new(:white, square)
+        end
+      end
+
+      it 'returns false' do
+        expect(rook.trapped?(board)).to be false
+      end
+    end
+  end
+
   describe '#to_s' do
     context 'when it is black' do
       subject(:rook) { described_class.new(:black, [0, 0]) }

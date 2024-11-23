@@ -69,6 +69,45 @@ RSpec.describe Queen do
     end
   end
 
+  describe '#trapped?' do
+    subject(:queen) { described_class.new(:black, [0, 3]) }
+    context 'when it can move to a new square' do
+      it 'returns false' do
+        expect(queen.trapped?(board)).to be false
+      end
+    end
+
+    context 'when it is surrounded by friends' do
+      surrounding_squares = [[0, 2], [1, 2], [1, 3], [1, 4], [0, 4]]
+
+      before do
+        surrounding_squares.each do |square|
+          x, y = square
+          board[x][y] = Piece.new(:black, square)
+        end
+      end
+
+      it 'returns true' do
+        expect(queen.trapped?(board)).to be true
+      end
+    end
+
+    context 'when it is surrounded by enemies' do
+      surrounding_squares = [[0, 2], [1, 2], [1, 3], [1, 4], [0, 4]]
+
+      before do
+        surrounding_squares.each do |square|
+          x, y = square
+          board[x][y] = Piece.new(:white, square)
+        end
+      end
+
+      it 'returns false' do
+        expect(queen.trapped?(board)).to be false
+      end
+    end
+  end
+
   describe '#to_s' do
     context 'when it is black' do
       subject(:black_queen) { described_class.new(:black, [0, 3]) }

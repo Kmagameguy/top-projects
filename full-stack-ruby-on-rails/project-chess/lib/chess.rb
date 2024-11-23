@@ -160,7 +160,7 @@ class Chess
   def print_error(piece, destination)
     if !own_piece?(piece)
       @display.not_piece_owner
-    elsif trapped?(piece)
+    elsif piece&.trapped?(board.squares)
       @display.no_eligible_moves(piece.class)
     elsif !in_move_set(piece, destination)
       @display.invalid_destination(piece.class, array_to_chess_notation(destination))
@@ -177,7 +177,7 @@ class Chess
 
   def valid_piece?(piece)
     return false unless own_piece?(piece)
-    return false if trapped?(piece)
+    return false if piece&.trapped?(board.squares)
 
     true
   end

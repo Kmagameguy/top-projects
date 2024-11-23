@@ -69,6 +69,38 @@ RSpec.describe Bishop do
     end
   end
 
+  describe '#trapped?' do
+    subject(:bishop) { described_class.new(:black, [0, 2]) }
+
+    context 'when it can move to a new square' do
+      it 'returns false' do
+        expect(bishop.trapped?(board)).to be false
+      end
+    end
+
+    context 'when it is surrounded by friends' do
+      before do
+        board[1][1] = Piece.new(:black, [1, 1])
+        board[1][3] = Piece.new(:black, [1, 3])
+      end
+
+      it 'returns true' do
+        expect(bishop.trapped?(board)).to be true
+      end
+    end
+
+    context 'when it is surrounded by enemies' do
+      before do
+        board[1][1] = Piece.new(:white, [1, 1])
+        board[1][3] = Piece.new(:white, [1, 3])
+      end
+
+      it 'returns false' do
+        expect(bishop.trapped?(board)).to be false
+      end
+    end
+  end
+
   describe '#to_s' do
     context 'when it is black' do
       subject(:black_bishop) { described_class.new(:black, [0, 1]) }

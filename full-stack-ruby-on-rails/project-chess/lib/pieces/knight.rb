@@ -14,6 +14,10 @@ class Knight < Piece
          .reject { |move| blocked?(move, board) && !killing_move?(move, board) }
   end
 
+  def trapped?(board)
+    possible_moves(board).empty?
+  end
+
   def to_s
     white? ? '♘' : '♞'
   end

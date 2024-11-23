@@ -65,6 +65,49 @@ RSpec.describe King do
     end
   end
 
+  describe '#trapped?' do
+    subject(:king) { described_class.new(:black, [0, 4]) }
+
+    context 'when it can move to a new square' do
+      it 'returns false' do
+        expect(king.trapped?(board)).to be false
+      end
+    end
+
+    context 'when it is surrounded by friends' do
+      surrounding_squares = [[0, 3], [1, 3], [1, 4], [1, 5], [0, 5]]
+
+      before do
+        surrounding_squares.each do |square|
+          x, y = square
+          board[x][y] = Piece.new(:black, square)
+        end
+      end
+
+      it 'returns true' do
+        expect(king.trapped?(board)).to be true
+      end
+    end
+
+    context 'when it can escape by taking an enemy' do
+      friendly_squares = [[0, 3], [1, 3], [1, 4], [1, 5]]
+      enemy_square = [0, 5]
+
+      before do
+        friendly_squares.each do |square|
+          x, y = square
+          board[x][y] = Piece.new(:black, square)
+        end
+
+        board[enemy_square[0]][enemy_square[1]] = Piece.new(:white, enemy_square)
+      end
+
+      it 'returns false' do
+        expect(king.trapped?(board)).to be false
+      end
+    end
+  end
+
   describe '#to_s' do
     context 'when it is black' do
       subject(:black_king) { described_class.new(:black, [0, 4]) }

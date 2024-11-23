@@ -65,6 +65,10 @@ class Pawn < Piece
     (position[0].zero? || position[0] == 7)
   end
 
+  def trapped?(board)
+    possible_moves(board).empty?
+  end
+
   def to_s
     white? ? '♙' : '♟︎'
   end
