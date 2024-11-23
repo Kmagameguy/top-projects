@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'piece'
-require_relative 'pawn'
-require_relative 'rook'
+require_relative './pieces/pawn'
+require_relative './pieces/rook'
+
 
 # A class to manage our chess board and its state
 class Board
