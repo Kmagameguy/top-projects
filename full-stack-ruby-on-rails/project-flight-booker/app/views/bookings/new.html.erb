@@ -8,21 +8,35 @@
     <p>Arriving At: <%= @booking.flight.arrival_airport_id %></p>
   </div>
 
-  <%= form_for @booking do |f| %>
+  <%= form_for @booking, data: { controller: :passenger } do |f| %>
     <%= f.hidden_field :flight_id, value: params[:flight_id] %>
 
     <h2>Please tell us who will be flying:</h2>
-    <div class="form-row">
-    <%= f.fields_for :passengers do |passenger| %>
-      <div class="passenger-fields">
-        <%= passenger.label :name %>
-        <%= passenger.text_field :name %>
+    <div class="form-row" data-passenger-target="source" >
+      <%= f.fields_for :passengers do |passenger| %>
 
-        <%= passenger.label :email %>
-        <%= passenger.text_field :email %>
-      </div>
-    <% end %>
-  </div>
+        <template data-passenger-target="row">
+          <div class="passenger-fields">
+            <%= passenger.label :name %>
+            <%= passenger.text_field :name %>
+
+            <%= passenger.label :email %>
+            <%= passenger.text_field :email %>
+            <%= f.button 'Remove Passenger', type: 'button', data: { action: "passenger#remove" } %>
+          </div>
+        </template>
+
+        <div class="passenger-fields">
+          <%= passenger.label :name %>
+          <%= passenger.text_field :name %>
+
+          <%= passenger.label :email %>
+          <%= passenger.text_field :email %>
+          <%= f.button 'Remove Passenger', type: 'button', data: { action: "passenger#remove" } %>
+        </div>
+      <% end %>
+    </div>
+    <button data-action="passenger#add">Add Passenger</button>
     <%= f.submit %>
   <% end %>
 
