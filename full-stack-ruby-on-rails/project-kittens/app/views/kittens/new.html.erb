@@ -1,0 +1,9 @@
+<% if @kitten.errors.full_messages.any? %>
+  <ul>
+    <% @kitten.errors.full_messages.each do |error_message| %>
+      <li><%= error_message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render 'kittens/form', kitten: @kitten %>

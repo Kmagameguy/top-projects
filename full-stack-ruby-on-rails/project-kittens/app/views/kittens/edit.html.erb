@@ -1,0 +1,13 @@
+<% if @kitten.errors.full_messages.any? %>
+  <ul>
+    <% @kitten.errors.full_messages.each do |error_message| %>
+      <li><%= error_message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render 'kittens/form', kitten: @kitten %>
+
+<%= link_to 'Cancel', kitten_path(@kitten), method: :get %>
+<%= link_to 'Delete Kitten', kitten_path(@kitten), method: :delete,
+  data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
