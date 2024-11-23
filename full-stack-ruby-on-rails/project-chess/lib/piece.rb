@@ -2,6 +2,7 @@
 
 # A generic playing piece
 class Piece
+  attr_accessor :position
   attr_reader :color, :type
 
   STRING_REPRESENTATION = {
@@ -23,9 +24,9 @@ class Piece
     }
   }
 
-  def initialize(color, type)
+  def initialize(color, position)
     @color = color
-    @type = type
+    @position = position
     @moved = false
   end
 
@@ -33,7 +34,8 @@ class Piece
     @moved
   end
 
-  def move
+  def move(coordinates)
+    @position = coordinates
     @moved = true
   end
 

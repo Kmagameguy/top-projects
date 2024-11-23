@@ -14,7 +14,7 @@ class Board
 
   def setup_board
     add_pawns
-    add_special_pieces
+    #add_special_pieces
   end
 
   def add_pawns
