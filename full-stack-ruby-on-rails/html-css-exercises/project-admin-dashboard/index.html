@@ -5,27 +5,28 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="./style.css"
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" />
 </head>
 <body>
   <div class="container">
-
     <div class="header">
-      <div class="toolbar">
-        <input type="search" name="search" id="search"/>
-        <ul>
-          <li id="notifications">Notifications</li>
-          <li id="user-profile">Profile</li>
-          <li id="user-name">Vin Diesel</li>
-        </ul>
+      <div id="search">
+        <label for="search-box"><span class="mdi mdi-magnify"></span></label>
+        <input type="search-box" name="search-box" id="search-box"/>
+      </div>
+      <div id="user-info">
+        <span class="mdi mdi-bell-ring-outline"></span>
+        <img class="rounded-img small-img" src="./assets/avatar1.png" alt="" />
+        <p>Vin Diesel</p>
       </div>
 
-      <div class="sub-toolbar">
-        <div id="welcome-panel">
-          <img src="..." alt="">
-          <p>Hi there,</p>
-          <h3>Vin Diesel (@diesel)</h3>
-        </div>
+      <div id="welcome-panel">
+        <img class="rounded-img large-img" src="./assets/avatar1.png" alt="" />
+        <p>Hi there,</p>
+        <h3>Vin Diesel (@diesel)</h3>
+      </div>
+      <div id="header-buttons">
         <button id="new">New</button>
         <button id="upload">Upload</button>
         <button id="share">Share</button>
@@ -33,30 +34,58 @@
     </div>
 
     <div class="sidebar">
-      <div class="logo"></div>
-      <div class="sidebar-section-one">
+      <div id="logo">
+        <h1><span class="mdi mdi-view-dashboard"></span>Dashboard</h1>
+      </div>
+      <div id="main-list">
         <ul>
-          <li id="home">Home</li>
-          <li id="profile">Profile</li>
-          <li id="messages">Messages</li>
-          <li id="history">History</li>
-          <li id="tasks">Tasks</li>
-          <li id="communities">Communities</li>
+          <li id="home">
+            <span class="mdi mdi-home"></span>
+            <p>Home</p>
+          </li>
+          <li id="profile">
+            <span class="mdi mdi-card-account-details-outline"></span>
+            <p>Profile</p>
+          </li>
+          <li id="messages">
+            <span class="mdi mdi-message-reply"></span>
+            <p>Messages</p>
+            </li>
+          <li id="history">
+            <span class="mdi mdi-clock-time-three"></span>
+            <p>History</p>
+          </li>
+          <li id="tasks">
+            <span class="mdi mdi-note-multiple"></span>
+            <p>Tasks</p>
+          </li>
+          <li id="communities">
+            <span class="mdi mdi-account-group"></span>
+            <p>Communities</p>
+          </li>
         </ul>
       </div>
-
-      <div class="sidebar-section-two">
+      <div id="secondary-list">
         <ul>
-          <li id="settings">Settings</li>
-          <li id="support">Support</li>
-          <li id="privacy">Privacy</li>
+          <li id="settings">
+            <span class="mdi mdi-cog"></span>
+            <p>Settings</p>
+          </li>
+          <li id="support">
+            <span class="mdi mdi-help-box"></span>
+            <p>Support</p>
+          </li>
+          <li id="privacy">
+            <span class="mdi mdi-shield-check"></span>
+            <p>Privacy</p>
+          </li>
         </ul>
       </div>
     </div>
 
     <div class="content-container">
       <div id="projects">
-        <h2>Your Projects</h2>
+        <h2>Projects</h2>
         <div class="project-card">
           <h3>Super Cool Project</h3>
           <p>
@@ -138,58 +167,62 @@
         </div>
       </div>
 
-      <div id="announcements">
-        <h2>Announcements</h2>
-        <ul>
-          <li class="announcement-card">
-            <h3>Site Maintenance</h3>
-            <p>
-              Vestibulum condimentum tellus lacus,
-              in accumsan elit maximus ac. Donec hendrerit sodales congue...
-            </p>
-          </li>
-          <li class="announcement-card">
-            <h3>Community Share Day</h3>
-            <p>
-              Nam vel lectus tincidunt, rutrum nulla eu, ornare libero.
-              Aliquam dictum accumsan porttitor...
-            </p>
-          </li>
-          <li class="announcement-card">
-            <h3>Updated Privacy Policy</h3>
-            <p>
-              Phasellus effictur nisi eget elit consectetur,
-              eget condimentum ante auctor.
-              Cras fringilla sagittis sem in mattis...
-            </p>
-          </li>
-        </ul>
-      </div>
+      <div class="right-sidebar">
+        <div id="announcements">
+          <h2>Announcements</h2>
+          <ul>
+            <li class="announcement-card">
+              <h3>Site Maintenance</h3>
+              <p>
+                Vestibulum condimentum tellus lacus,
+                in accumsan elit maximus ac. Donec hendrerit sodales congue...
+              </p>
+              <hr />
+            </li>
+            <li class="announcement-card">
+              <h3>Community Share Day</h3>
+              <p>
+                Nam vel lectus tincidunt, rutrum nulla eu, ornare libero.
+                Aliquam dictum accumsan porttitor...
+              </p>
+              <hr />
+            </li>
+            <li class="announcement-card">
+              <h3>Updated Privacy Policy</h3>
+              <p>
+                Phasellus effictur nisi eget elit consectetur,
+                eget condimentum ante auctor.
+                Cras fringilla sagittis sem in mattis...
+              </p>
+            </li>
+          </ul>
+        </div>
 
-      <div id="trending">
-        <h2>Trending</h2>
-        <ul>
-          <li>
-            <p class="user-image">image placeholder</p>
-            <p class="user-name">@tegan</p>
-            <p class="user-description">World Peace Builder</p>
-          </li>
-          <li>
-            <p class="user-image">image placeholder</p>
-            <p class="user-name">@morgan</p>
-            <p class="user-description">Super Cool Project</p>
-          </li>
-          <li>
-            <p class="user-image">image placeholder</p>
-            <p class="user-name">@kendall</p>
-            <p class="user-description">Life Changing App</p>
-          </li>
-          <li>
-            <p class="user-image">placeholder image</p>
-            <p class="user-name">@alex</p>
-            <p class="user-description">No Traffic Maker</p>
-          </li>
-        </ul>
+        <div id="trending">
+          <h2>Trending</h2>
+          <ul>
+            <li>
+              <p class="user-image"><img src="./assets/avatar2.png" alt="" class="rounded-img small-img"></p>
+              <p class="user-name">@tegan</p>
+              <p class="user-description">World Peace Builder</p>
+            </li>
+            <li>
+              <p class="user-image"><img src="./assets/avatar1.png" alt="" class="rounded-img small-img"></p>
+              <p class="user-name">@morgan</p>
+              <p class="user-description">Super Cool Project</p>
+            </li>
+            <li>
+              <p class="user-image"><img src="./assets/avatar3.png" alt="" class="rounded-img small-img"></p>
+              <p class="user-name">@kendall</p>
+              <p class="user-description">Life Changing App</p>
+            </li>
+            <li>
+              <p class="user-image"><img src="./assets/avatar4.png" alt="" class="rounded-img small-img"></p>
+              <p class="user-name">@alex</p>
+              <p class="user-description">No Traffic Maker</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
