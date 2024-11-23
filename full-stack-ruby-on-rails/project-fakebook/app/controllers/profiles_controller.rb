@@ -9,8 +9,7 @@ class ProfilesController < ApplicationController
     if current_user.id == @user.id
       @profile = @user.profile
     else
-      flash[:alert] = "You cannot edit someone else's profile."
-      redirect_to user_posts_path(@user)
+      redirect_to user_posts_path(@user), status: :unprocessable_entity
     end
   end
 

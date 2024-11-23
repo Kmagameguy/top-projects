@@ -14,8 +14,7 @@ class FriendRequestsController < ApplicationController
 
   def index
     unless current_user.id == @user.id
-      flash[:alert] = "You can't see other people's friend requests!"
-      redirect_to root_path
+      redirect_to root_path, status: :unprocessable_entity
     end
   end
 
