@@ -1,6 +1,11 @@
-<%= link_to event_path event do %>
-  <h2><%= event.title %></h2>
-  <p><%= event.creator.name %></p>
-  <p><%= event.description %></p>
-  <p><%= friendly_date(event) %> at <%= event.location %></p>
+<%= link_to event_path(event), class: "card" do %>
+  <div class="card-header">
+    <h2 class="event-title"><%= event.title %></h2>
+  </div>
+  <div class="card-body">
+    <p class="event-date"><%= friendly_date(event) %></li>
+    <p class="event-location"><%= event.location %></p>
+    <p class="event-description"><%= event.description %></p>
+    <p class="event-attendees"><%= event.attendee_count %> <%= "attendee".pluralize(event.attendee_count) %></p>
+  </div>
 <% end %>

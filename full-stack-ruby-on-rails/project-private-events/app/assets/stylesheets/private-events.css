@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+/* README NEXT TIME YOU PICK THIS PROJECT UP
+ * The grid stuff isn't working great on the main
+ * page because it expects the first auto row
+ * to be a header row.  Since the index's first
+ * auto-row are cards, the sizing isn't right.
+ * need to either containerize each section as its own grid
+ * (e.g. EventsContainer, PastEventsContainer, MyEventsContainer
+ * or go back to the drawing board
+  */
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  --primary-background-color: #FFFFFE;
+  --secondary-background-color: #FAEEE7;
+
+  --primary-outline-color: #0D0D0D;
+  --primary-headline-color: #0D0D0D;
+  --primary-card-headline-color: white;
+  --primary-text-color: #2A2A2A;
+  --secondary-text-color: #A69D97;
+  --primary-accent-color: #D9376E;
+  --secondary-accent-color: #FF8E3C;
+
+  --primary-button-color: #FF8E3C;
+  --primary-button-hover-color: #FFA768;
+  --primary-button-active-color: #EC7928;
+
+  --primary-error-background-color: #F8D7DA;
+  --primary-error-text-color: #721C24;
+  --primary-error-border-color: #F5C6CB;
+
+  --primary-success-background-color: #D4EDDA;
+  --primary-success-text-color: #155724;
+  --primary-success-border-color: #C3E6CB;
+
+  --heading-font-family: 'Lato', sans-serif;
+  --heading-font-weight: 700;
+
+  --paragraph-font-family: 'Merriweather', serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-background-color);
+  font-family: var(--paragraph-font-family);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font-family: var(--heading-font-family);
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  margin-bottom: 1rem;
+}
+
+nav {
+  font-family: var(--heading-font-family);
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  padding: 1rem;
+  background-color: var(--secondary-background-color);
+  border-bottom: 0.1rem solid var(--primary-outline-color);
+
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+nav a,
+nav a:hover,
+nav a:visited,
+nav a:active {
+  color: var(--primary-text-color);
+  text-decoration: none;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+nav a {
+  overflow: hidden;
+  padding-bottom: 0.2rem;
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.2rem;
+  background-color: var(--primary-accent-color);
+  opacity: 1;
+  transform: translate3d(-100%, 0, 0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+nav a:hover::after,
+nav a:focus::after {
+  transform: translate3d(0, 0, 0);
+}
+
+.btn-home {
+  margin-right: auto;
+}
+
+.toast {
+  margin: 2rem 6rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  border: 1px solid;
+}
+
+.notice {
+  color: var(--primary-success-text-color);
+  background-color: var(--primary-success-background-color);
+  border-color: var(--primary-success-border-color);
+}
+
+.alert {
+  color: var(--primary-error-text-color);
+  background-color: var(--primary-error-background-color);
+  border-color: var(--primary-error-border-color);
+}
+
+.user-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  margin: 0 2rem;
+  gap: 1rem;
+}
+
+
+.single-page-wrapper {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.single-page-container {
+  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  margin: 0 2rem;
+  gap: 2rem;
+}
+
+.user-container .section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-auto-rows: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.event-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-auto-rows: 1fr;
+  margin: 0 2rem;
+  gap: 1rem;
+  align-items: start;
+}
+
+.section-header {
+  cursor: default;
+  color: var(--primary-headline-color);
+  grid-column: 1 / -1;
+  margin-bottom: 1rem;
+}
+
+.event-container .card,
+.user-container .section .card {
+  text-decoration: none;
+  color: var(--primary-text-color);
+  border: 1px solid var(--primary-outline-color);
+  border-radius: 0.25rem;
+  transition: box-shadow 0.2s ease-in-out;
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+}
+
+.event-container .card:hover,
+.user-container .section .card:hover {
+  box-shadow: 0.25rem 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+
+.event-container .card-header,
+.user-container .section .card-header {
+  color: var(--primary-card-headline-color);
+  background-color: var(--primary-accent-color);
+  border-bottom: 0.1rem solid var(--primary-outline-color);
+  height: 100px;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.event-container .card-body,
+.user-container .section .card-body {
+  display: grid;
+  grid-template-rows: auto auto 2fr auto;
+  padding: 0 24px;
+}
+
+.event-container .card-body .event-date,
+.user-container .section .card-body .event-date,
+.single-page-container .event-date {
+  color: var(--primary-accent-color);
+  font-style: italic;
+}
+
+.event-container .card-body .event-location,
+.user-container .section .card-body .event-location {
+  color: var(--secondary-text-color);
+}
+
+.event-container .card-body .event-description,
+.user-container .section .card-body .event-description {
+  align-self: start;
+  margin-top: 2rem;
+  word-break: break-word;
+}
+
+.card-body .event-attendees,
+.user-container .section .card-body .event-attendees {
+  justify-self: end;
+  color: var(--secondary-accent-color);
+  font-size: 0.9rem;
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
+.single-page-container .form-row {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.single-page-container .form-row label {
+  font-family: var(--heading-font-family);
+}
+
+.single-page-container .form-row input[type="text"],
+.single-page-container .form-row input[type="datetime-local"],
+.single-page-container .form-row input[type="email"],
+.single-page-container .form-row input[type="password"],
+.single-page-container .form-row textarea {
+  font-family: var(--paragraph-font-family);
+  font-size: 1rem;
+  border: 1px solid var(--primary-outline-color);
+  border-radius: 0.25rem;
+  width: 100%;
+  padding: 0.25rem;
+}
+
+.single-page-container .form-block {
+  font-family: var(--paragraph-font-family);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.single-page-container .form-row textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.single-page-container .form-row .form-hint {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--secondary-text-color);
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.single-page-container .btn {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  background-color: var(--primary-button-color);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  width: 200px;
+  cursor: pointer;
+}
+
+.single-page-container .btn:hover {
+  background-color: var(--primary-button-hover-color);
+}
+
+.single-page-container .btn:active {
+  background-color: var(--primary-button-active-color);
+}
+
+.single-page-container .event-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

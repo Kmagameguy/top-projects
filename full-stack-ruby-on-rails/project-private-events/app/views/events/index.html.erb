@@ -1,15 +1,12 @@
-<h1 class="section-header">Events</h1>
-<% if @events.any? %>
-  <% @events.each do |event| %>
-    <%= link_to event_path event do %>
-      <h2><%= event.title %></h2>
-      <p><%= event.description %></p>
-      <p>Where: <%= event.location %></p>
-      <p>When: <%= friendly_date(event) %></p>
+<div class="event-container">
+  <h1 class="section-header">Events</h1>
+  <% if @events.any? %>
+    <% @events.each do |event| %>
+      <%= render "events/card", event: event %>
     <% end %>
+  <% else %>
+    <div>
+      <p>There are no events yet. You dropped the database, didn't you?</p>
+    </div>
   <% end %>
-<% else %>
-  <div class="card">
-    <p>There are no events yet. You dropped the database, didn't you?</p>
-  </div>
-<% end %>
+</div>

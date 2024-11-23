@@ -10,4 +10,8 @@ class Event < ApplicationRecord
 
   scope :past, -> { where("event_date < ?", DateTime.now) }
   scope :upcoming, -> { where("event_date >= ?", DateTime.now)}
+
+  def attendee_count
+    attendees.count
+  end
 end

@@ -1,21 +1,33 @@
-<div class="container">
-  <div class="single-event">
-    <p><%= friendly_date(@event) %></p>
-    <h1 class="section-header"><%= @event.title %></h1>
-    <p>Organized by: <%= @event.creator.name %></p>
-    <p><%= @event.description %></p>
-    <p>Where: <%= @event.location %></p>
-    <p>When: <%= friendly_time(@event) %></p>
-    <% if not_own_event?(@event) && user_attending?(@event) %>
-      <%= button_to "Cancel Attendance", event_attendance_path(@event), method: :delete, data: { turbo_method: :delete } %>
-    <% elsif not_own_event?(@event) %>
-      <%= form_with model: @event_attendance do |f| %>
-        <%= f.hidden_field :attended_event_id, value: @event.id %>
-        <%= f.submit "Attend this event" %>
+<div class="single-page-wrapper">
+  <div class="single-page-container">
+    <div class="header">
+      <p class="event-date"><%= friendly_date(@event) %></p>
+      <h1 class="section-header"><%= @event.title %></h1>
+    </div>
+    <div class="organizer">
+      <h2>Organized By:</h2>
+      <p class="event-owner"><%= @event.creator.name %></p>
+    </div>
+    <div class="about-event">
+      <h2>About this Event:</h2>
+      <p class="event-description"><%= @event.description %></p>
+    </div>
+    <div class="geo-time">
+      <h2>When and Where</h2>
+      <p class="event-location"><%= @event.location %>, at <%= friendly_time(@event) %></p>
+    </div>
+    <div class="event-buttons">
+      <% if not_own_event?(@event) && user_attending?(@event) %>
+        <%= button_to "Cancel Attendance", event_attendance_path(@event), method: :delete, data: { turbo_method: :delete }, class: "btn" %>
+      <% elsif not_own_event?(@event) %>
+        <%= form_with model: @event_attendance do |f| %>
+          <%= f.hidden_field :attended_event_id, value: @event.id %>
+          <%= f.submit "Attend this event", class: "btn" %>
+        <% end %>
+      <% else %>
+        <%= button_to "Edit Event", edit_event_path(@event), method: :get, class: "btn" %>
+        <%= button_to "Delete Event", @event, method: :delete, data: { turbo_method: :delete }, class: "btn" %>
       <% end %>
-    <% else %>
-      <%= link_to "Edit Event", edit_event_path(@event) %>
-      <%= button_to "Delete Event", @event, method: :delete, data: { turbo_method: :delete } %>
-    <% end %>
+    </div>
   </div>
 </div>

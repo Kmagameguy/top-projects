@@ -1,15 +1,26 @@
 <%= form_with model: event do |f| %>
-  <%= f.label :title, "Event Title:" %>
-  <%= f.text_field :title, placeholder: "My Cool Event!" %>
+  <div class="form-row">
+    <%= f.label :title, "Event Title:" %>
+    <%= f.text_field :title, placeholder: "My Cool Event!" %>
+  </div>
 
-  <%= f.label :event_date, "Event Date:" %>
-  <%= f.datetime_field :event_date, value: "#{event_date_placeholder(event)}" %>
+  <div class="form-row">
+    <%= f.label :event_date, "Event Date:" %>
+    <%= f.datetime_field :event_date, value: "#{event_date_placeholder(event)}" %>
+  </div>
 
-  <%= f.label :location, "Event Location:" %>
-  <%= f.text_field :location, placeholder: "Tell everyone where to find your event." %>
+  <div class="form-row">
+    <%= f.label :location, "Event Location:" %>
+    <%= f.text_field :location, placeholder: "Tell everyone where to find your event." %>
+  </div>
 
-  <%= f.label :description, "Event Notes:" %>
-  <%= f.text_area :description, placeholder: "Tell everyone about your event." %>
+  <div class="form-row">
+    <%= f.label :description, "Event Notes:" %>
+    <%= f.text_area :description, placeholder: "Tell everyone about your event." %>
+    <p class="form-hint">Be brief - no more than 140 characters, please!</p>
+  </div>
 
-  <%= f.submit %>
+  <div class="form-row">
+    <%= f.submit class: "btn" %>
+  </div>
 <% end %>
