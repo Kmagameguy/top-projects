@@ -10,6 +10,21 @@
         <% if posts_owner?(@user) %>
           <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
         <% end %>
+        <% if post.comments.any? %>
+          <% post.comments.each do |comment| %>
+            <div>
+              <p><%= comment.commentable.user.name %>
+              <p><%= comment.body %>
+            </div>
+          <% end %>
+        <% end %>
+        <%= form_for :comment, url: user_comments_path, method: :post do |f| %>
+          <%= f.hidden_field :commentable_id, value: post.id %>
+          <%= f.hidden_field :commentable_type, value: "Post" %>
+          <%= f.hidden_field :user_id, value: current_user.id %>
+          <%= f.text_field :body %>
+          <%= f.submit %>
+        <% end %>
       <% end %>
     </div>
   <% else %>

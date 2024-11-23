@@ -6,11 +6,13 @@ Rails.application.routes.draw do
     resources :friend_requests, only: [:create, :destroy, :index]
     resources :friends, only: [:create, :index]
     resources :posts, only: [:index, :create, :destroy]
+    resources :comments, only: [:create, :destroy]
   end
 
   resources :friend_requests, only: [:destroy]
   resources :friends, only: [:destroy]
   resources :posts, only: [:destroy]
+  resources :comments, only: [:destroy]
 
   # Defines the root path route ("/")
   # root "articles#index"
