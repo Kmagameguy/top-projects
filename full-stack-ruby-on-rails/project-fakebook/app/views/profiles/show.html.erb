@@ -7,4 +7,7 @@
     <li><span class="bold-text">Location: </span><%= @profile.address %></li>
     <li><span class="bold-text">Phone: </span><%= @profile.phone %></li>
   </ul>
+  <% if current_user.id == @user.id %>
+    <%= link_to "Edit Profile", edit_user_profile_path(@user.profile) %>
+  <% end %>
 </div>
