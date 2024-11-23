@@ -7,6 +7,6 @@ module ApplicationHelper
   end
 
   def link_to_user_profile(user)
-    link_to user.name, user_path(user)
+    link_to user.name, user_posts_path(user)
   end
 end
