@@ -15,7 +15,7 @@ class Knight
   def possible_next_moves(visited_squares)
     x, y = @coordinates
     moves = MOVES.map { |x_offset, y_offset| [x + x_offset, y + y_offset] }
-    moves = moves.reject { |move| out_of_bounds?(move) } # .reject, nice, thanks RuboCop
+    moves = moves.reject { |move| out_of_bounds?(move) }
     moves.reject { |move| already_visited?(move, visited_squares) }
   end
 
@@ -29,24 +29,3 @@ class Knight
     squares.any? { |square| square.coordinates == move }
   end
 end
-
-# Valid moves (Where "x" is current position):
-#       0        1        2        3        4        5        6        7
-# 0 [      ] [      ] [      ] [      ] [      ] [      ] [      ] [      ]
-# 1 [      ] [      ] [      ] [      ] [      ] [      ] [      ] [      ]
-# 2 [      ] [      ] [-1, -2] [      ] [1, -2 ] [      ] [      ] [      ]
-# 3 [      ] [-2, -1] [      ] [      ] [      ] [ 2, -1] [      ] [      ]
-# 4 [      ] [      ] [      ] [   x  ] [      ] [      ] [      ] [      ]
-# 5 [      ] [ -2, 1] [      ] [      ] [      ] [ 2, 1 ] [      ] [      ]
-# 6 [      ] [      ] [ -1, 2] [      ] [ 1, 2 ] [      ] [      ] [      ]
-# 7 [      ] [      ] [      ] [      ] [      ] [      ] [      ] [      ]
-
-# As a Knight, I:
-# Can traverse:
-#   [-2, -1] OR
-#   [-2,  1] OR
-#   [-1, -2] OR
-#   [-1,  2] OR
-#   [1,  -2] OR
-#   [1,   2] OR
-#   [2,  -1]
