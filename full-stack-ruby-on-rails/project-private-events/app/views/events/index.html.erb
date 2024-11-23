@@ -1,9 +1,9 @@
 <h1>Events</h1>
-
-<ul>
-  <% @events.each do |event| %>
-    <li>
-      <%= event.event_date %>
-    </li>
-  <% end %>
-</ul>
+<% @events.each do |event| %>
+  <div class="card">
+    <h2><%= event.title %></h2>
+    <p><%= event.creator.name %></p>
+    <p><%= event.description %></p>
+    <p><%= event.event_date %> at <%= event.location %></p>
+  </div>
+<% end %>
