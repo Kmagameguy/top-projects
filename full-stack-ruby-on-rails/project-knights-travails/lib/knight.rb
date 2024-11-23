@@ -2,22 +2,21 @@
 
 # A class which defines our Knight chess piece
 class Knight
-  attr_accessor :coordinates, :visited_squares
+  attr_accessor :coordinates
 
   MOVES = [[-1, -2], [1, -2], [2, -1], [2, 1],
            [1, 2],   [-1, 2], [-2, 1], [-2, -1]].freeze
 
   def initialize(starting_position: [0, 0], board_size: 8)
     @coordinates = starting_position
-    @visited_squares = []
     @board_size = board_size - 1
   end
 
-  def possible_next_moves
+  def possible_next_moves(visited_squares)
     x, y = @coordinates
     moves = MOVES.map { |x_offset, y_offset| [x + x_offset, y + y_offset] }
     moves = moves.reject { |move| out_of_bounds?(move) } # .reject, nice, thanks RuboCop
-    moves.reject { |move| already_visited?(move) }
+    moves.reject { |move| already_visited?(move, visited_squares) }
   end
 
   def knight_moves; end
@@ -28,8 +27,8 @@ class Knight
     move.any? { |coordinate| coordinate.negative? || coordinate > @board_size }
   end
 
-  def already_visited?(move)
-    @visited_squares.any? { |square| square == move }
+  def already_visited?(move, squares)
+    squares.any? { |square| square.coordinates == move }
   end
 end
 
