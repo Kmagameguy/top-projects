@@ -3,6 +3,7 @@
 require_relative 'board'
 require_relative 'player'
 require_relative 'computer'
+require_relative 'display'
 
 # A class to manage our Connect Four game
 class ConnectFour
@@ -14,6 +15,7 @@ class ConnectFour
     @player = Player.new(player_name, @board.column_count)
     @computer = Computer.new
     @current_player = @player
+    show_board
   end
 
   def play
@@ -21,6 +23,7 @@ class ConnectFour
       switch_players
       show_turn_message
       add_chip
+      show_board
       break if game_over?
     end
 
@@ -56,6 +59,10 @@ class ConnectFour
     else
       puts 'Computer is picking a spot...'
     end
+  end
+
+  def show_board
+    Display.show(board.slots)
   end
 
   def verify_column(column)
