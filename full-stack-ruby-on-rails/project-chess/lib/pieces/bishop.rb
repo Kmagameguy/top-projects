@@ -2,6 +2,7 @@
 
 require_relative 'piece'
 
+# A Bishop piece in a chess game
 class Bishop < Piece
   def possible_moves(board)
     sliding_diagonal_moves(position, board)

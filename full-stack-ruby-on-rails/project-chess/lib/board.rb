@@ -14,12 +14,12 @@ class Board
   def initialize
     @size = 8
     @squares = Array.new(size) { Array.new(size) }
-    setup_board
+    setup_board!
   end
 
-  def setup_board
-    add_pawns
-    add_special_pieces
+  def setup_board!
+    add_pawns!
+    add_special_pieces!
   end
 
   def square(coordinates)
@@ -28,35 +28,35 @@ class Board
   end
 
   def update!(piece, new_square)
-    destroy_piece(piece.position)
-    destroy_en_passanted_pawns(piece)
+    destroy_piece!(piece.position)
+    destroy_en_passanted_pawns!(piece, new_square)
     piece.move!(new_square)
 
-    update_square(piece)
+    update_square!(piece)
   end
 
-  def destroy_en_passanted_pawns(piece, destination)
+  def destroy_en_passanted_pawns!(piece, destination)
     return unless piece.is_a?(Pawn)
     return if piece.forward_move?(destination)
 
     if !piece.en_passantable_left.empty?
-      destroy_piece(piece.en_passantable_left)
+      destroy_piece!(piece.en_passantable_left)
     elsif !piece.en_passantable_right.empty?
-      destroy_piece(piece.en_passantable_right)
+      destroy_piece!(piece.en_passantable_right)
     end
   end
 
-  def create_piece(coordinates, piece, color)
+  def create_piece!(coordinates, piece, color)
     x, y = coordinates
     squares[x][y] = piece.new(color, coordinates)
   end
 
-  def destroy_piece(coordinates)
+  def destroy_piece!(coordinates)
     x, y = coordinates
     squares[x][y] = nil
   end
 
-  def update_square(piece)
+  def update_square!(piece)
     x, y = piece.position
     squares[x][y] = piece
   end
@@ -89,7 +89,7 @@ class Board
     [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
   end
 
-  def add_pawns
+  def add_pawns!
     black_pawn_rank = 1
     white_pawn_rank = 6
 
@@ -97,12 +97,12 @@ class Board
       black_pawn_position = [black_pawn_rank, file]
       white_pawn_position = [white_pawn_rank, file]
 
-      create_piece(black_pawn_position, Pawn, :black)
-      create_piece(white_pawn_position, Pawn, :white)
+      create_piece!(black_pawn_position, Pawn, :black)
+      create_piece!(white_pawn_position, Pawn, :white)
     end
   end
 
-  def add_special_pieces
+  def add_special_pieces!
     black_special_piece_rank = 0
     white_special_piece_rank = 7
 
@@ -110,8 +110,8 @@ class Board
       black_position = [black_special_piece_rank, file]
       white_position = [white_special_piece_rank, file]
 
-      create_piece(black_position, piece, :black)
-      create_piece(white_position, piece, :white)
+      create_piece!(black_position, piece, :black)
+      create_piece!(white_position, piece, :white)
     end
   end
 end

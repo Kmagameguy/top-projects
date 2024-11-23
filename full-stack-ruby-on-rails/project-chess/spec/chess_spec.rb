@@ -10,10 +10,10 @@ RSpec.describe Chess do
     allow_any_instance_of(Chess).to receive(:create_player).and_return('Freddy Krueger', 'Jason Voorhees')
   end
 
-  describe '#switch_players' do
+  describe '#switch_players!' do
     it 'exchanges the active and inactive players' do
       expect(game.current_player.name).to eq 'Freddy Krueger'
-      game.switch_players
+      game.switch_players!
       expect(game.current_player.name).to eq 'Jason Voorhees'
     end
   end
@@ -46,7 +46,7 @@ RSpec.describe Chess do
         first_piece = Rook.new(:black, [0, 0])
         second_piece = King.new(:black, [0, 4])
 
-        expect(game.castling?(first_piece, second_piece)). to be true
+        expect(game.castling?(first_piece, second_piece)).to be true
       end
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe Chess do
 
     context 'when some, but not all, the spaces between the rook and the king are empty' do
       before do
-        2.times { |time| game.board.destroy_piece([7, time + 1]) }
+        2.times { |time| game.board.destroy_piece!([7, time + 1]) }
       end
 
       it 'returns false' do
@@ -96,12 +96,12 @@ RSpec.describe Chess do
 
     context 'when the spaces between the rook and the king are empty' do
       before do
-        3.times { |time| game.board.destroy_piece([7, time + 1]) }
+        3.times { |time| game.board.destroy_piece!([7, time + 1]) }
       end
 
       context 'and the king is checked' do
         before do
-          game.board.create_piece([5, 3], Knight, :black)
+          game.board.create_piece!([5, 3], Knight, :black)
         end
 
         it 'returns false' do
@@ -133,7 +133,7 @@ RSpec.describe Chess do
 
       context 'and the king passes through a square which would put it into check' do
         before do
-          game.board.create_piece([6, 2], Pawn, :black)
+          game.board.create_piece!([6, 2], Pawn, :black)
         end
 
         it 'returns false' do
@@ -156,7 +156,7 @@ RSpec.describe Chess do
       context 'and the rook and king can short-castle unimpeded' do
         before do
           adjacent_right = 5
-          2.times { |offset| game.board.destroy_piece([7, adjacent_right + offset]) }
+          2.times { |offset| game.board.destroy_piece!([7, adjacent_right + offset]) }
         end
 
         it 'returns true' do
@@ -172,8 +172,8 @@ RSpec.describe Chess do
   describe '#castle!' do
     before do
       king_adjacent_right = 5
-      3.times { |index| game.board.destroy_piece([7, index + 1]) }
-      2.times { |offset| game.board.destroy_piece([7, king_adjacent_right + offset]) }
+      3.times { |index| game.board.destroy_piece!([7, index + 1]) }
+      2.times { |offset| game.board.destroy_piece!([7, king_adjacent_right + offset]) }
     end
 
     context 'when the rook is to the left of the king' do
@@ -347,18 +347,18 @@ RSpec.describe Chess do
         piece_rows = [0, 1, 6, 7]
         piece_rows.each do |row_index|
           8.times do |time|
-            game.board.destroy_piece([row_index, time])
+            game.board.destroy_piece!([row_index, time])
           end
         end
       end
 
       context "and the pattern is Anastasia's mate" do
         before do
-          game.board.create_piece([1, 4], Knight, :black)
-          game.board.create_piece([5, 4], Rook, :black)
-          game.board.create_piece([7, 6], King, :black)
-          game.board.create_piece([1, 6], Pawn, :white)
-          game.board.create_piece([1, 7], King, :white)
+          game.board.create_piece!([1, 4], Knight, :black)
+          game.board.create_piece!([5, 4], Rook, :black)
+          game.board.create_piece!([7, 6], King, :black)
+          game.board.create_piece!([1, 6], Pawn, :white)
+          game.board.create_piece!([1, 7], King, :white)
 
           white_rook = game.board.square([5, 4])
           game.board.update!(white_rook, [5, 7])
@@ -372,14 +372,14 @@ RSpec.describe Chess do
 
       context "and the pattern is Anderssen's mate" do
         before do
-          game.board.create_piece([0, 6], King, :black)
-          game.board.create_piece([1, 6], Pawn, :white)
-          game.board.create_piece([2, 5], King, :white)
-          game.board.create_piece([6, 7], Rook, :white)
+          game.board.create_piece!([0, 6], King, :black)
+          game.board.create_piece!([1, 6], Pawn, :white)
+          game.board.create_piece!([2, 5], King, :white)
+          game.board.create_piece!([6, 7], Rook, :white)
 
           white_rook = game.board.square([6, 7])
           game.board.update!(white_rook, [0, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -390,14 +390,14 @@ RSpec.describe Chess do
 
       context 'and the pattern is Arabian mate' do
         before do
-          game.board.create_piece([0, 7], King, :black)
-          game.board.create_piece([1, 1], Rook, :white)
-          game.board.create_piece([2, 5], Knight, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 7], King, :black)
+          game.board.create_piece!([1, 1], Rook, :white)
+          game.board.create_piece!([2, 5], Knight, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_rook = game.board.square([1, 1])
           game.board.update!(white_rook, [1, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -408,18 +408,18 @@ RSpec.describe Chess do
 
       context 'and the pattern is Back Rank mate' do
         before do
-          game.board.create_piece([0, 6], King, :black)
+          game.board.create_piece!([0, 6], King, :black)
           [5, 6, 7].each do |column|
-            game.board.create_piece([1, column], Pawn, :black)
-            game.board.create_piece([6, column], Pawn, :white)
+            game.board.create_piece!([1, column], Pawn, :black)
+            game.board.create_piece!([6, column], Pawn, :white)
           end
 
-          game.board.create_piece([7, 3], Rook, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([7, 3], Rook, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_rook = game.board.square([7, 3])
           game.board.update!(white_rook, [0, 3])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -430,14 +430,14 @@ RSpec.describe Chess do
 
       context 'and the pattern is Balestra mate' do
         before do
-          game.board.create_piece([0, 4], King, :black)
-          game.board.create_piece([2, 5], Queen, :white)
-          game.board.create_piece([5, 5], Bishop, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 4], King, :black)
+          game.board.create_piece!([2, 5], Queen, :white)
+          game.board.create_piece!([5, 5], Bishop, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_bishop = game.board.square([5, 5])
           game.board.update!(white_bishop, [2, 2])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -448,16 +448,16 @@ RSpec.describe Chess do
 
       context "and the pattern is Blackburne's mate" do
         before do
-          game.board.create_piece([0, 5], Rook, :black)
-          game.board.create_piece([0, 6], King, :black)
-          game.board.create_piece([3, 6], Knight, :white)
-          game.board.create_piece([5, 3], Bishop, :white)
-          game.board.create_piece([6, 1], Bishop, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 5], Rook, :black)
+          game.board.create_piece!([0, 6], King, :black)
+          game.board.create_piece!([3, 6], Knight, :white)
+          game.board.create_piece!([5, 3], Bishop, :white)
+          game.board.create_piece!([6, 1], Bishop, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_bishop = game.board.square([5, 3])
           game.board.update!(white_bishop, [1, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -468,15 +468,15 @@ RSpec.describe Chess do
 
       context 'and the pattern is Blind Swine mate' do
         before do
-          game.board.create_piece([0, 5], Rook, :black)
-          game.board.create_piece([0, 6], King, :black)
-          game.board.create_piece([1, 1], Rook, :white)
-          game.board.create_piece([1, 7], Rook, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 5], Rook, :black)
+          game.board.create_piece!([0, 6], King, :black)
+          game.board.create_piece!([1, 1], Rook, :white)
+          game.board.create_piece!([1, 7], Rook, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_rook = game.board.square([1, 1])
           game.board.update!(white_rook, [1, 6])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -487,16 +487,16 @@ RSpec.describe Chess do
 
       context "and the pattern is Boden's mate" do
         before do
-          game.board.create_piece([0, 2], King, :black)
-          game.board.create_piece([0, 3], Rook, :black)
-          game.board.create_piece([1, 3], Pawn, :black)
-          game.board.create_piece([4, 5], Bishop, :white)
-          game.board.create_piece([5, 3], Bishop, :white)
-          game.board.create_piece([7, 2], King, :white)
+          game.board.create_piece!([0, 2], King, :black)
+          game.board.create_piece!([0, 3], Rook, :black)
+          game.board.create_piece!([1, 3], Pawn, :black)
+          game.board.create_piece!([4, 5], Bishop, :white)
+          game.board.create_piece!([5, 3], Bishop, :white)
+          game.board.create_piece!([7, 2], King, :white)
 
           white_bishop = game.board.square([5, 3])
           game.board.update!(white_bishop, [2, 0])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -507,15 +507,15 @@ RSpec.describe Chess do
 
       context 'and the pattern is Corner mate' do
         before do
-          game.board.create_piece([0, 7], King, :black)
-          game.board.create_piece([1, 7], Pawn, :black)
-          game.board.create_piece([3, 4], Knight, :white)
-          game.board.create_piece([7, 2], King, :white)
-          game.board.create_piece([7, 6], Rook, :white)
+          game.board.create_piece!([0, 7], King, :black)
+          game.board.create_piece!([1, 7], Pawn, :black)
+          game.board.create_piece!([3, 4], Knight, :white)
+          game.board.create_piece!([7, 2], King, :white)
+          game.board.create_piece!([7, 6], Rook, :white)
 
           white_knight = game.board.square([3, 4])
           game.board.update!(white_knight, [1, 5])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -526,15 +526,15 @@ RSpec.describe Chess do
 
       context 'and the pattern is Corridor mate' do
         before do
-          game.board.create_piece([1, 2], King, :black)
-          game.board.create_piece([4, 7], Queen, :white)
-          game.board.create_piece([7, 1], Rook, :white)
-          game.board.create_piece([7, 3], Rook, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([1, 2], King, :black)
+          game.board.create_piece!([4, 7], Queen, :white)
+          game.board.create_piece!([7, 1], Rook, :white)
+          game.board.create_piece!([7, 3], Rook, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_queen = game.board.square([4, 7])
           game.board.update!(white_queen, [4, 2])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -545,15 +545,15 @@ RSpec.describe Chess do
 
       context 'and the pattern is Diagonal Corridor mate' do
         before do
-          game.board.create_piece([0, 6], Bishop, :black)
-          game.board.create_piece([0, 7], King, :black)
-          game.board.create_piece([1, 7], Pawn, :black)
-          game.board.create_piece([5, 6], Bishop, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 6], Bishop, :black)
+          game.board.create_piece!([0, 7], King, :black)
+          game.board.create_piece!([1, 7], Pawn, :black)
+          game.board.create_piece!([5, 6], Bishop, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_bishop = game.board.square([5, 6])
           game.board.update!(white_bishop, [3, 4])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -564,16 +564,16 @@ RSpec.describe Chess do
 
       context 'and the pattern is Dovetail mate' do
         before do
-          game.board.create_piece([3, 6], Pawn, :black)
-          game.board.create_piece([4, 5], Queen, :black)
-          game.board.create_piece([4, 6], King, :black)
-          game.board.create_piece([5, 2], Queen, :white)
-          game.board.create_piece([6, 6], King, :white)
+          game.board.create_piece!([3, 6], Pawn, :black)
+          game.board.create_piece!([4, 5], Queen, :black)
+          game.board.create_piece!([4, 6], King, :black)
+          game.board.create_piece!([5, 2], Queen, :white)
+          game.board.create_piece!([6, 6], King, :white)
 
           white_queen = game.board.square([5, 2])
 
           game.board.update!(white_queen, [5, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -584,16 +584,16 @@ RSpec.describe Chess do
 
       context "and the pattern is Damiano's mate" do
         before do
-          game.board.create_piece([0, 5], Rook, :black)
-          game.board.create_piece([0, 6], King, :black)
-          game.board.create_piece([1, 6], Pawn, :black)
-          game.board.create_piece([2, 6], Pawn, :white)
-          game.board.create_piece([5, 7], Queen, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 5], Rook, :black)
+          game.board.create_piece!([0, 6], King, :black)
+          game.board.create_piece!([1, 6], Pawn, :black)
+          game.board.create_piece!([2, 6], Pawn, :white)
+          game.board.create_piece!([5, 7], Queen, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_queen = game.board.square([5, 7])
           game.board.update!(white_queen, [1, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -604,17 +604,17 @@ RSpec.describe Chess do
 
       context 'and the pattern is David and Goliath mate' do
         before do
-          game.board.create_piece([2, 1], Rook, :white)
-          game.board.create_piece([3, 5], Pawn, :black)
-          game.board.create_piece([3, 6], King, :black)
-          game.board.create_piece([3, 7], Pawn, :black)
-          game.board.create_piece([5, 5], King, :white)
-          game.board.create_piece([5, 6], Pawn, :white)
-          game.board.create_piece([5, 7], Pawn, :white)
+          game.board.create_piece!([2, 1], Rook, :white)
+          game.board.create_piece!([3, 5], Pawn, :black)
+          game.board.create_piece!([3, 6], King, :black)
+          game.board.create_piece!([3, 7], Pawn, :black)
+          game.board.create_piece!([5, 5], King, :white)
+          game.board.create_piece!([5, 6], Pawn, :white)
+          game.board.create_piece!([5, 7], Pawn, :white)
 
           white_pawn = game.board.square([5, 7])
           game.board.update!(white_pawn, [4, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -625,15 +625,15 @@ RSpec.describe Chess do
 
       context 'and the pattern is Epaulette mate' do
         before do
-          game.board.create_piece([0, 3], Rook, :black)
-          game.board.create_piece([0, 4], King, :black)
-          game.board.create_piece([0, 5], Rook, :black)
-          game.board.create_piece([4, 2], Queen, :white)
-          game.board.create_piece([7, 6], King, :white)
+          game.board.create_piece!([0, 3], Rook, :black)
+          game.board.create_piece!([0, 4], King, :black)
+          game.board.create_piece!([0, 5], Rook, :black)
+          game.board.create_piece!([4, 2], Queen, :white)
+          game.board.create_piece!([7, 6], King, :white)
 
           white_queen = game.board.square([4, 2])
           game.board.update!(white_queen, [2, 4])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -644,15 +644,15 @@ RSpec.describe Chess do
 
       context "and the pattern is Greco's mate" do
         before do
-          game.board.create_piece([0, 7], King, :black)
-          game.board.create_piece([1, 6], Pawn, :black)
-          game.board.create_piece([4, 2], Bishop, :white)
-          game.board.create_piece([7, 2], King, :white)
-          game.board.create_piece([7, 3], Rook, :white)
+          game.board.create_piece!([0, 7], King, :black)
+          game.board.create_piece!([1, 6], Pawn, :black)
+          game.board.create_piece!([4, 2], Bishop, :white)
+          game.board.create_piece!([7, 2], King, :white)
+          game.board.create_piece!([7, 3], Rook, :white)
 
           white_rook = game.board.square([7, 3])
           game.board.update!(white_rook, [7, 7])
-          game.switch_players
+          game.switch_players!
         end
 
         it 'returns true' do
@@ -665,8 +665,8 @@ RSpec.describe Chess do
 
   describe '#promote!' do
     before do
-      game.switch_players
-      game.board.create_piece([7, 0], Pawn, :black)
+      game.switch_players!
+      game.board.create_piece!([7, 0], Pawn, :black)
     end
 
     context 'when choosing to replace the pawn with a queen' do

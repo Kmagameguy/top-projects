@@ -33,7 +33,7 @@ class Chess
       return if @saved_and_quit
 
       record_rushing_pawns
-      switch_players
+      switch_players!
       increment_round
     end
     @display.show_winner(other_player.name)
@@ -69,7 +69,7 @@ class Chess
     end
   end
 
-  def switch_players
+  def switch_players!
     @current_player = other_player
   end
 
@@ -137,7 +137,7 @@ class Chess
 
   def promote!(pawn)
     @display.update!(board.squares, @current_player, @turn_count)
-    board.create_piece(pawn.position, replacement_piece, @current_player.color)
+    board.create_piece!(pawn.position, replacement_piece, @current_player.color)
   end
 
   def replacement_piece

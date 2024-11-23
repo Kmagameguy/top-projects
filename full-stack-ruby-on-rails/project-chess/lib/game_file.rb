@@ -17,7 +17,7 @@ class GameFile
     Queen,
     King,
     Pawn
-  ]
+  ].freeze
 
   def initialize(save_directory = DEFAULT_SAVE_LOCATION, save_file = DEFAULT_SAVE_FILE)
     @save_directory = save_directory

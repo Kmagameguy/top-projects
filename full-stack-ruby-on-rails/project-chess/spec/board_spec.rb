@@ -111,6 +111,40 @@ RSpec.describe Board do
     end
   end
 
+  describe '#create_piece!' do
+    it 'creates the specified piece at the selected destination' do
+      piece = board.create_piece!([0, 0], Pawn, :black)
+
+      expect(board.square([0, 0])).to be_a Pawn
+      expect(board.square([0, 0])).to have_attributes(rushing: false, en_passantable_left: [], en_passantable_right: [], color: :black, position: [0, 0])
+    end
+  end
+
+  describe '#destroy_piece!' do
+    it 'removes the piece at the selected destination' do
+      piece = board.square([0, 0])
+      expect(piece).to be_a Rook
+      board.destroy_piece!([0, 0])
+      expect(board.square([0, 0])).to be_nil
+    end
+
+    it 'does nothing if the square is already nil' do
+      square = board.square([3, 0])
+      expect(square).to be_nil
+      board.destroy_piece!([3, 0])
+      expect(square).to be_nil
+    end
+  end
+
+  describe '#update_square!' do
+    it 'assigns the selected piece to the position it holds' do
+      piece = Piece.new(:black, [3, 1])
+      expect(board.square([3, 1])).to be_nil
+      board.update_square!(piece)
+      expect(board.square([3, 1])).to be piece
+    end
+  end
+
   describe '#check?' do
     context 'when the king is not in check' do
       it 'returns false' do
