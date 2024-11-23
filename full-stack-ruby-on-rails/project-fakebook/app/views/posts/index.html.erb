@@ -1,18 +1,66 @@
-<div>
-  <h1><%= possessive(@user.name) %> profile</h1>
-</div>
 <div class="profile-container">
-  <div class="friends-container">
-    <div class="card friends">
-      <%= possessive(@user.name) %> friends:
-      <% if @user.friends.any? %>
-        <ul>
-          <% @user.friends.each do |friend| %>
-            <li><%= link_to_user_profile(friend) %></li>
-          <% end %>
-        </ul>
+  <div>
+    <h1><%= possessive(@user.name) %> Profile</h1>
+    <h4>
+      <% if current_user.email == @user.email %>
+        <i>That's you!</i>
+      <% elsif pending_friend_request?(@user) %>
+        Your friend request is still pending...
+      <% elsif current_user.friends.include?(@user) %>
+        <p>You and <%= @user.name %> are friends.</p> <%= button_to "Unfriend 🔪", friend_path(@user), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
       <% else %>
-        <p><%= @user.name %> doesn't have any friends yet.  You could be their first!</p>
+        <%= button_to 'Request to be friends', user_friend_requests_path(@user), data: { 'turbo-method' => :post } %>
+      <% end %>
+    </h4>
+  </div>
+
+  <div class="profile-sidebars">
+    <div class="friends-container">
+      <div class="card friends">
+      <h4>Friends:</h4>
+        <% if @user.friends.any? %>
+          <ul>
+            <% @user.friends.each do |friend| %>
+              <li><%= link_to_user_profile(friend) %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p><%= @user.name %> doesn't have any friends yet.  You could be their first!</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="feed-container">
+      <% if posts_owner?(@user) %>
+        <%= render "posts/post_form" %>
+      <% end %>
+
+      <% if @posts&.any? %>
+        <div>
+          <% @posts.each do |post| %>
+            <div class="card post">
+              <p><span class="post-author"><%= post.author.name %> Posted:</span> <%= post.body %></p>
+              <% if posts_owner?(@user) %>
+                <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+              <% end %>
+              <% if post.comments.any? %>
+                <% post.comments.each do |comment| %>
+                  <div class="card comment">
+                    <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
+                    <% if comment_owner?(comment.author) %>
+                      <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+              <%= render "posts/comment_form", :post => post %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="card post">
+          <p><%= posts_owner?(@user) ? "You haven\'t" : "#{@user&.name} hasn't" %> posted anything yet.</p>
+        </div>
       <% end %>
     </div>
   </div>
@@ -22,29 +70,30 @@
       <%= render "posts/post_form" %>
     <% end %>
 
-  <% if @posts&.any? %>
-    <div>
-      <% @posts.each do |post| %>
-        <div class="card post">
-          <p><span class="post-author"><%= post.author.name %> Posted:</span><%= post.body %></p>
-          <% if posts_owner?(@user) %>
-            <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
-          <% end %>
-          <% if post.comments.any? %>
-            <% post.comments.each do |comment| %>
-              <div class="card comment">
-                <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
-                <% if comment_owner?(comment.author) %>
-                  <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
-                <% end %>
-              </div>
+    <% if @posts&.any? %>
+      <div>
+        <% @posts.each do |post| %>
+          <div class="card post">
+            <p><span class="post-author"><%= post.author.name %> Posted:</span><%= post.body %></p>
+            <% if posts_owner?(@user) %>
+              <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
             <% end %>
-            <%= render "posts/comment_form", :post => post %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <p><%= posts_owner?(@user) ? "You haven't" : "#{@user&.name} hasn't" %> posted anything yet.</p>
-  <% end %>
+            <% if post.comments.any? %>
+              <% post.comments.each do |comment| %>
+                <div class="card comment">
+                  <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
+                  <% if comment_owner?(comment.author) %>
+                    <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+                  <% end %>
+                </div>
+              <% end %>
+              <%= render "posts/comment_form", :post => post %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p><%= posts_owner?(@user) ? "You haven't" : "#{@user&.name} hasn't" %> posted anything yet.</p>
+    <% end %>
+  </div>
 </div>

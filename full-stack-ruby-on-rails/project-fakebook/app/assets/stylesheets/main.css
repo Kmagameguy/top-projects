@@ -77,10 +77,8 @@ body {
   margin-bottom: 0.9rem;
 }
 
-.card.status {
-  box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-}
-
+.card.status,
+.card.friends,
 .card.post {
   box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
 }
@@ -99,10 +97,6 @@ body {
 
 .card.comment {
   background-color: rgb(245, 245, 245);
-}
-
-.card.friends {
-  height: 100%;
 }
 
 .card.friends li {
@@ -125,6 +119,10 @@ body {
 }
 
 .profile-container {
+  height: 100%;
+}
+
+.profile-sidebars {
   height: 100%;
   display: flex;
   gap: 2rem;
