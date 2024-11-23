@@ -57,10 +57,20 @@ class Board
     squares[n_rank][n_file] = piece
   end
 
+  def check?(defender_color, attacker_color)
+    defender_king_position = find_king(defender_color)
+    attacker_pieces = find_pieces(attacker_color)
+    attacker_pieces.any? do |piece|
+      piece.possible_moves(squares).include?(defender_king_position)
+    end
+  end
+
   def find_king(color)
-    squares.flatten.compact.select.find do |piece|
-      piece.is_a? King && piece.color == color
-    end.position
+    find_pieces(color).find { |piece| piece.is_a? King }.position
+  end
+
+  def find_pieces(color)
+    squares.flatten.compact.select { |piece| piece.color == color }
   end
 
   def default_special_pieces

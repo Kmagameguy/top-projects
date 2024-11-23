@@ -22,6 +22,7 @@ class Chess
       take_turn
       break if game_over?
 
+      board.check?(@current_player.color, other_player.color)
       switch_players
       increment_round
     end
