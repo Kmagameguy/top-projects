@@ -110,6 +110,7 @@ body {
   box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
 }
 
+.comment-form,
 .card.status form {
   display: flex;
   flex-direction: column;

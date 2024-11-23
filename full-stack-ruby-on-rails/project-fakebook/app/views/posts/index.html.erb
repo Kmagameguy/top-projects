@@ -36,27 +36,25 @@
       <% end %>
 
       <% if @posts&.any? %>
-        <div>
-          <% @posts.each do |post| %>
-            <div class="card post">
-              <p><span class="post-author"><%= post.author.name %> Posted:</span> <%= post.body %></p>
-              <% if posts_owner?(@user) %>
-                <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+        <% @posts.each do |post| %>
+          <div class="card post">
+            <p><span class="post-author"><%= post.author.name %> Posted:</span> <%= post.body %></p>
+            <% if posts_owner?(@user) %>
+              <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+            <% end %>
+            <% if post.comments.any? %>
+              <% post.comments.each do |comment| %>
+                <div class="card comment">
+                  <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
+                  <% if comment_owner?(comment.author) %>
+                    <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+                  <% end %>
+                </div>
               <% end %>
-              <% if post.comments.any? %>
-                <% post.comments.each do |comment| %>
-                  <div class="card comment">
-                    <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
-                    <% if comment_owner?(comment.author) %>
-                      <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-              <%= render "posts/comment_form", :post => post %>
-            </div>
-          <% end %>
-        </div>
+            <% end %>
+            <%= render "posts/comment_form", :post => post %>
+          </div>
+        <% end %>
       <% else %>
         <div class="card post">
           <p><%= posts_owner?(@user) ? "You haven\'t" : "#{@user&.name} hasn't" %> posted anything yet.</p>

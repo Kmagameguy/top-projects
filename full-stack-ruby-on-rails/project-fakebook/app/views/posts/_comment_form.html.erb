@@ -1,9 +1,7 @@
-<div>
-  <%= form_for :comment, url: user_comments_path, method: :post do |f| %>
-    <%= f.hidden_field :commentable_id, value: post.id %>
-    <%= f.hidden_field :commentable_type, value: "Post" %>
-    <%= f.hidden_field :user_id, value: current_user.id %>
-    <%= f.text_area :body, placeholder: "Reply here..." %>
-    <%= f.submit %>
-  <% end %>
-</div>
+<%= form_for :comment, url: user_comments_path, method: :post, html: { class: 'comment-form' } do |f| %>
+  <%= f.hidden_field :commentable_id, value: post.id %>
+  <%= f.hidden_field :commentable_type, value: "Post" %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <%= f.text_area :body, placeholder: "Reply here..." %>
+  <%= f.submit %>
+<% end %>
