@@ -53,4 +53,35 @@ RSpec.describe Board do
       end
     end
   end
+
+  describe '#vertical_in_a_row_match?' do
+    context 'when no player has 4-in-a-row, vertically' do
+      it 'returns false' do
+        chosen_column = 3
+        player_marker = 'x'
+        board.drop_to_slot(chosen_column, player_marker)
+        expect(board.vertical_in_a_row?(player_marker)).to be false
+      end
+    end
+
+    context 'when a player has 4-in-a-row, vertically' do
+      it 'returns true' do
+        chosen_column = 3
+        player_marker = 'x'
+        4.times { board.drop_to_slot(chosen_column, player_marker) }
+        expect(board.vertical_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4 vertical spots in a column, but not in-a-row' do
+      it 'returns false' do
+        chosen_column = 3
+        column_markers = [nil, 'x', 'o', 'x', 'x', 'x']
+
+        column_markers.each { |marker| board.drop_to_slot(chosen_column, marker) }
+
+        expect(board.vertical_in_a_row?('x')).to be false
+      end
+    end
+  end
 end

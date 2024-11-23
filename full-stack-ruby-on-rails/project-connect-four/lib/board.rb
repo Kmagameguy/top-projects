@@ -28,4 +28,21 @@ class Board
   def find_slot(row, column)
     @slots[row - 1][column - 1]
   end
+
+  def vertical_in_a_row?(marker)
+    markers_in_a_row = 0
+    @column_count.times do |column|
+      @slots.each do |row|
+        if row[column] == marker
+          markers_in_a_row += 1
+        else
+          markers_in_a_row = 0
+        end
+
+        break if markers_in_a_row == 4
+      end
+      break if markers_in_a_row == 4
+    end
+    !!(markers_in_a_row == 4)
+  end
 end
