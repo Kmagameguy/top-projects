@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="#" method="post">
+    <fieldset>
+      <legend>User Information:</legend>
+
+      <div>
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first-name" name="first_name" placeholder="Conan...">
+      </div>
+
+      <div>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last-name" name="last_name" placeholder="the Librarian...">
+      </div>
+
+      <div>
+        <label for="user_email">Email Address:</label>
+        <input type="email" id="user_email" name="email" placeholder="conan@thelibrary.org">
+      </div>
+
+      <div>
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" placeholder="52">
+      </div>
+
+      <div>
+        <label for="user_password">Password:</label>
+        <input type="password" id="user_password" name="password">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Lookup by ID:</legend>
+      <div>
+        <label for="amount">Dewey Index #:</label>
+        <input type="number" id="amount" name="amount" placeholder="0.0">
+      </div>
+
+      <div>
+        <label for="notes">Additional Notes:</label>
+        <textarea name="notes" id="notes" cols="60" rows="20">Don't you know the Dewey Decimal System?!???</textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Items in stock:</legend>
+
+      <label for="inventory">Inventory List:</label>
+      <select name="inventory" id="inventory">
+        <optgroup label="books">
+          <option value="2666">2666</option>
+          <option value="everything-is-illuminated">Everything Is Illuminated</option>
+          <option value="gilead" selected>Gilead</option>
+          <option value="the-book-thief">The Book Thief</option>
+          <option value="the-road">The Road</option>
+          <option value="white-teeth">White Teeth</option>
+        </optgroup>
+        <optgroup label="films">
+          <option value="metropolis">Metropolis</option>
+          <option value="suspiria">Suspiria</option>
+          <option value="the-cabinet-of-dr-caligari">The Cabinet of Dr. Caligari</option>
+          <option value="uhf">UHF</option>
+        </optgroup>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>Rental Period:</legend>
+        <div>
+          <label for="short-rental">Short (2 days)</label>
+          <input type="radio" id="short-rental" name="rental_period" value="short" checked>
+        </div>
+
+        <div>
+          <label for="medium-rental">Medium (7 days)</label>
+          <input type="radio" id="medium-rental" name="rental_period" value="medium">
+        </div>
+
+        <div>
+          <label for="long-rental">Long (14 days)</label>
+          <input type="radio" id="long-rental" name="rental_period" value="long">
+        </div>
+      </fieldset>
+
+    <fieldset>
+      <legend>Condition Filter:</legend>
+
+      <div>
+        <label for="poor">Poor</label>
+        <input type="checkbox" id="poor-condition" name="condition_filter" value="poor" checked>
+      </div>
+
+      <div>
+        <label for="okay">Okay</label>
+        <input type="checkbox" id="okay-condition" name="condition_filter" value="okay" checked>
+      </div>
+
+      <div>
+        <label for="good">Good</label>
+        <input type="checkbox" id="good-condition" name="condition_filter" value="good" checked>
+      </div>
+
+      <div>
+        <label for="excellent">Excellent</label>
+        <input type="checkbox" id="excellent-condition" name="condition_filter" value="excellent" checked>
+      </div>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+    <button type="button">Help?</button>
+  </form>
+</body>
+</html>
