@@ -4,9 +4,10 @@
 class Player
   attr_reader :name, :marker
 
-  def initialize(name, marker)
+  def initialize(name, marker, max_range = 7)
     @name = name
     @marker = marker
+    @max_range = max_range
   end
 
   def select_column
@@ -21,7 +22,7 @@ class Player
   private
 
   def verify_input(input)
-    return input if input.between?(1, 7)
+    return input if input.between?(1, @max_range)
   end
 
   def user_input

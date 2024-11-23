@@ -8,9 +8,9 @@ class ConnectFour
   attr_accessor :board
   attr_reader :player, :computer, :current_player
 
-  def initialize(player_name:, player_marker:, board: Board.new)
-    @board = board
-    @player = Player.new(player_name, player_marker)
+  def initialize(player_name:, player_marker:)
+    @board = Board.new
+    @player = Player.new(player_name, player_marker, @board.column_count)
     @computer = Player.new('computer', 'o')
     @current_player = @player
   end

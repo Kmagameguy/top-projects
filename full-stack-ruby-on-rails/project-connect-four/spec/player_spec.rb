@@ -5,7 +5,7 @@ require 'player'
 RSpec.describe Player do
   subject(:column_selection) { described_class.new('Mannimarco', 'x') }
 
-  describe 'picking a spot to drop a chip' do
+  describe '#select_column' do
     context 'when user selection is valid' do
       it 'stops loop and does not display error message' do
         valid_input = 2
