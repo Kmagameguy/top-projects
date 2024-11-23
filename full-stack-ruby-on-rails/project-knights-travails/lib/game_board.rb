@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
 require_relative 'knight'
+require_relative 'node'
+require 'pry-byebug'
 
 # A class which contains a knight and a grid of positions onto which it can move
 class GameBoard
-  def initialize; end
+  attr_accessor :knight
+
+  def initialize(size: 8)
+    @size = size
+    @knight = Knight.new(board_size: @size)
+  end
 end
+
+b = GameBoard.new
+b.knight.coordinates = [1, 6]
+puts "Starting position: #{b.knight.coordinates}"
 
 # Board:
 #

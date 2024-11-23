@@ -5,11 +5,12 @@ class Knight
   attr_accessor :coordinates, :visited_squares
 
   MOVES = [[-1, -2], [1, -2], [2, -1], [2, 1],
-           [1, 2],  [-1, 2],  [-2, 1],  [-2, -1]].freeze
+           [1, 2],   [-1, 2], [-2, 1], [-2, -1]].freeze
 
-  def initialize(starting_position = [0, 0])
+  def initialize(starting_position: [0, 0], board_size: 8)
     @coordinates = starting_position
     @visited_squares = []
+    @board_size = board_size - 1
   end
 
   def possible_next_moves
@@ -24,21 +25,13 @@ class Knight
   private
 
   def out_of_bounds?(move)
-    # board_boundary is hopefully temporary... i want to be able to evaluate
-    # jumps for any size board...which we can eventually get from
-    # the game_board i think.
-    board_boundary = 7
-    move.any? { |coordinate| coordinate.negative? || coordinate > board_boundary }
+    move.any? { |coordinate| coordinate.negative? || coordinate > @board_size }
   end
 
   def already_visited?(move)
     @visited_squares.any? { |square| square == move }
   end
 end
-
-k = Knight.new([3, 4])
-puts "Starting position: #{k.coordinates}"
-p k.possible_next_moves
 
 # Valid moves (Where "x" is current position):
 #       0        1        2        3        4        5        6        7
