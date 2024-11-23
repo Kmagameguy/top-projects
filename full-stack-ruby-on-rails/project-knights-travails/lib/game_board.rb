@@ -18,13 +18,14 @@ class GameBoard
   def knight_moves(source, destination)
     @start_position = source
     @end_position = destination
-    build_move_tree(Node.new(coordinates: @start_position))
+    build_move_tree(@start_position)
     find_shortest_path
   end
 
   private
 
-  def build_move_tree(path_node)
+  def build_move_tree(coordinates)
+    path_node = Node.new(coordinates: coordinates)
     @queue = [path_node]
     @visited_squares = [path_node]
 
