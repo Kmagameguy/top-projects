@@ -102,11 +102,11 @@ class Chess
 
     king, rook = identify_rook_and_king(piece_one, piece_two)
 
-    !board.check?(@current_player.color, other_player.color) &&
-      (!king.moved? && !rook.moved?) &&
+    board.not_checked?(@current_player.color, other_player.color) &&
+      (king.not_moved? && rook.not_moved?) &&
       own_piece?(king) && own_piece?(rook) &&
       rook_to_king_is_empty?(king, rook) &&
-      !king_passes_through_check?(king, rook)
+      king_does_not_pass_through_check?(king, rook)
   end
 
   def castle!(king, rook)
@@ -159,11 +159,11 @@ class Chess
   end
 
   def print_error(piece, destination)
-    if !own_piece?(piece)
+    if not_own_piece?(piece)
       @display.not_piece_owner
     elsif piece&.trapped?(board.squares)
       @display.no_eligible_moves(piece.class)
-    elsif !in_move_set?(piece, destination)
+    elsif not_in_move_set?(piece, destination)
       @display.invalid_destination(piece.class, array_to_chess_notation(destination))
     elsif hits_king?(destination)
       @display.cannot_take_king
@@ -239,13 +239,17 @@ class Chess
 
   def valid_piece?(piece)
     own_piece?(piece) &&
-      !piece.trapped?(board.squares)
+      piece.can_move?(board.squares)
   end
 
   def valid_destination?(piece, destination)
     in_move_set?(piece, destination) &&
-      !hits_king?(destination) &&
-      !moves_into_check?(piece, destination)
+      does_not_hit_king?(destination) &&
+      does_not_move_into_check?(piece, destination)
+  end
+
+  def not_own_piece(piece)
+    !own_piece(piece)
   end
 
   def own_piece?(piece)
@@ -261,8 +265,16 @@ class Chess
     piece.possible_moves(board.squares).empty?
   end
 
+  def not_in_move_set?(piece, move)
+    !in_move_set?(piece, move)
+  end
+
   def in_move_set?(piece, move)
     piece.possible_moves(board.squares).include?(move) unless hits_king?(move)
+  end
+
+  def does_not_hit_king?(move)
+    !hits_king?(move)
   end
 
   def hits_king?(move)
@@ -271,10 +283,10 @@ class Chess
 
   def checkmate?
     board.check?(@current_player.color, other_player.color) &&
-      !can_break_check?
+      cannot_break_check?
   end
 
-  def can_break_check?
+  def cannot_break_check?
     moves = []
     pieces = board.find_pieces(@current_player.color)
     pieces.each do |piece|
@@ -282,7 +294,11 @@ class Chess
         moves_into_check?(piece, move)
       end
     end
-    !moves.flatten.empty?
+    moves.flatten.empty?
+  end
+
+  def does_not_move_into_check?(piece, move)
+    !moves_into_check?(piece, move)
   end
 
   def moves_into_check?(piece, move)
@@ -302,6 +318,10 @@ class Chess
     max = [king_file, rook_file].max
 
     board.squares[king_rank][min + 1...max].compact.empty?
+  end
+
+  def king_does_not_pass_through_check?(king, rook)
+    !king_passes_through_check?(king, rook)
   end
 
   def king_passes_through_check?(king, rook)

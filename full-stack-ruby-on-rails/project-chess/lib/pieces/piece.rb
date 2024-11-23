@@ -22,6 +22,10 @@ class Piece
     possible_moves(board).empty?
   end
 
+  def can_move?(board)
+    !trapped?(board)
+  end
+
   def move!(coordinates)
     @position = coordinates
     @moved = true
@@ -29,6 +33,10 @@ class Piece
 
   def moved?
     @moved
+  end
+
+  def not_moved?
+    !moved?
   end
 
   def white?

@@ -63,6 +63,10 @@ class Board
     squares[x][y] = piece
   end
 
+  def not_checked?(defender_color, attacker_color)
+    !check?(defender_color, attacker_color)
+  end
+
   def check?(defender_color, attacker_color)
     defender_king_position = find_king(defender_color).position
     attacker_pieces = find_pieces(attacker_color)
