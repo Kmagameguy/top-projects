@@ -1,0 +1,12 @@
+<div>
+  <h1><%= @user == current_user ? 'Your' : possessive(@user.name)%> Friends</h1>
+  <% if @friendships.any? %>
+    <ul>
+      <% @friendships.each do |friend| %>
+        <li><%= link_to friend.name, user_path(friend) %> | <%= friend.email %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Looks like you have no friends.  Too bad!</p>
+  <% end %>
+</div>

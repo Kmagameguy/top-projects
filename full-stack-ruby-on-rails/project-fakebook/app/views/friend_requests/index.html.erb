@@ -7,6 +7,7 @@
       <div>
         <h3><%= friend_request.friend.name %></h3>
         <p><%= button_to "reject friend request", friend_request_path(friend_request), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></p>
+        <p><%= button_to "accept friend request", user_friends_path(friend_request, friendship: { user_id: friend_request.user_id, friend_id: friend_request.friend_id} ), data: { 'turbo-method' => :post }, method: :post %></p>
       </div>
     <% end %>
   <% end %>

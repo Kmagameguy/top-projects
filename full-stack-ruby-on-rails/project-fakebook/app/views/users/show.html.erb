@@ -13,9 +13,13 @@
       <h2>
         <p>Your friend request is still pending...</p>
       </h2>
+    <% elsif current_user.friends.include?(@user) %>
+      <h2>
+        <p>You are already friends!</p>
+      </h2>
     <% else %>
       <h2>
-        <%= link_to "Request to be friends", "/users/#{@user.id}/friend_requests", method: :post, data: { 'turbo-method' => :post } %>
+        <%= button_to "Request to be friends", user_friend_requests_path(@user), data: { 'turbo-method' => :post } %>
       </h2>
     <% end %>
   </div>
