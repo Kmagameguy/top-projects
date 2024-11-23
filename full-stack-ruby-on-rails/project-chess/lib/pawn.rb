@@ -19,4 +19,8 @@ class Pawn < Piece
       moves
     end
   end
+
+  def promote?
+    (@position[0].zero? || @position[0] == 7)
+  end
 end

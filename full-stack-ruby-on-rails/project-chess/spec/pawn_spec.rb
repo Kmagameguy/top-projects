@@ -37,4 +37,36 @@ RSpec.describe Pawn do
       end
     end
   end
+
+  describe '#promote?' do
+    subject(:black_pawn) { described_class.new(:black, [1, 0]) }
+    subject(:white_pawn) { described_class.new(:white, [6, 0]) }
+
+    context 'when the pawns have not moved' do
+      it 'returns false' do
+        expect(black_pawn).to_not be_promote
+        expect(white_pawn).to_not be_promote
+      end
+    end
+
+    context 'when the pawns have moved but not reached their opposing side' do
+      it 'returns false' do
+        black_pawn.move([3, 0])
+        white_pawn.move([4, 0])
+
+        expect(black_pawn).to_not be_promote
+        expect(white_pawn).to_not be_promote
+      end
+    end
+
+    context 'when the pawns have reached their opposing side' do
+      it 'returns true' do
+        black_pawn.move([7, 0])
+        white_pawn.move([0, 0])
+
+        expect(black_pawn).to be_promote
+        expect(white_pawn).to be_promote
+      end
+    end
+  end
 end
