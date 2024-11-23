@@ -109,6 +109,7 @@ body {
   margin-bottom: 0.9rem;
 }
 
+.card.profile,
 .card.status,
 .card.friends,
 .card.post {
@@ -136,6 +137,28 @@ body {
   background-color: rgb(220, 220, 220);
   padding: 0.8rem;
   margin: 0.4rem 0;
+}
+
+.card.profile {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card.profile img {
+  width: 3rem;
+  border-radius: 1.5rem;
+}
+
+.profile-short-detail ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.profile-short-detail li {
+  margin-bottom: 0.3rem;
 }
 
 .comment-form {

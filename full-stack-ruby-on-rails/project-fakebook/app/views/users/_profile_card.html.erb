@@ -1,0 +1,18 @@
+<div class="card profile">
+  <div class="profile-img">
+    <%= gravatar_for(user) %>
+  </div>
+  <div class="profile-short-detail">
+    <ul>
+      <li><%= link_to_user_profile(user) %></li>
+      <% unless user.profile.email.blank? %>
+        <li>Email: <%= user.profile.email %></li>
+      <% end %>
+      <% if pending_friend_request?(user) %>
+        <li>Your friend request is still pending...</li>
+      <% elsif !current_user.friends.include?(user) %>
+        <li><%= button_to 'Request to be friends', user_friend_requests_path(user), data: { turbo_method: :post} %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
