@@ -5,6 +5,22 @@ require 'connect_four'
 RSpec.describe ConnectFour do
   subject(:game_loop) { described_class.new(player_name: 'Ongar the World-Weary', player_marker: 'x') }
 
+  describe 'taking turns' do
+    context 'when the game has just started' do
+      it 'should make the user the active player' do
+        expect(game_loop.current_player).to be game_loop.player
+      end
+    end
+
+    context 'when the player has just taken a turn' do
+      it 'should make the computer the active player' do
+        game_loop.board.drop_to_slot(3, 'x')
+        game_loop.switch_players
+        expect(game_loop.current_player).to be game_loop.computer
+      end
+    end
+  end
+
   describe 'adding a chip to the board' do
     context 'when user selection is valid' do
       it 'stops loop and does not display error message' do

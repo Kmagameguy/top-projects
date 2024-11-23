@@ -8,6 +8,20 @@ RSpec.describe Board do
   let(:computer_marker) { 'o' }
   let(:chosen_column) { 3 }
 
+  describe '#blank?' do
+    context 'when no one has played a move yet' do
+      it 'returns true' do
+        expect(board).to be_blank
+      end
+    end
+
+    context 'when at least one player has made a move' do
+      it 'returns false' do
+        board.slots[0][0] = player_marker
+        expect(board).to_not be_blank
+      end
+    end
+  end
 
   describe '#find_slot' do
     it 'returns the value of the slot at the given coordinates' do

@@ -11,6 +11,10 @@ class Board
     @slots = Array.new(@row_count) { Array.new(@column_count) }
   end
 
+  def blank?
+    @slots.all? { |row| row.all?(&:nil?) }
+  end
+
   def full?(column)
     column_index = column - 1
 

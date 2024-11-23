@@ -16,7 +16,18 @@ class ConnectFour
   end
 
   def play
+    switch_players
     add_chip
+  end
+
+  def switch_players
+    return if board.blank?
+
+    @current_player = if @current_player == @player
+                        @computer
+                      else
+                        @player
+                      end
   end
 
   def add_chip
