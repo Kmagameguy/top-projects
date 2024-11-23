@@ -14,9 +14,9 @@ class Knight
 
   def possible_next_moves(visited_squares)
     x, y = @coordinates
-    moves = MOVES.map { |x_offset, y_offset| [x + x_offset, y + y_offset] }
-    moves = moves.reject { |move| out_of_bounds?(move) }
-    moves.reject { |move| already_visited?(move, visited_squares) }
+    MOVES.map { |x_offset, y_offset| [x + x_offset, y + y_offset] }
+         .reject { |move| out_of_bounds?(move) }
+         .reject { |move| already_visited?(move, visited_squares) }
   end
 
   private
