@@ -14,6 +14,11 @@
     <%= render "layouts/header" %>
 
     <div class="main-container">
+      <% flash.each do |type, msg| %>
+        <div class="flash <%= type %>">
+          <%= msg %>
+        </div>
+      <% end %>
       <%= yield %>
     </div>
   </body>

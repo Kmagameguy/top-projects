@@ -63,6 +63,25 @@ p {
   align-items: stretch;
 }
 
+.main-container .flash {
+  margin: 1rem 6rem;
+  padding: 0.75rem 1.25rem;
+
+  color: white;
+  border: 1px solid;
+  border-radius: 0.25rem;
+}
+
+.main-container .flash.alert {
+  background-color: red;
+  border-color: darkred;
+}
+
+.main-container .flash.success {
+  background-color: green;
+  border-color: darkgreen;
+}
+
 .main-container form {
   margin: 0 auto 1.5rem auto;
 }
