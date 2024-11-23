@@ -42,6 +42,7 @@ class ConnectFour
 
   def add_chip
     board.drop_to_slot(pick_column, @current_player.marker)
+    sleep(1) if @current_player == @computer
   end
 
   def pick_column
