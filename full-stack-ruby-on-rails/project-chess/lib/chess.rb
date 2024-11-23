@@ -13,6 +13,7 @@ class Chess
   def initialize(save_file = GameFile.new)
     @save_file = save_file
     @saved_and_quit = false
+    @en_passantable_pawns = []
     @display = Display.new
 
     setup_game
@@ -70,6 +71,7 @@ class Chess
       white: @white_player,
       board_state: @board,
       current_turn: @current_player,
+      rushing_pawns: @en_passantable_pawns,
       turns: @turn_count
     }
 
@@ -82,6 +84,7 @@ class Chess
     @white_player = data[:white]
     @board = data[:board_state]
     @current_player = data[:current_turn]
+    @en_passantable_pawns = data[:rushing_pawns]
     @turn_count = data[:turns]
   end
 
@@ -94,6 +97,7 @@ class Chess
       take_turn
       return if @saved_and_quit
 
+      record_rushing_pawns
       switch_players
       increment_round
     end
@@ -115,6 +119,7 @@ class Chess
 
         if valid?(piece, destination)
           board.update!(piece, destination)
+          reset_en_passant
           promote(piece) if promote?(piece)
           break
         else
@@ -142,6 +147,21 @@ class Chess
 
   def valid?(piece, destination)
     valid_piece?(piece) && valid_destination?(piece, destination)
+  end
+
+  def record_rushing_pawns
+    @en_passantable_pawns = rushing_pawns
+  end
+
+  def reset_en_passant
+    @en_passantable_pawns.each { |piece| piece.rushing = false }
+    @en_passantable_pawns = []
+  end
+
+  def rushing_pawns
+    board.find_pieces(@current_player.color)
+         .select { |piece| piece.is_a?(Pawn) }
+         .select(&:rushing?)
   end
 
   def game_over?

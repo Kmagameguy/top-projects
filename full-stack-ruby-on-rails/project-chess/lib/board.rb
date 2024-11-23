@@ -32,9 +32,20 @@ class Board
     n_rank, n_file = new_square
 
     destroy_piece(piece.position)
+    destroy_en_passanted_pawns(piece)
     piece.move!(new_square)
 
     update_square(piece)
+  end
+
+  def destroy_en_passanted_pawns(piece)
+    return unless piece.is_a?(Pawn)
+
+    if !piece.en_passantable_left.empty?
+      destroy_piece(piece.en_passantable_left)
+    elsif !piece.en_passantable_right.empty?
+      destroy_piece(piece.en_passantable_right)
+    end
   end
 
   def create_piece(coordinates, piece, color)

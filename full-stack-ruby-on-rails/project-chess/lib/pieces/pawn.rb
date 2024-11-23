@@ -6,8 +6,24 @@ require_relative 'piece'
 class Pawn < Piece
   MOVES_SET = [[1, 0], [2, 0]].freeze
 
+  attr_accessor :rushing
+  attr_reader :en_passantable_left, :en_passantable_right
+
+  def initialize(color, position)
+    super
+    @rushing = false
+    @en_passantable_left = []
+    @en_passantable_right = []
+  end
+
+  def move!(coordinates)
+    update_rushing(coordinates)
+    super
+  end
+
   def possible_moves(squares)
     move_set(squares).concat(attackable_squares(squares))
+                     .concat(en_passantable_squares(squares))
                      .reject { |move| out_of_bounds?(move, squares) }
   end
 
@@ -35,6 +51,46 @@ class Pawn < Piece
     attackable_squares << right_diag unless squares.dig(r_rank, r_file).nil?
 
     attackable_squares
+  end
+
+  def en_passantable_squares(squares)
+    pawn_rank = position[0]
+
+    pawn_left = if white?
+                  position[1] - 1
+                else
+                  position[1] + 1
+                end
+
+    pawn_right = if white?
+                   position[1] + 1
+                 else
+                   position[1] - 1
+                 end
+
+    adjacent_left = squares[pawn_rank][pawn_left]
+    adjacent_right = squares[pawn_rank][pawn_right]
+
+    adjacent_squares = []
+    @en_passantable_left = []
+    @en_passantable_right = []
+
+    @en_passantable_left = [pawn_rank, pawn_left] if other_rushing?(adjacent_left)
+    @en_passantable_right = [pawn_rank, pawn_right] if other_rushing?(adjacent_right)
+
+    if white?
+      adjacent_squares << left_diag if other_rushing?(adjacent_left)
+      adjacent_squares << right_diag if other_rushing?(adjacent_right)
+    else
+      adjacent_squares << right_diag if other_rushing?(adjacent_left)
+      adjacent_squares << left_diag if other_rushing?(adjacent_right)
+    end
+
+    adjacent_squares
+  end
+
+  def other_rushing?(square)
+    square.is_a?(Pawn) && square.rushing?
   end
 
   def left_diag
@@ -65,11 +121,27 @@ class Pawn < Piece
     (position[0].zero? || position[0] == 7)
   end
 
+  def rushing?
+    @rushing
+  end
+
   def trapped?(board)
     possible_moves(board).empty?
   end
 
   def to_s
     white? ? '♙' : '♟︎'
+  end
+
+  private
+
+  def update_rushing(coordinates)
+    prev_rank = coordinates[0]
+    new_rank = position[0]
+    @rushing = if white?
+                 prev_rank == (new_rank - 2)
+               else
+                 prev_rank == (new_rank + 2)
+               end
   end
 end
