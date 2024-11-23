@@ -66,8 +66,3 @@ class GameBoard
                     .first
   end
 end
-
-b = GameBoard.new
-r = b.knight_moves([3, 3], [4, 3])
-puts "Knight made it from #{r[:pathway].first} to #{r[:pathway].last} in #{r[:move_count]} moves."
-r[:pathway].each { |square| p square }
