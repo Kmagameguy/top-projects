@@ -8,4 +8,7 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
+
+  has_many :pending_friends, through: :friend_requests, source: :friend
+  has_many :friend_requests, dependent: :destroy
 end
