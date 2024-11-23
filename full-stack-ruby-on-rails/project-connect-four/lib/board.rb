@@ -11,8 +11,10 @@ class Board
     @slots = Array.new(@row_count) { Array.new(@column_count) }
   end
 
-  def size
-    { rows: @row_count, columns: @column_count }
+  def full?(column)
+    column_index = column - 1
+
+    @slots.all? { |row| !row[column_index].nil? }
   end
 
   def drop_to_slot(column, marker)

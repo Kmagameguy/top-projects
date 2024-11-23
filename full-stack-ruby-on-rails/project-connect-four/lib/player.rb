@@ -11,8 +11,8 @@ class Player
 
   def select_column
     loop do
-      column = verify_input(pick_spot)
-      break if column
+      column = verify_input(user_input)
+      return column if column
 
       puts 'Input error!  Try again.'
     end
@@ -24,9 +24,7 @@ class Player
     return input if input.between?(1, 7)
   end
 
-  def pick_spot
-    puts "#{name}, it's your turn.  Next move?"
-    puts 'Available options: 1, 2, 3, 4, 5, 6, 7'
+  def user_input
     gets.chomp.to_i
   end
 end

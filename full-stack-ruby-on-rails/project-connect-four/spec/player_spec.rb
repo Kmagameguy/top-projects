@@ -9,7 +9,7 @@ RSpec.describe Player do
     context 'when user selection is valid' do
       it 'stops loop and does not display error message' do
         valid_input = 2
-        allow(column_selection).to receive(:pick_spot).and_return(valid_input)
+        allow(column_selection).to receive(:user_input).and_return(valid_input)
         expect(column_selection).not_to receive(:puts).with('Input error!  Try again.')
         column_selection.select_column
       end
@@ -19,7 +19,7 @@ RSpec.describe Player do
       before do
         invalid_input = 0
         valid_input = 7
-        allow(column_selection).to receive(:pick_spot).and_return(invalid_input, valid_input)
+        allow(column_selection).to receive(:user_input).and_return(invalid_input, valid_input)
       end
 
       it 'displays an error message once' do
@@ -34,7 +34,7 @@ RSpec.describe Player do
         second_invalid_input = 13
         third_invalid_input = 1_000_000
         valid_input = 7
-        allow(column_selection).to receive(:pick_spot).and_return(first_invalid_input, second_invalid_input, third_invalid_input, valid_input)
+        allow(column_selection).to receive(:user_input).and_return(first_invalid_input, second_invalid_input, third_invalid_input, valid_input)
       end
 
       it 'shows errors until the valid input is entered' do

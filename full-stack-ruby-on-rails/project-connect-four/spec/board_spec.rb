@@ -16,6 +16,22 @@ RSpec.describe Board do
     end
   end
 
+  describe '#full?' do
+    context 'when a column has chips in every slot' do
+      it 'returns true' do
+        6.times { board.drop_to_slot(chosen_column, player_marker) }
+        expect(board.full?(chosen_column)).to be true
+      end
+    end
+
+    context 'when a column does not have chips in every slot' do
+      it 'returns false' do
+        5.times { board.drop_to_slot(chosen_column, player_marker) }
+        expect(board.full?(chosen_column)).to be false
+      end
+    end
+  end
+
   describe '#drop_to_slot' do
     context 'when a chip is added to a column' do
       it 'puts the chip into the bottom-most slot' do
