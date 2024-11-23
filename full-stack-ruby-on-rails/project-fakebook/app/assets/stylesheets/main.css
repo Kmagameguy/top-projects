@@ -96,6 +96,10 @@ body {
   border-color: #b8daff;
 }
 
+.bold-text {
+  font-weight: 700;
+}
+
 .card {
   background-color: white;
   border: 1px solid rgb(220, 220, 220);
@@ -148,6 +152,20 @@ body {
 .comment-form input[type='submit'] {
   padding: 0.45rem 0.6rem;
   align-self: flex-start;
+}
+
+.profile-form {
+  margin: 1rem 6rem;
+}
+
+.profile-form-input {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+.profile-form-input input[type='text'] {
+  padding: 0.5rem 0.3rem;
 }
 
 .profile-container {

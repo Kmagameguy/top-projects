@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   resources :users, only: [:index, :show] do
+    resource :profile, only: [:show, :edit, :update]
     resources :friend_requests, only: [:create, :destroy, :index]
     resources :friends, only: [:create, :index]
     resources :posts, only: [:index, :create, :destroy] do
