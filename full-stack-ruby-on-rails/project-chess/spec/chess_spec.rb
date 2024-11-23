@@ -43,6 +43,17 @@ RSpec.describe Chess do
           expect(game.valid_move?(pawn, [8, 0])).to be false
         end
       end
+
+      context 'when the move is blocked by another piece' do
+        it 'returns false' do
+          blocking_pawn = game.board.squares[1][0]
+          moving_pawn = game.board.squares[6][0]
+
+          game.board.update([1, 0], [4, 0])
+
+          expect(game.valid_move?(moving_pawn, [4, 0])).to be false
+        end
+      end
     end
   end
 end

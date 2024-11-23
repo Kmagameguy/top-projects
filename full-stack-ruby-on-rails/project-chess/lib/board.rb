@@ -39,6 +39,17 @@ class Board
     end
   end
 
+  def update(last_square, new_square)
+    l_rank, l_file = last_square
+    n_rank, n_file = new_square
+
+    piece = squares[l_rank][l_file]
+    piece.move(new_square)
+
+    squares[l_rank][l_file] = nil
+    squares[n_rank][n_file] = piece
+  end
+
   # convenience method for now...
   def to_s
     num_squares = size
