@@ -22,6 +22,7 @@ class Display
   DOUBLE_SPACER = SPACER + SPACER
 
   def self.show(board)
+    clear
     puts column_header
     board.each do |row|
       print '|'
@@ -39,5 +40,9 @@ class Display
     row.map do |cell|
       NIL_ICON[cell] || cell
     end.join(SPACER)
+  end
+
+  def self.clear
+    system('clear')
   end
 end

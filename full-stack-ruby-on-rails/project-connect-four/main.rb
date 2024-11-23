@@ -3,6 +3,7 @@
 require_relative './lib/connect_four'
 
 def setup_game
+  Display.clear
   puts 'Welcome to Connect Four!'
   puts 'To get started, please enter your name:'
 
