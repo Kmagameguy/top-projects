@@ -26,7 +26,7 @@ class GameBoard
 
   def build_move_tree(path_node)
     @queue = [path_node]
-    @visited_squares << path_node
+    @visited_squares = [path_node]
 
     until @queue.empty?
       return if path_node.coordinates == @end_position
