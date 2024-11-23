@@ -25,21 +25,7 @@ class Chess
     square_rank, square_file = square
     piece = board.squares[square_rank][square_file]
 
-    m = piece.possible_moves
-             .reject { |p_move| out_of_bounds?(p_move) }
-
-    m = m.reject { |p_move| blocked?(p_move) } if piece.is_a? Pawn
-
-    m.include?(move)
-  end
-
-  def blocked?(move)
-    x, y = move
-    !board.squares.dig(x, y).nil?
-  end
-
-  def out_of_bounds?(move)
-    move.any? { |coordinate| coordinate.negative? || coordinate > board.size - 1 }
+    piece.possible_moves(board.squares).include?(move)
   end
 
   private

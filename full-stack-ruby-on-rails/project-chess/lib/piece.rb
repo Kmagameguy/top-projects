@@ -39,6 +39,10 @@ class Piece
     @moved = true
   end
 
+  def out_of_bounds?(move, board)
+    move.any? { |coordinate| (coordinate.negative? || coordinate > board.size - 1) }
+  end
+
   def to_s
     STRING_REPRESENTATION.dig(color, type)
   end
