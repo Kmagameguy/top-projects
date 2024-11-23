@@ -86,6 +86,11 @@ class Display
     puts "Moving #{piece} to #{destination} would put your King into check!"
   end
 
+  def cannot_castle
+    puts 'You cannot castle those pieces.'
+    prompt_for_reselection
+  end
+
   def prompt_for_reselection
     puts 'Select again.'
   end

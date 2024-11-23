@@ -20,7 +20,6 @@ class Chess
   end
 
   def setup_game
-    @display.welcome
     load_game? ? load! : new_game
   end
 
@@ -49,31 +48,23 @@ class Chess
       if input.quit
         quit!
         break
+      end
+
+      piece = board.square(chess_notation_to_array(input.first_location))
+      destination = chess_notation_to_array(input.second_location)
+      destination_piece = board.square(destination)
+
+      if valid_castle?(piece, destination_piece)
+        king, rook = identify_rook_and_king(piece, destination_piece)
+        castle!(king, rook)
+        break
+      elsif valid_move?(piece, destination)
+        board.update!(piece, destination)
+        reset_en_passant
+        promote!(piece) if promote?(piece)
+        break
       else
-        piece = board.square(chess_notation_to_array(input.first_location))
-        destination = chess_notation_to_array(input.second_location)
-        destination_piece = board.square(destination)
-
-        if castling?(piece, destination_piece)
-          rook, king = identify_rook_and_king(piece, destination_piece)
-
-          if valid_castle?(king, rook)
-            castle!(king, rook)
-            break
-          else
-            puts 'You cannot castle those pieces. Select again.'
-            next
-          end
-        end
-
-        if valid?(piece, destination)
-          board.update!(piece, destination)
-          reset_en_passant
-          promote!(piece) if promote?(piece)
-          break
-        else
-          print_error(piece, destination)
-        end
+        print_error(piece, destination)
       end
     end
   end
@@ -106,7 +97,11 @@ class Chess
     [king, rook]
   end
 
-  def valid_castle?(king, rook)
+  def valid_castle?(piece_one, piece_two)
+    return false unless castling?(piece_one, piece_two)
+
+    king, rook = identify_rook_and_king(piece_one, piece_two)
+
     !board.check?(@current_player.color, other_player.color) &&
       (!king.moved? && !rook.moved?) &&
       own_piece?(king) && own_piece?(rook) &&
@@ -132,7 +127,7 @@ class Chess
     board.update!(rook, [king_rank, rook_destination])
   end
 
-  def valid?(piece, destination)
+  def valid_move?(piece, destination)
     valid_piece?(piece) && valid_destination?(piece, destination)
   end
 
@@ -173,7 +168,10 @@ class Chess
     elsif hits_king?(destination)
       @display.cannot_take_king
     elsif moves_into_check?(piece, destination)
-      @display.cannot_move_into_check
+      @display.cannot_move_into_check(piece, destination)
+    elsif valid_castle?(piece, destination)
+      destination_piece = board.square(destination)
+      king, rook = identify_rook_and_king(piece, destination_piece)
     end
 
     @display.prompt_for_reselection
@@ -241,30 +239,27 @@ class Chess
   end
 
   def valid_piece?(piece)
-    return false unless own_piece?(piece)
-    return false if piece&.trapped?(board.squares)
-
-    true
+    own_piece?(piece) &&
+      !piece.trapped?(board.squares)
   end
 
   def valid_destination?(piece, destination)
-    if in_move_set?(piece, destination)
-      return false if hits_king?(destination)
-      return false if moves_into_check?(piece, destination)
-
-      true
-    else
-      false
-    end
+    in_move_set?(piece, destination) &&
+      !hits_king?(destination) &&
+      !moves_into_check?(piece, destination)
   end
 
   def own_piece?(piece)
-    piece&.color == @current_player.color
+    return false if piece.nil?
+
+    piece.color == @current_player.color
   end
 
   # To Do: Move to Piece class
   def trapped?(piece)
-    piece&.possible_moves(board.squares)&.empty?
+    return false if piece.nil?
+
+    piece.possible_moves(board.squares).empty?
   end
 
   def in_move_set?(piece, move)

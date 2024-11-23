@@ -211,14 +211,14 @@ RSpec.describe Chess do
     end
   end
 
-  describe '#valid?' do
+  describe '#valid_move?' do
     context 'when the selected piece can move to the destination' do
       it 'return true' do
         pawn = game.board.square([6, 0])
         destination = [5, 0]
 
         expect(game.current_player.color).to be :white
-        expect(game.valid?(pawn, destination)).to be true
+        expect(game.valid_move?(pawn, destination)).to be true
       end
     end
 
@@ -228,7 +228,7 @@ RSpec.describe Chess do
         destination = [2, 0]
 
         expect(game.current_player.color).to be :white
-        expect(game.valid?(black_piece, destination)).to be false
+        expect(game.valid_move?(black_piece, destination)).to be false
       end
     end
 
@@ -238,7 +238,7 @@ RSpec.describe Chess do
         destination = [6, 0]
 
         expect(game.current_player.color).to be :white
-        expect(game.valid?(rook, destination)).to be false
+        expect(game.valid_move?(rook, destination)).to be false
       end
     end
 
@@ -248,7 +248,7 @@ RSpec.describe Chess do
         destination = [3, 0]
 
         expect(game.current_player.color).to be :white
-        expect(game.valid?(pawn, destination)).to be false
+        expect(game.valid_move?(pawn, destination)).to be false
       end
     end
 
@@ -264,7 +264,7 @@ RSpec.describe Chess do
         king_square = game.board.square([0, 4])
 
         expect(pawn.position).to match_array([1, 4])
-        expect(game.valid?(pawn, king_square)).to be false
+        expect(game.valid_move?(pawn, king_square)).to be false
       end
     end
 
@@ -278,7 +278,7 @@ RSpec.describe Chess do
         pawn = game.board.square([6, 5])
         destination = [5, 5]
 
-        expect(game.valid?(pawn, destination)).to be false
+        expect(game.valid_move?(pawn, destination)).to be false
       end
     end
   end
@@ -338,6 +338,327 @@ RSpec.describe Chess do
       it 'returns true' do
         expect(game.current_player.color).to be :white
         expect(game).to be_game_over
+      end
+    end
+
+    context 'when the king is in checkmate' do
+      before do
+        # clear off the board so we can create specific mate patterns
+        piece_rows = [0, 1, 6, 7]
+        piece_rows.each do |row_index|
+          8.times do |time|
+            game.board.destroy_piece([row_index, time])
+          end
+        end
+      end
+
+      context "and the pattern is Anastasia's mate" do
+        before do
+          game.board.create_piece([1, 4], Knight, :black)
+          game.board.create_piece([5, 4], Rook, :black)
+          game.board.create_piece([7, 6], King, :black)
+          game.board.create_piece([1, 6], Pawn, :white)
+          game.board.create_piece([1, 7], King, :white)
+
+          white_rook = game.board.square([5, 4])
+          game.board.update!(white_rook, [5, 7])
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :white
+          expect(game.game_over?).to be true
+        end
+      end
+
+      context "and the pattern is Anderssen's mate" do
+        before do
+          game.board.create_piece([0, 6], King, :black)
+          game.board.create_piece([1, 6], Pawn, :white)
+          game.board.create_piece([2, 5], King, :white)
+          game.board.create_piece([6, 7], Rook, :white)
+
+          white_rook = game.board.square([6, 7])
+          game.board.update!(white_rook, [0, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Arabian mate' do
+        before do
+          game.board.create_piece([0, 7], King, :black)
+          game.board.create_piece([1, 1], Rook, :white)
+          game.board.create_piece([2, 5], Knight, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_rook = game.board.square([1, 1])
+          game.board.update!(white_rook, [1, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Back Rank mate' do
+        before do
+          game.board.create_piece([0, 6], King, :black)
+          [5, 6, 7].each do |column|
+            game.board.create_piece([1, column], Pawn, :black)
+            game.board.create_piece([6, column], Pawn, :white)
+          end
+
+          game.board.create_piece([7, 3], Rook, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_rook = game.board.square([7, 3])
+          game.board.update!(white_rook, [0, 3])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Balestra mate' do
+        before do
+          game.board.create_piece([0, 4], King, :black)
+          game.board.create_piece([2, 5], Queen, :white)
+          game.board.create_piece([5, 5], Bishop, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_bishop = game.board.square([5, 5])
+          game.board.update!(white_bishop, [2, 2])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context "and the pattern is Blackburne's mate" do
+        before do
+          game.board.create_piece([0, 5], Rook, :black)
+          game.board.create_piece([0, 6], King, :black)
+          game.board.create_piece([3, 6], Knight, :white)
+          game.board.create_piece([5, 3], Bishop, :white)
+          game.board.create_piece([6, 1], Bishop, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_bishop = game.board.square([5, 3])
+          game.board.update!(white_bishop, [1, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Blind Swine mate' do
+        before do
+          game.board.create_piece([0, 5], Rook, :black)
+          game.board.create_piece([0, 6], King, :black)
+          game.board.create_piece([1, 1], Rook, :white)
+          game.board.create_piece([1, 7], Rook, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_rook = game.board.square([1, 1])
+          game.board.update!(white_rook, [1, 6])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context "and the pattern is Boden's mate" do
+        before do
+          game.board.create_piece([0, 2], King, :black)
+          game.board.create_piece([0, 3], Rook, :black)
+          game.board.create_piece([1, 3], Pawn, :black)
+          game.board.create_piece([4, 5], Bishop, :white)
+          game.board.create_piece([5, 3], Bishop, :white)
+          game.board.create_piece([7, 2], King, :white)
+
+          white_bishop = game.board.square([5, 3])
+          game.board.update!(white_bishop, [2, 0])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Corner mate' do
+        before do
+          game.board.create_piece([0, 7], King, :black)
+          game.board.create_piece([1, 7], Pawn, :black)
+          game.board.create_piece([3, 4], Knight, :white)
+          game.board.create_piece([7, 2], King, :white)
+          game.board.create_piece([7, 6], Rook, :white)
+
+          white_knight = game.board.square([3, 4])
+          game.board.update!(white_knight, [1, 5])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Corridor mate' do
+        before do
+          game.board.create_piece([1, 2], King, :black)
+          game.board.create_piece([4, 7], Queen, :white)
+          game.board.create_piece([7, 1], Rook, :white)
+          game.board.create_piece([7, 3], Rook, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_queen = game.board.square([4, 7])
+          game.board.update!(white_queen, [4, 2])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Diagonal Corridor mate' do
+        before do
+          game.board.create_piece([0, 6], Bishop, :black)
+          game.board.create_piece([0, 7], King, :black)
+          game.board.create_piece([1, 7], Pawn, :black)
+          game.board.create_piece([5, 6], Bishop, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_bishop = game.board.square([5, 6])
+          game.board.update!(white_bishop, [3, 4])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Dovetail mate' do
+        before do
+          game.board.create_piece([3, 6], Pawn, :black)
+          game.board.create_piece([4, 5], Queen, :black)
+          game.board.create_piece([4, 6], King, :black)
+          game.board.create_piece([5, 2], Queen, :white)
+          game.board.create_piece([6, 6], King, :white)
+
+          white_queen = game.board.square([5, 2])
+
+          game.board.update!(white_queen, [5, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context "and the pattern is Damiano's mate" do
+        before do
+          game.board.create_piece([0, 5], Rook, :black)
+          game.board.create_piece([0, 6], King, :black)
+          game.board.create_piece([1, 6], Pawn, :black)
+          game.board.create_piece([2, 6], Pawn, :white)
+          game.board.create_piece([5, 7], Queen, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_queen = game.board.square([5, 7])
+          game.board.update!(white_queen, [1, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is David and Goliath mate' do
+        before do
+          game.board.create_piece([2, 1], Rook, :white)
+          game.board.create_piece([3, 5], Pawn, :black)
+          game.board.create_piece([3, 6], King, :black)
+          game.board.create_piece([3, 7], Pawn, :black)
+          game.board.create_piece([5, 5], King, :white)
+          game.board.create_piece([5, 6], Pawn, :white)
+          game.board.create_piece([5, 7], Pawn, :white)
+
+          white_pawn = game.board.square([5, 7])
+          game.board.update!(white_pawn, [4, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context 'and the pattern is Epaulette mate' do
+        before do
+          game.board.create_piece([0, 3], Rook, :black)
+          game.board.create_piece([0, 4], King, :black)
+          game.board.create_piece([0, 5], Rook, :black)
+          game.board.create_piece([4, 2], Queen, :white)
+          game.board.create_piece([7, 6], King, :white)
+
+          white_queen = game.board.square([4, 2])
+          game.board.update!(white_queen, [2, 4])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
+      end
+
+      context "and the pattern is Greco's mate" do
+        before do
+          game.board.create_piece([0, 7], King, :black)
+          game.board.create_piece([1, 6], Pawn, :black)
+          game.board.create_piece([4, 2], Bishop, :white)
+          game.board.create_piece([7, 2], King, :white)
+          game.board.create_piece([7, 3], Rook, :white)
+
+          white_rook = game.board.square([7, 3])
+          game.board.update!(white_rook, [7, 7])
+          game.switch_players
+        end
+
+        it 'returns true' do
+          expect(game.current_player.color).to be :black
+          expect(game).to be_game_over
+        end
       end
     end
   end
