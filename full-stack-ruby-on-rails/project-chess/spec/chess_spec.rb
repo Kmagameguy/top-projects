@@ -24,4 +24,25 @@ RSpec.describe Chess do
       end
     end
   end
+
+  describe '#valid_move?' do
+    subject(:game) { described_class.new }
+
+    context 'when the piece is a pawn' do
+      context 'and the move is valid' do
+        it 'returns true' do
+          pawn = game.board.squares[1][0]
+          expect(game.valid_move?(pawn, [2, 0])).to be true
+        end
+      end
+
+      context 'and the move is out of bounds' do
+        it 'returns false' do
+          pawn = game.board.squares[1][0]
+          pawn.move([7, 0])
+          expect(game.valid_move?(pawn, [8, 0])).to be false
+        end
+      end
+    end
+  end
 end
