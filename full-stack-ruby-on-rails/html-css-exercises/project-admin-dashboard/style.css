@@ -167,6 +167,11 @@ hr {
   padding: 25px;
 }
 
+.sidebar p,
+.sidebar span {
+  font-size: 24px;
+}
+
 #logo {
   display: grid;
   grid-auto-flow: column;
