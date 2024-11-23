@@ -5,6 +5,10 @@ require 'chess'
 RSpec.describe Chess do
   subject(:game) { described_class.new('Freddy Krueger', 'Jason Voorhees') }
 
+  before do
+    allow_any_instance_of(Chess).to receive(:load_game?).and_return(false)
+  end
+
   describe '#switch_players' do
     it 'exchanges the active and inactive players' do
       expect(game.current_player.name).to eq 'Freddy Krueger'

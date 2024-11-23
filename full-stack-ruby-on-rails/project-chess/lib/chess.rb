@@ -4,17 +4,67 @@ require_relative 'board'
 require_relative 'player'
 require_relative 'display'
 require_relative 'input'
+require_relative 'game_file'
 
 # A class to manage the state of a chess game
 class Chess
   attr_reader :board, :current_player
 
-  def initialize(white_name, black_name)
-    @board = Board.new
-    @black_player = Player.new(black_name, :black)
+  def initialize(white_name, black_name, save_file = GameFile.new)
+    @save_file = save_file
+    @saved_and_quit = false
+    load_game? ? load! : new_game(white_name, black_name)
+  end
+
+  def new_game(white_name, black_name)
     @white_player = Player.new(white_name, :white)
+    @black_player = Player.new(black_name, :black)
+    @board = Board.new
     @current_player = @white_player
     @turn_count = 1
+  end
+
+  def load_game?
+    return false unless @save_file.exists?
+
+    puts 'Load saved game? (y/n)'
+    Input.yes_response?
+  end
+
+  def save_game?
+    puts 'Save before quitting? (y/n)'
+    Input.yes_response?
+  end
+
+  def quit_game?
+    puts 'Quit game? (y/n)'
+    Input.yes_response?
+  end
+
+  def quit!
+    @saved_and_quit = true
+    save! if save_game?
+  end
+
+  def save!
+    data = {
+      black: @black_player,
+      white: @white_player,
+      board_state: @board,
+      current_turn: @current_player,
+      turns: @turn_count
+    }
+
+    @save_file.save!(data)
+  end
+
+  def load!
+    data = @save_file.load!
+    @black_player = data[:black]
+    @white_player = data[:white]
+    @board = data[:board_state]
+    @current_player = data[:current_turn]
+    @turn_count = data[:turns]
   end
 
   def play
@@ -24,6 +74,8 @@ class Chess
 
       puts 'Your King is checked!' if board.check?(@current_player.color, other_player.color)
       take_turn
+      return if @saved_and_quit
+
       switch_players
       increment_round
     end
@@ -31,17 +83,23 @@ class Chess
   end
 
   def take_turn
-    puts 'Make your move:'
+    puts 'Make your move or type "quit game" to quit:'
     loop do
       input = Input.new
-      piece = board.square(chess_notation_to_array(input.first_location))
-      destination = chess_notation_to_array(input.second_location)
 
-      if valid?(piece, destination)
-        board.update!(piece, destination)
+      if input.quit
+        quit!
         break
       else
-        print_error(piece, destination)
+        piece = board.square(chess_notation_to_array(input.first_location))
+        destination = chess_notation_to_array(input.second_location)
+
+        if valid?(piece, destination)
+          board.update!(piece, destination)
+          break
+        else
+          print_error(piece, destination)
+        end
       end
     end
   end
