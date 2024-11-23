@@ -1,4 +1,4 @@
-<% if current_user.likes.any? { |like| like.likeable_id == commentable.id } %>
+<% if already_liked?(commentable) %>
   <%= link_to icon('fa-solid', 'thumbs-up'), [ current_user, commentable, :like ], data: { 'turbo-method' => :delete } %> <%= pluralize(commentable.likes.count, 'like') %>
 <% else %>
   <%= link_to icon('fa-regular', 'thumbs-up'), [ current_user, commentable, :like ], data: { 'turbo-method' => :post } %>
