@@ -29,8 +29,13 @@
   <% unless @search_results.present? %>
     <p>Sorry, we couldn't find any flights.</p>
   <% else %>
-    <% @search_results.each do |flight| %>
-      <%= render "flights/flight_card", flight: flight %>
+    <%= form_with url: new_booking_path, method: :get do |f| %>
+      <%= f.hidden_field :num_tickets, value: params[:num_tickets] %>
+      <% @search_results.each do |flight| %>
+        <%= f.radio_button :flight_id, flight.id, required: true %>
+        <%= render "flights/flight_card", flight: flight %>
+        <%= f.submit "Book It" %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

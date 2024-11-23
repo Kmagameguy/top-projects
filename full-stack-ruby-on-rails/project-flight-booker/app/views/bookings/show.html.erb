@@ -1,0 +1,6 @@
+<h1>Your Flight Information</h1>
+<p>Flight Number: <%= @booking.flight_id %></p>
+<p>Departing From: <%= @booking.flight.departure_airport_id %></p>
+<p>Arriving At:<%= @booking.flight.arrival_airport_id %></p>
+<p>Departure Time: <%= @booking.flight.friendly_datetime %></p>
+<p><%= @booking.passengers.count %></p>
