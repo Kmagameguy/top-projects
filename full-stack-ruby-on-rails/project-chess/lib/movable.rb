@@ -27,6 +27,7 @@ module Movable
     top_vertical_move(position, squares).concat(bottom_vertical_move(position, squares))
                                         .concat(left_horizontal_move(position, squares))
                                         .concat(right_horizontal_move(position, squares))
+                                        .sort
   end
 
   def upleft_move(position, squares)
@@ -58,7 +59,7 @@ module Movable
   end
 
   def left_horizontal_move(position, squares)
-    [downleft_moves(position, squares).first].compact
+    [left_horizontal_moves(position, squares).first].compact
   end
 
   def upleft_moves(position, squares)
