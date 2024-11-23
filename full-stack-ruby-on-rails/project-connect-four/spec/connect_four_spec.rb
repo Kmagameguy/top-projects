@@ -5,7 +5,7 @@ require 'connect_four'
 RSpec.describe ConnectFour do
   subject(:game_loop) { described_class.new(player_name: 'Ongar the World-Weary', player_marker: 'x') }
 
-  describe 'taking turns' do
+  describe '#switch_players' do
     context 'when the game has just started' do
       it 'should make the user the active player' do
         expect(game_loop.current_player).to be game_loop.player
@@ -21,7 +21,7 @@ RSpec.describe ConnectFour do
     end
   end
 
-  describe 'adding a chip to the board' do
+  describe '#pick_column' do
     context 'when user selection is valid' do
       it 'stops loop and does not display error message' do
         valid_input = 2
@@ -43,6 +43,21 @@ RSpec.describe ConnectFour do
         error_message = 'That column is full, try another.'
         expect(game_loop).to receive(:puts).with(error_message).once
         game_loop.pick_column
+      end
+    end
+  end
+
+  describe '#game_over?' do
+    context 'when no player has 4-in-a-row' do
+      it 'returns false' do
+        expect(game_loop).to_not be_game_over
+      end
+    end
+
+    context 'when a player has 4-in-a-row' do
+      it 'returns true' do
+        4.times { game_loop.board.drop_to_slot(3, game_loop.current_player.marker) }
+        expect(game_loop).to be_game_over
       end
     end
   end

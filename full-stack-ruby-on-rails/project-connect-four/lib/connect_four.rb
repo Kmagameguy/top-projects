@@ -16,8 +16,13 @@ class ConnectFour
   end
 
   def play
-    switch_players
-    add_chip
+    loop do
+      switch_players
+      add_chip
+      break if game_over?
+    end
+
+    puts "#{@current_player.name} wins!"
   end
 
   def switch_players
@@ -50,5 +55,9 @@ class ConnectFour
 
   def pick
     @current_player.select_column
+  end
+
+  def game_over?
+    board.any_in_a_row?(@current_player.marker)
   end
 end
