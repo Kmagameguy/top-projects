@@ -15,10 +15,12 @@ class Chess
   end
 
   def make_move(from, to)
-    from = chess_notation_to_array(from)
-    to = chess_notation_to_array(to)
+    a_from = chess_notation_to_array(from)
+    a_to = chess_notation_to_array(to)
 
-    board.update(from, to) if valid_move?(from, to)
+    board.update(a_from, a_to) if valid_move?(a_from, a_to)
+
+    puts "Moving from #{from} to #{to} is illegal. Try again."
   end
 
   def valid_move?(square, move)
