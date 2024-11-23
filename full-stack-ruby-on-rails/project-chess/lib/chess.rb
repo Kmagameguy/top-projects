@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 require_relative 'board'
+require_relative 'player'
 
 # A class to manage the state of a chess game
 class Chess
   attr_reader :board
 
-  def initialize
+  def initialize(black_name, white_name)
     @board = Board.new
+    @black_player = Player.new(black_name, :black)
+    @white_player = Player.new(white_name, :white)
+    @current_player = @white_player
   end
 
   def chess_notation_to_array(chess_notation)
