@@ -14,13 +14,13 @@ class Piece
     @moved = false
   end
 
-  def moved?
-    @moved
-  end
-
   def move!(coordinates)
     @position = coordinates
     @moved = true
+  end
+
+  def moved?
+    @moved
   end
 
   def white?
