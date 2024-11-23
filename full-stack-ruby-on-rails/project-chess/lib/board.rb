@@ -64,7 +64,7 @@ class Board
   end
 
   def check?(defender_color, attacker_color)
-    defender_king_position = find_king(defender_color)
+    defender_king_position = find_king(defender_color).position
     attacker_pieces = find_pieces(attacker_color)
     attacker_pieces.any? do |piece|
       piece.possible_moves(squares).include?(defender_king_position)
@@ -72,7 +72,7 @@ class Board
   end
 
   def find_king(color)
-    find_pieces(color).find { |piece| piece.is_a? King }.position
+    find_pieces(color).find { |piece| piece.is_a? King }
   end
 
   def find_pieces(color)

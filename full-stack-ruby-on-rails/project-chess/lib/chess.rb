@@ -116,6 +116,19 @@ class Chess
       else
         piece = board.square(chess_notation_to_array(input.first_location))
         destination = chess_notation_to_array(input.second_location)
+        destination_piece = board.square(destination)
+
+        if castling?(piece, destination_piece)
+          rook, king = identify_rook_and_king(piece, destination_piece)
+
+          if valid_castle?(king, rook)
+            castle(king, rook)
+            break
+          else
+            puts 'You cannot castle those pieces. Select again.'
+            next
+          end
+        end
 
         if valid?(piece, destination)
           board.update!(piece, destination)
@@ -145,6 +158,11 @@ class Chess
     @turn_count += 1
   end
 
+  def castling?(piece, destination_piece)
+    (destination_piece.is_a?(King) && piece.is_a?(Rook)) ||
+      (destination_piece.is_a?(Rook) && piece.is_a?(King))
+  end
+
   def valid?(piece, destination)
     valid_piece?(piece) && valid_destination?(piece, destination)
   end
@@ -162,6 +180,67 @@ class Chess
     board.find_pieces(@current_player.color)
          .select { |piece| piece.is_a?(Pawn) }
          .select(&:rushing?)
+  end
+
+  def identify_rook_and_king(piece_one, piece_two)
+    king = piece_one.is_a?(King) ? piece_one : piece_two
+    rook = piece_one.is_a?(Rook) ? piece_one : piece_two
+
+    [king, rook]
+  end
+
+  def castle(king, rook)
+    king_rank, king_file = king.position
+    _, rook_file = rook.position
+
+    if king_file > rook_file
+      # move king left and rook right
+      king_destination = king_file - 2
+      rook_destination = king_destination + 1
+    else
+      # move king right and rook left
+      king_destination = king_file + 2
+      rook_destination = king_destination - 1
+    end
+
+    board.update!(king, [king_rank, king_destination])
+    board.update!(rook, [king_rank, rook_destination])
+  end
+
+  def valid_castle?(king, rook)
+    !board.check?(@current_player.color, other_player.color) &&
+      castling?(king, rook) &&
+      (!king.moved? && !rook.moved?) &&
+      own_piece?(king) && own_piece?(rook) &&
+      rook_to_king_is_empty?(king, rook) &&
+      !king_passes_through_check?(king, rook)
+  end
+
+  def rook_to_king_is_empty?(king, rook)
+    king_rank, king_file = king.position
+    rook_rank, rook_file = rook.position
+
+    return false if king_rank != rook_rank
+
+    min = [king_file, rook_file].min
+    max = [king_file, rook_file].max
+
+    board.squares[king_rank][min + 1...max].compact.empty?
+  end
+
+  def king_passes_through_check?(king, rook)
+    king_rank, king_file = king.position
+    _, rook_file = rook.position
+
+    min = [king_file, rook_file].min
+    max = [king_file, rook_file].max
+
+    steps = (min + 1...max).to_a
+
+    steps.any? do |file|
+      move = [king_rank, file]
+      moves_into_check?(king, move)
+    end
   end
 
   def game_over?
@@ -238,7 +317,7 @@ class Chess
   end
 
   def hits_king?(move)
-    move == board.find_king(other_player.color)
+    move == board.find_king(other_player.color).position
   end
 
   def checkmate?

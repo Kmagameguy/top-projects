@@ -162,7 +162,7 @@ RSpec.describe Board do
       it 'returns e8' do
         e8 = [0, 4]
 
-        expect(board.find_king(:black)).to match_array(e8)
+        expect(board.find_king(:black).position).to match_array(e8)
       end
     end
 
@@ -176,7 +176,7 @@ RSpec.describe Board do
         board.update!(black_king, f6)
       end
       it 'returns f6' do
-        expect(board.find_king(:black)).to eq [2, 5]
+        expect(board.find_king(:black).position).to eq [2, 5]
       end
     end
 
@@ -184,7 +184,7 @@ RSpec.describe Board do
       it 'returns e7' do
         e7 = [7, 4]
 
-        expect(board.find_king(:white)).to match_array(e7)
+        expect(board.find_king(:white).position).to match_array(e7)
       end
     end
 
@@ -201,7 +201,7 @@ RSpec.describe Board do
       it 'returns d3' do
         d3 = [5, 3]
 
-        expect(board.find_king(:white)).to match_array(d3)
+        expect(board.find_king(:white).position).to match_array(d3)
       end
     end
   end
