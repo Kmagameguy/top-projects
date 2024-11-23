@@ -4,10 +4,11 @@ require_relative 'piece'
 
 # A class to manage our chess board and its state
 class Board
-  attr_reader :squares
+  attr_reader :size, :squares
 
   def initialize
-    @squares = Array.new(8) { Array.new(8) }
+    @size = 8
+    @squares = Array.new(size) { Array.new(size) }
     setup_board
   end
 
@@ -20,7 +21,7 @@ class Board
     black_pawn_row = squares[1]
     white_pawn_row = squares[6]
 
-    (0...8).each do |column|
+    size.times do |column|
       black_pawn_row[column] = Piece.new(:black, :pawn)
       white_pawn_row[column] = Piece.new(:white, :pawn)
     end
@@ -31,7 +32,7 @@ class Board
     black_special_piece_row = squares[0]
     white_special_piece_row = squares[7]
 
-    (0...8).each do |column|
+    size.times do |column|
       black_special_piece_row[column] = Piece.new(:black, pieces[column])
       white_special_piece_row[column] = Piece.new(:white, pieces[column])
     end
@@ -39,7 +40,7 @@ class Board
 
   # convenience method for now...
   def to_s
-    num_squares = 8
+    num_squares = size
     squares.each_with_index do |row, index|
       print "#{num_squares - index}| "
       row.each do |square|
@@ -61,13 +62,13 @@ class Board
 end
 
 # board:
-# (0) 8 [♖] [♘] [♗] [♕] [♔] [♗] [♘] [♖]
-# (1) 7 [♙] [♙] [♙] [♙] [♙] [♙] [♙] [♙]
+# (0) 8 [♜] [♞] [♝] [♛] [♚] [♝] [♞] [♜]
+# (1) 7 [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎]
 # (2) 6 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
 # (3) 5 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
 # (4) 4 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
 # (5) 3 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
-# (6) 2 [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎]
-# (7) 1 [♜] [♞] [♝] [♛] [♚] [♝] [♞] [♜]
+# (6) 2 [♙] [♙] [♙] [♙] [♙] [♙] [♙] [♙]
+# (7) 1 [♖] [♘] [♗] [♕] [♔] [♗] [♘] [♖]
 #        a   b   c   d   e   f   g   h
 #       (0) (1) (2) (3) (4) (5) (6) (7)
