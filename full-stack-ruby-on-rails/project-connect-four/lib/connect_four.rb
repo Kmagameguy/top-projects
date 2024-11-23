@@ -41,7 +41,7 @@ class ConnectFour
   end
 
   def add_chip
-    board.drop_to_slot(pick_column, current_player.marker)
+    board.drop_to_slot(pick_column, current_player.chip)
     sleep(1) if current_player == computer
   end
 
@@ -81,7 +81,7 @@ class ConnectFour
   end
 
   def player_has_four_in_a_row
-    board.any_in_a_row?(current_player.marker)
+    board.any_in_a_row?(current_player.chip)
   end
 
   def no_spots_left?

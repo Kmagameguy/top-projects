@@ -2,11 +2,11 @@
 
 # A class to manage players
 class Player
-  attr_reader :name, :marker
+  attr_reader :name, :chip
 
   def initialize(name, max_range = 7)
     @name = name
-    @marker = '🔴'
+    @chip = '🔴'
     @max_range = max_range
   end
 

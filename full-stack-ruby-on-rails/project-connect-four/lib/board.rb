@@ -25,11 +25,11 @@ class Board
     slots.all? { |row| row.none?(&:nil?) }
   end
 
-  def drop_to_slot(column, marker)
+  def drop_to_slot(column, chip)
     column_index = column - 1
     slots.reverse_each do |row|
       if row[column_index].nil?
-        row[column_index] = marker
+        row[column_index] = chip
         break
       end
     end
@@ -39,31 +39,31 @@ class Board
     slots[row - 1][column - 1]
   end
 
-  def any_in_a_row?(marker)
-    vertical_in_a_row?(marker) ||
-      horizontal_in_a_row?(marker) ||
-      upslope_in_a_row?(marker) ||
-      downslope_in_a_row?(marker)
+  def any_in_a_row?(chip)
+    vertical_in_a_row?(chip) ||
+      horizontal_in_a_row?(chip) ||
+      upslope_in_a_row?(chip) ||
+      downslope_in_a_row?(chip)
   end
 
   private
 
-  def vertical_in_a_row?(marker)
-    four_in_a_row?(slots, marker)
+  def vertical_in_a_row?(chip)
+    four_in_a_row?(slots, chip)
   end
 
-  def horizontal_in_a_row?(marker)
-    four_in_a_row?(rows_to_columns, marker)
+  def horizontal_in_a_row?(chip)
+    four_in_a_row?(rows_to_columns, chip)
   end
 
-  def upslope_in_a_row?(marker)
+  def upslope_in_a_row?(chip)
     aligned_diagonals = vertically_align_diagonal_cells(check_upslope: true)
-    four_in_a_row?(aligned_diagonals, marker)
+    four_in_a_row?(aligned_diagonals, chip)
   end
 
-  def downslope_in_a_row?(marker)
+  def downslope_in_a_row?(chip)
     aligned_diagonals = vertically_align_diagonal_cells
-    four_in_a_row?(aligned_diagonals, marker)
+    four_in_a_row?(aligned_diagonals, chip)
   end
 
   def vertically_align_diagonal_cells(check_upslope: false)
@@ -82,23 +82,23 @@ class Board
     deep_copy(slots).transpose
   end
 
-  def four_in_a_row?(rows, marker)
-    markers_in_a_row = 0
+  def four_in_a_row?(rows, chip)
+    chips_in_a_row = 0
     columns = rows[0].size
     columns.times do |column|
-      markers_in_a_row = 0
+      chips_in_a_row = 0
       rows.each do |row|
-        if row[column] == marker
-          markers_in_a_row += 1
+        if row[column] == chip
+          chips_in_a_row += 1
         else
-          markers_in_a_row = 0
+          chips_in_a_row = 0
         end
 
-        break if markers_in_a_row == 4
+        break if chips_in_a_row == 4
       end
-      break if markers_in_a_row == 4
+      break if chips_in_a_row == 4
     end
-    !!(markers_in_a_row == 4)
+    !!(chips_in_a_row == 4)
   end
 
   # I couldn't figure out a better way to avoid mutating the @slots

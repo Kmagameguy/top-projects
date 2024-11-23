@@ -2,11 +2,11 @@
 
 # A class to manage computer players
 class Computer
-  attr_reader :name, :marker
+  attr_reader :name, :chip
 
   def initialize(max_range = 7)
     @name = 'Computer'
-    @marker = '🔵'
+    @chip = '🔵'
     @max_range = max_range
   end
 

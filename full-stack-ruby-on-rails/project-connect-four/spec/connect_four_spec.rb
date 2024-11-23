@@ -33,7 +33,7 @@ RSpec.describe ConnectFour do
 
     context 'when the selected column is full' do
       before do
-        6.times { game_loop.board.drop_to_slot(3, game_loop.current_player.marker) }
+        6.times { game_loop.board.drop_to_slot(3, game_loop.current_player.chip) }
         invalid_input = 3
         valid_input = 6
         allow(game_loop).to receive(:pick).and_return(invalid_input, valid_input)
@@ -56,7 +56,7 @@ RSpec.describe ConnectFour do
 
     context 'when a player has 4-in-a-row' do
       it 'returns true' do
-        4.times { game_loop.board.drop_to_slot(3, game_loop.current_player.marker) }
+        4.times { game_loop.board.drop_to_slot(3, game_loop.current_player.chip) }
         expect(game_loop).to be_game_over
       end
     end

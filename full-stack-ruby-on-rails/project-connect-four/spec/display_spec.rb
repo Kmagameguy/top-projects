@@ -20,25 +20,25 @@ RSpec.describe Display do
       end
     end
 
-    context 'when the row only has a player marker' do
-      marker = '🔴'
+    context 'when the row only has a player chip' do
+      chip = '🔴'
 
-      it 'shows a red marker' do
-        board[0][0] = marker
+      it 'shows a red chip' do
+        board[0][0] = chip
         row = board[0]
         expect(display.emojify(row)).to eql '🔴 ⚪ ⚪ ⚪ ⚪ ⚪ ⚪'
       end
     end
 
     context 'when the row has a mix of taken and empty slots' do
-      it 'shows the empty, player, and computer markers in the right spots' do
-        player_marker = '🔴'
-        computer_marker = '🔵'
+      it 'shows the empty, player, and computer chips in the right spots' do
+        player_chip = '🔴'
+        computer_chip = '🔵'
         row = board[0]
-        row[0] = player_marker
-        row[3] = computer_marker
-        row[4] = player_marker
-        row[5] = player_marker
+        row[0] = player_chip
+        row[3] = computer_chip
+        row[4] = player_chip
+        row[5] = player_chip
 
         expect(display.emojify(row)).to eql '🔴 ⚪ ⚪ 🔵 🔴 🔴 ⚪'
       end
