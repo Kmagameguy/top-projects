@@ -23,7 +23,7 @@
 
           <li>
             <%= link_to user_friends_path(current_user) do %>
-              <span title="<%= pluralize(current_user.friends.count, 'friends') %>"><i class='fa-solid fa-user-group'></i></span>
+              <span title="<%= pluralize(current_user.friends.count, 'friend') %>"><i class='fa-solid fa-user-group'></i></span>
             <% end %>
           </li>
 
