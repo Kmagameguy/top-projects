@@ -150,6 +150,28 @@ nav a:focus::after {
   border-color: var(--primary-error-border-color);
 }
 
+.link,
+.link:visited {
+  color: var(--primary-button-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--primary-button-hover-color);
+}
+
+.link:active {
+  color: var(--primary-button-active-color);
+}
+
+.link.forward::after {
+  content: ' >';
+}
+
+.link.back::before {
+  content: '< ';
+}
+
 .user-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -189,7 +211,7 @@ nav a:focus::after {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
   grid-auto-rows: 1fr;
-  margin: 0 2rem;
+  margin: 0 2rem 2rem 2rem;
   gap: 1rem;
   align-items: start;
 }

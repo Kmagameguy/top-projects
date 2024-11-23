@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users
   resources :events
   resources :event_attendances, only: [:create, :destroy]
+  get 'past_events', to: 'events#past_events'
 
   root "events#index"
 end

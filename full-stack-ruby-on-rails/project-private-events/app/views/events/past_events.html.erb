@@ -1,0 +1,15 @@
+<div class="event-container">
+  <h1 class="section-header">Past Events</h1>
+  <% if @events.any? %>
+    <% @events.each do |event| %>
+      <%= render "events/card", event: event %>
+    <% end %>
+  <% else %>
+    <div>
+      <p>No events have happened yet.</p>
+    </div>
+  <% end %>
+</div>
+<div class="single-page-container">
+  <%= link_to 'Back to main page', root_path, method: :get, class: "link back" %>
+</div>

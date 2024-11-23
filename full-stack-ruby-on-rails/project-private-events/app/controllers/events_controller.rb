@@ -9,6 +9,10 @@ class EventsController < ApplicationController
     @events = Event.upcoming
   end
 
+  def past_events
+    @events = Event.past
+  end
+
   def show
     @event = Event.find(params[:id])
     @event_attendance = EventAttendance.new
