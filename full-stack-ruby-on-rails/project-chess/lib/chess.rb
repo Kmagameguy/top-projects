@@ -24,70 +24,6 @@ class Chess
     load_game? ? load! : new_game
   end
 
-  def new_game
-    @white_player = Player.new(create_player, :white)
-    @black_player = Player.new(create_player, :black)
-    @board = Board.new
-    @current_player = @white_player
-    @turn_count = 1
-  end
-
-  def create_player
-    @white_player.nil? ? @display.player_one_prompt : @display.player_two_prompt
-
-    loop do
-      name = Input.user_input
-      return name if Input.valid_name?(name)
-
-      @display.empty_name_warning
-    end
-  end
-
-  def load_game?
-    return false unless @save_file.exists?
-
-    @display.load_game_prompt
-    Input.yes_response?
-  end
-
-  def save_game?
-    @display.save_game_prompt
-    Input.yes_response?
-  end
-
-  def quit_game?
-    @display.quit_game_prompt
-    Input.yes_response?
-  end
-
-  def quit!
-    @saved_and_quit = true
-    save! if save_game?
-  end
-
-  def save!
-    data = {
-      black: @black_player,
-      white: @white_player,
-      board_state: @board,
-      current_turn: @current_player,
-      rushing_pawns: @en_passantable_pawns,
-      turns: @turn_count
-    }
-
-    @save_file.save!(data)
-  end
-
-  def load!
-    data = @save_file.load!
-    @black_player = data[:black]
-    @white_player = data[:white]
-    @board = data[:board_state]
-    @current_player = data[:current_turn]
-    @en_passantable_pawns = data[:rushing_pawns]
-    @turn_count = data[:turns]
-  end
-
   def play
     loop do
       @display.update!(board.squares, @current_player, @turn_count)
@@ -122,7 +58,7 @@ class Chess
           rook, king = identify_rook_and_king(piece, destination_piece)
 
           if valid_castle?(king, rook)
-            castle(king, rook)
+            castle!(king, rook)
             break
           else
             puts 'You cannot castle those pieces. Select again.'
@@ -163,25 +99,6 @@ class Chess
       (destination_piece.is_a?(Rook) && piece.is_a?(King))
   end
 
-  def valid?(piece, destination)
-    valid_piece?(piece) && valid_destination?(piece, destination)
-  end
-
-  def record_rushing_pawns
-    @en_passantable_pawns = rushing_pawns
-  end
-
-  def reset_en_passant
-    @en_passantable_pawns.each { |piece| piece.rushing = false }
-    @en_passantable_pawns = []
-  end
-
-  def rushing_pawns
-    board.find_pieces(@current_player.color)
-         .select { |piece| piece.is_a?(Pawn) }
-         .select(&:rushing?)
-  end
-
   def identify_rook_and_king(piece_one, piece_two)
     king = piece_one.is_a?(King) ? piece_one : piece_two
     rook = piece_one.is_a?(Rook) ? piece_one : piece_two
@@ -189,7 +106,15 @@ class Chess
     [king, rook]
   end
 
-  def castle(king, rook)
+  def valid_castle?(king, rook)
+    !board.check?(@current_player.color, other_player.color) &&
+      (!king.moved? && !rook.moved?) &&
+      own_piece?(king) && own_piece?(rook) &&
+      rook_to_king_is_empty?(king, rook) &&
+      !king_passes_through_check?(king, rook)
+  end
+
+  def castle!(king, rook)
     king_rank, king_file = king.position
     _, rook_file = rook.position
 
@@ -207,54 +132,25 @@ class Chess
     board.update!(rook, [king_rank, rook_destination])
   end
 
-  def valid_castle?(king, rook)
-    !board.check?(@current_player.color, other_player.color) &&
-      castling?(king, rook) &&
-      (!king.moved? && !rook.moved?) &&
-      own_piece?(king) && own_piece?(rook) &&
-      rook_to_king_is_empty?(king, rook) &&
-      !king_passes_through_check?(king, rook)
-  end
-
-  def rook_to_king_is_empty?(king, rook)
-    king_rank, king_file = king.position
-    rook_rank, rook_file = rook.position
-
-    return false if king_rank != rook_rank
-
-    min = [king_file, rook_file].min
-    max = [king_file, rook_file].max
-
-    board.squares[king_rank][min + 1...max].compact.empty?
-  end
-
-  def king_passes_through_check?(king, rook)
-    king_rank, king_file = king.position
-    _, rook_file = rook.position
-
-    min = [king_file, rook_file].min
-    max = [king_file, rook_file].max
-
-    steps = (min + 1...max).to_a
-
-    steps.any? do |file|
-      move = [king_rank, file]
-      moves_into_check?(king, move)
-    end
+  def valid?(piece, destination)
+    valid_piece?(piece) && valid_destination?(piece, destination)
   end
 
   def game_over?
     checkmate?
   end
 
-  def promote?(piece)
-    piece.is_a?(Pawn) && piece.promote?
-  end
-
   def promote(pawn)
     @display.update!(board.squares, @current_player, @turn_count)
-    transformed_pawn = board.special_pieces[Input.promote_piece]
-    board.create_piece(pawn.position, transformed_pawn, @current_player.color)
+    board.create_piece(pawn.position, replacement_piece, @current_player.color)
+  end
+
+  def replacement_piece
+    board.special_pieces[Input.promote_piece]
+  end
+
+  def promote?(piece)
+    piece.is_a?(Pawn) && piece.promote?
   end
 
   def chess_notation_to_array(chess_notation)
@@ -283,7 +179,66 @@ class Chess
     @display.prompt_for_reselection
   end
 
+  def quit!
+    @saved_and_quit = true
+    save! if save_game?
+  end
+
+  def save!
+    data = {
+      black: @black_player,
+      white: @white_player,
+      board_state: @board,
+      current_turn: @current_player,
+      rushing_pawns: @en_passantable_pawns,
+      turns: @turn_count
+    }
+
+    @save_file.save!(data)
+  end
+
+  def save_game?
+    @display.save_game_prompt
+    Input.yes_response?
+  end
+
   private
+
+  def load_game?
+    return false unless @save_file.exists?
+
+    @display.load_game_prompt
+    Input.yes_response?
+  end
+
+  def load!
+    data = @save_file.load!
+    @black_player = data[:black]
+    @white_player = data[:white]
+    @board = data[:board_state]
+    @current_player = data[:current_turn]
+    @en_passantable_pawns = data[:rushing_pawns]
+    @turn_count = data[:turns]
+  end
+
+  def new_game
+    @white_player = Player.new(create_player, :white)
+    @black_player = Player.new(create_player, :black)
+    @board = Board.new
+    @current_player = @white_player
+    @turn_count = 1
+  end
+
+  def create_player
+    @white_player.nil? ? @display.player_one_prompt : @display.player_two_prompt
+
+    loop do
+      name = Input.user_input
+      return name if Input.valid_name?(name)
+
+      @display.empty_name_warning
+    end
+  end
 
   def valid_piece?(piece)
     return false unless own_piece?(piece)
@@ -341,6 +296,48 @@ class Chess
     piece = temp_board.square(piece.position)
     temp_board.update!(piece, move)
     temp_board.check?(@current_player.color, other_player.color)
+  end
+
+  def rook_to_king_is_empty?(king, rook)
+    king_rank, king_file = king.position
+    rook_rank, rook_file = rook.position
+
+    return false if king_rank != rook_rank
+
+    min = [king_file, rook_file].min
+    max = [king_file, rook_file].max
+
+    board.squares[king_rank][min + 1...max].compact.empty?
+  end
+
+  def king_passes_through_check?(king, rook)
+    king_rank, king_file = king.position
+    _, rook_file = rook.position
+
+    min = [king_file, rook_file].min
+    max = [king_file, rook_file].max
+
+    steps = (min + 1...max).to_a
+
+    steps.any? do |file|
+      move = [king_rank, file]
+      moves_into_check?(king, move)
+    end
+  end
+
+  def record_rushing_pawns
+    @en_passantable_pawns = rushing_pawns
+  end
+
+  def rushing_pawns
+    board.find_pieces(@current_player.color)
+         .select { |piece| piece.is_a?(Pawn) }
+         .select(&:rushing?)
+  end
+
+  def reset_en_passant
+    @en_passantable_pawns.each { |piece| piece.rushing = false }
+    @en_passantable_pawns = []
   end
 
   def indexed_alphabet

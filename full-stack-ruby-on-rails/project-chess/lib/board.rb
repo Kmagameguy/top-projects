@@ -28,9 +28,6 @@ class Board
   end
 
   def update!(piece, new_square)
-    l_rank, l_file = piece.position
-    n_rank, n_file = new_square
-
     destroy_piece(piece.position)
     destroy_en_passanted_pawns(piece)
     piece.move!(new_square)
