@@ -1,14 +1,14 @@
 module EventsHelper
   def friendly_date(event)
     if event.event_date.year != this_year
-      event.event_date.in_time_zone(system_timezone).strftime('%B %d, %Y')
+      event.event_date.strftime('%B %d, %Y')
     else
-      event.event_date.in_time_zone(system_timezone).strftime('%B %d')
+      event.event_date.strftime('%B %d')
     end
   end
 
   def friendly_time(event)
-    event.event_date.in_time_zone(system_timezone).strftime('%l:%M %p')
+    event.event_date.strftime('%l:%M %p')
   end
 
   def event_date_placeholder(event)
