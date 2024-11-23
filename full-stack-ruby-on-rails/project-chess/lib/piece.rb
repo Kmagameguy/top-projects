@@ -7,18 +7,14 @@ class Piece
 
   STRING_REPRESENTATION = {
     black: {
-      pawn: '♟︎',
       knight: '♞',
       bishop: '♝',
-      rook: '♜',
       queen: '♛',
       king: '♚'
     },
     white: {
-      pawn: '♙',
       knight: '♘',
       bishop: '♗',
-      rook: '♖',
       queen: '♕',
       king: '♔'
     }
@@ -41,6 +37,15 @@ class Piece
 
   def out_of_bounds?(move, board)
     move.any? { |coordinate| (coordinate.negative? || coordinate > board.size - 1) }
+  end
+
+  def blocked?(move, board)
+    x, y = move
+    !board.dig(x, y).nil?
+  end
+
+  def white?
+    color == :white
   end
 
   def to_s

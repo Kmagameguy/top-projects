@@ -72,15 +72,6 @@ class Rook < Piece
     moves
   end
 
-  def blocked?(move, board)
-    x, y = move
-    !board.dig(x, y).nil?
-  end
-
-  def white?
-    color == :white
-  end
-
   def to_s
     white? ? '♖' : '♜'
   end

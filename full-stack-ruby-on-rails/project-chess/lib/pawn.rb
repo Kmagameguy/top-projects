@@ -50,15 +50,6 @@ class Pawn < Piece
     (position[0].zero? || position[0] == 7)
   end
 
-  def blocked?(move, board)
-    x, y = move
-    !board.dig(x, y).nil?
-  end
-
-  def white?
-    color == :white
-  end
-
   def to_s
     white? ? '♙' : '♟︎'
   end
