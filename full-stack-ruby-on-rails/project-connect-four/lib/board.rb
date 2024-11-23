@@ -51,6 +51,7 @@ class Board
   def horizontal_in_a_row?(marker)
     markers_in_a_row = 0
     @slots.each do |row|
+      markers_in_a_row = 0
       @column_count.times do |column|
         if row[column] == marker
           markers_in_a_row += 1
@@ -90,6 +91,7 @@ class Board
   def four_in_a_row?(rows, marker)
     markers_in_a_row = 0
     @column_count.times do |column|
+      markers_in_a_row = 0
       rows.each do |row|
         if row[column] == marker
           markers_in_a_row += 1

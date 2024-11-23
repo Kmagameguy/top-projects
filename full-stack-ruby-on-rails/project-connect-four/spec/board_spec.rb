@@ -166,5 +166,19 @@ RSpec.describe Board do
         expect(board.any_in_a_row?(player_marker)).to be false
       end
     end
+
+    context 'when a player has a chip in the last slot of a row and three chips in the following rows first three slots' do
+      it 'returns false' do
+        board.slots[5][0] = player_marker
+        board.slots[5][1] = player_marker
+        board.slots[5][2] = player_marker
+        board.slots[3][3] = player_marker
+        board.slots[5][4] = player_marker
+        board.slots[5][5] = player_marker
+        board.slots[4][6] = player_marker
+
+        expect(board.any_in_a_row?(player_marker)).to be false
+      end
+    end
   end
 end
