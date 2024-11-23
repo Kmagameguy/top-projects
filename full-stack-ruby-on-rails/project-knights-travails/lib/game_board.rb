@@ -31,12 +31,20 @@ class GameBoard
       node = queue.shift
     end
 
-    p node
+    path = @visited_squares.select { |square| square.coordinates == destination }
+                           .first
+
+    pathway = []
+    until path.parent.nil?
+      pathway << path.coordinates
+      path = path.parent
+    end
+    pathway.reverse
   end
 end
 
 b = GameBoard.new
-b.knight_move([1, 6], [6, 1])
+p b.knight_move([1, 6], [6, 1])
 
 # Board:
 #
