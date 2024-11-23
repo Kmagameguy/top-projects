@@ -31,10 +31,25 @@ class Board
     l_rank, l_file = piece.position
     n_rank, n_file = new_square
 
+    destroy_piece(piece.position)
     piece.move!(new_square)
 
-    squares[l_rank][l_file] = nil
-    squares[n_rank][n_file] = piece
+    update_square(piece)
+  end
+
+  def create_piece(coordinates, piece, color)
+    x, y = coordinates
+    squares[x][y] = piece.new(color, coordinates)
+  end
+
+  def destroy_piece(coordinates)
+    x, y = coordinates
+    squares[x][y] = nil
+  end
+
+  def update_square(piece)
+    x, y = piece.position
+    squares[x][y] = piece
   end
 
   def check?(defender_color, attacker_color)
@@ -70,8 +85,11 @@ class Board
     white_pawn_rank = 6
 
     size.times do |file|
-      squares[black_pawn_rank][file] = Pawn.new(:black, [black_pawn_rank, file])
-      squares[white_pawn_rank][file] = Pawn.new(:white, [white_pawn_rank, file])
+      black_pawn_position = [black_pawn_rank, file]
+      white_pawn_position = [white_pawn_rank, file]
+
+      create_piece(black_pawn_position, Pawn, :black)
+      create_piece(white_pawn_position, Pawn, :white)
     end
   end
 
@@ -80,8 +98,11 @@ class Board
     white_special_piece_rank = 7
 
     default_special_pieces.each_with_index do |piece, file|
-      squares[black_special_piece_rank][file] = piece.new(:black, [black_special_piece_rank, file])
-      squares[white_special_piece_rank][file] = piece.new(:white, [white_special_piece_rank, file])
+      black_position = [black_special_piece_rank, file]
+      white_position = [white_special_piece_rank, file]
+
+      create_piece(black_position, piece, :black)
+      create_piece(white_position, piece, :white)
     end
   end
 end

@@ -155,8 +155,7 @@ class Chess
   def promote(pawn)
     @display.update!(board.squares, @current_player, @turn_count)
     transformed_pawn = board.special_pieces[Input.promote_piece]
-    x, y = pawn.position
-    board.squares[x][y] = transformed_pawn.new(pawn.color, pawn.position)
+    board.create_piece(pawn.position, transformed_pawn, @current_player.color)
   end
 
   def chess_notation_to_array(chess_notation)
@@ -174,7 +173,7 @@ class Chess
       @display.not_piece_owner
     elsif piece&.trapped?(board.squares)
       @display.no_eligible_moves(piece.class)
-    elsif !in_move_set(piece, destination)
+    elsif !in_move_set?(piece, destination)
       @display.invalid_destination(piece.class, array_to_chess_notation(destination))
     elsif hits_king?(destination)
       @display.cannot_take_king
