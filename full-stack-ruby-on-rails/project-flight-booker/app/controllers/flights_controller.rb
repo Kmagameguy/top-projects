@@ -6,6 +6,7 @@ class FlightsController < ApplicationController
     unless params[:arrival_airport_id].nil?
       @search_results = Flight.where(departure_airport_id: params[:departure_airport_id])
                               .where(arrival_airport_id: params[:arrival_airport_id])
+                              .where("num_tickets >= ?", params[:num_tickets])
                               .select { |f| f.friendly_date == params[:departure_time] }
     end
   end
@@ -13,6 +14,6 @@ class FlightsController < ApplicationController
   private
 
   def flight_params
-    params.require(:flight).permit(:departure_airport_id, :arrival_airport_id, :departure_time)
+    params.require(:flight).permit(:departure_airport_id, :arrival_airport_id, :departure_time, :num_tickets)
   end
 end

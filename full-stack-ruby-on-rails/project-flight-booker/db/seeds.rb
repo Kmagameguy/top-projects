@@ -50,7 +50,8 @@ puts "Created #{Airport.count} airports."
   Flight.create!(
     departure_airport_id: AIRPORT_CODES.first,
     arrival_airport_id: AIRPORT_CODES[i + 1],
-    departure_time: DateTime.now + rand(1..30).days
+    departure_time: DateTime.now + rand(1..30).days,
+    num_tickets: rand(1..10)
   )
 end
 

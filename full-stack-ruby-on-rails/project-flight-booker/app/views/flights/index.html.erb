@@ -11,6 +11,11 @@
     </div>
 
     <div class="form-row">
+      <%= f.label :num_tickets, "Passengers" %>
+      <%= f.select :num_tickets, options_for_select((1..4).to_a, params[:num_tickets]) %>
+    </div>
+
+    <div class="form-row">
       <%= f.label :departure_time, "Available Departure Times" %>
       <%= f.select :departure_time, options_for_select(@departure_times, params[:departure_time]) %>
     </div>
