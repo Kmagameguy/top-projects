@@ -17,6 +17,10 @@ module EventsHelper
     event.event_date.in_time_zone(system_timezone).strftime('%Y-%m-%dT%k:%M')
   end
 
+  def upcoming?(event)
+    !past?(event)
+  end
+
   def past?(event)
     Event.past.include?(event)
   end

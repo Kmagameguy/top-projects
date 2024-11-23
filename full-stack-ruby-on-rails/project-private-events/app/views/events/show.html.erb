@@ -18,7 +18,7 @@
     </div>
 
     <div class="event-buttons">
-      <% if user_signed_in? %>
+      <% if user_signed_in? && upcoming?(@event) %>
         <% if not_own_event?(@event) && user_attending?(@event) %>
           <%= button_to "Cancel Attendance", event_attendance_path(@event), method: :delete, data: { turbo_method: :delete }, class: "btn" %>
         <% elsif own_event?(@event) %>
