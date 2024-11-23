@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show past_events]
+
   def new
     @event = Event.new
   end
@@ -25,6 +27,11 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
+
+    if current_user != @event.creator
+      flash[:alert] = 'You are not authorized to edit this event.'
+      redirect_to @event
+    end
   end
 
   def update
