@@ -1,6 +1,10 @@
 <div class="content-container">
   <% if @username.present? %>
-    <h2>Images by <%= @username %></h2>
+    <% if @photos.none? %>
+      <h2>No images found for <%= @username %></h2>
+    <% else %>
+      <h2>Images by <%= @username %></h2>
+    <% end %>
   <% else %>
     <h2>Top 10 Images by Interesting-ness</h2>
   <% end %>
