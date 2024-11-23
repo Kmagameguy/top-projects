@@ -8,6 +8,90 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="container">
+    <div class="row">
+      <div class="col" id="left">
+        <div id="logo-container">
+          <img src="./assets/images/odin-lined.png" alt="a linework rendition of a bearded deer with an eyepatch" />
+          <p>Odin</p>
+        </div>
+        <div id="attribution">
+          <p>
+            Photo by <a href="https://unsplash.com/@haliewestphoto?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Halie West</a> on <a href="https://unsplash.com/photos/25xggax4bSA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+          </p>
+        </div>
+      </div>
+      <div class="col" id="right">
+        <div id="header">
+          <h1>
+            This is not a real online service!
+            You know you need something like this in your life to help you
+            realize your deepest dreams.
+            Sign up <em>now</em> to get started.
+          </h1>
+          <h1>
+            You <em>know</em> you want to.
+          </h1>
+        </div>
+        <form action="#" method="post">
+          <div id="form-body">
+            <div class="form-row">
+              <div class="form-column">
+                <h2>Let's do this!</h2>
+              </div>
+            </div>
 
+            <div class="form-row">
+              <div class="form-column">
+                <label for="first-name">FIRST NAME *</label>
+                <input type="text" name="first-name" id="first-name" required placeholder="Thor" />
+              </div>
+              <div class=form-column>
+                <label for="last-name">LAST NAME *</label>
+                <input type="text" name="last-name" id="last-name" required placeholder="Odinson" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-column">
+                <label for="email">EMAIL *</label>
+                <input type="email" name="email" id="email" required placeholder="thor@odinson.com" />
+              </div>
+
+              <div class="form-column">
+                <label for="phone">PHONE NUMBER</label>
+                <input type="tel" name="phone" id="phone" placeholder="555-867-5309" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-column">
+                <label for="password">PASSWORD *</label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password" />
+              </div>
+              <div class="form-column">
+                <label for="password-confirmation">CONFIRM PASSWORD *</label>
+                <input
+                  type="password"
+                  name="password-confirmation"
+                  id="password-confirmation"
+                  required />
+              </div>
+            </div>
+          </div>
+          <div id="form-footer">
+            <button type="submit">Create Account</button>
+            <p>Already have an account? <a href="#">Log in</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <script src="./assets/script.js"></script>
+  </footer>
 </body>
 </html>
