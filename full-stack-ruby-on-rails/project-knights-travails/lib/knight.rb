@@ -13,10 +13,21 @@ class Knight
 
   def possible_next_moves
     x, y = @coordinates
-    MOVES.map { |x_offset, y_offset| [x + x_offset, y + y_offset] }
+    moves = MOVES.map { |x_offset, y_offset| [x + x_offset, y + y_offset] }
+    moves.reject { |move| out_of_bounds?(move) } # .reject, nice, thanks RuboCop
   end
 
   def knight_moves; end
+
+  private
+
+  def out_of_bounds?(move)
+    # board_boundary is hopefully temporary... i want to be able to evaluate
+    # jumps for any size board...which we can eventually get from
+    # the game_board i think.
+    board_boundary = 7
+    move.any? { |coordinate| coordinate.negative? || coordinate > board_boundary }
+  end
 end
 
 k = Knight.new([3, 4])
