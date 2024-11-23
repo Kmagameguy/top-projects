@@ -15,7 +15,7 @@
       </h2>
     <% elsif current_user.friends.include?(@user) %>
       <h2>
-        <p>You are already friends!</p>
+        <p>You are already friends!</p> <%= button_to "Unfriend 🔪", friend_path(@user), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete%>
       </h2>
     <% else %>
       <h2>
