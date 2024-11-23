@@ -33,13 +33,12 @@ class Board
   end
 
   def add_special_pieces
-    black_special_piece_row = 0
-    white_special_piece_row = 7
-    pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    black_special_piece_rank = 0
+    white_special_piece_rank = 7
 
-    pieces.each_with_index do |piece, column|
-      squares[black_special_piece_row][column] = piece.new(:black, [black_special_piece_row, column])
-      squares[white_special_piece_row][column] = piece.new(:white, [white_special_piece_row, column])
+    default_special_pieces.each_with_index do |piece, file|
+      squares[black_special_piece_rank][file] = piece.new(:black, [black_special_piece_rank, file])
+      squares[white_special_piece_rank][file] = piece.new(:white, [white_special_piece_rank, file])
     end
   end
 
@@ -52,6 +51,10 @@ class Board
 
     squares[l_rank][l_file] = nil
     squares[n_rank][n_file] = piece
+  end
+
+  def default_special_pieces
+    [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
   end
 
   # convenience method for now...
