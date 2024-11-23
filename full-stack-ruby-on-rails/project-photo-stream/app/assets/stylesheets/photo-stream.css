@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+html {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  font-size: 1.2rem;
+  --heading-font-family: 'Lato', sans-serif;
+  --paragraph-font-family: 'Merriweather', serif;
+}
+
+body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 0.2rem 1rem;
+  background-color: white;
+  border-bottom: 0.1rem solid black;
+  box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h1 {
+  font-family: var(--heading-font-family);
+  cursor: default;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+}
+
+nav form input[type="text"] {
+  font-family: var(--paragraph-font-family);
+  font-size: 0.6rem;
+  padding: 0.4rem 0.8rem;
+  border: 0.1rem solid grey;
+  border-radius: 0.2rem;
+}
+
+nav form input[type="submit"] {
+  font-family: var(--heading-font-family);
+  font-size: 0.6rem;
+  padding: 0.5rem 1rem;
+  outline: none;
+  appearance: none;
+  border: none;
+}
+
+.content-container {
+  flex: auto;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-container .img-container {
+  margin: 1rem;
+  border: 0.2rem solid black;
+  border-radius: 0.5rem;
+
+  padding: 2rem 2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-container .img-container h2 {
+  margin: 0rem 0rem 1rem 0rem;
+  padding: 0;
+}
+
+.content-container .img-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}

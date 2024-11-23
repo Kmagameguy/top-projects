@@ -5,6 +5,7 @@ class StaticPagesController < ApplicationController
               else
                 flickr.interestingness.getList(per_page: 10).photos
               end
+    @username = params[:username] if params[:username].present?
   end
 
   private
