@@ -6,7 +6,12 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    @profile = @user.profile
+    if current_user.id == @user.id
+      @profile = @user.profile
+    else
+      flash[:alert] = "You cannot edit someone else's profile."
+      redirect_to user_posts_path(@user)
+    end
   end
 
   def update
