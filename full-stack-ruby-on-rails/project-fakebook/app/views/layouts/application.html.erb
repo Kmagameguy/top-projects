@@ -13,6 +13,9 @@
 
   <body>
     <%= render 'layouts/header' %>
+    <% flash.each do |name, msg| %>
+      <span class="flash <%= name %>"><%= msg %></span>
+    <% end %>
     <div id="main-content-container">
       <%= yield %>
     </div>
