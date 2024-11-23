@@ -4,10 +4,7 @@ class FlightsController < ApplicationController
     @departure_times = Flight.upcoming_flight_times
 
     unless params[:arrival_airport_id].nil?
-      @search_results = Flight.where(departure_airport_id: params[:departure_airport_id])
-                              .where(arrival_airport_id: params[:arrival_airport_id])
-                              .where("num_tickets >= ?", params[:num_tickets])
-                              .select { |f| f.friendly_date == params[:departure_time] }
+      @search_results = Flight.search(params)
     end
   end
 

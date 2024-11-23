@@ -14,6 +14,13 @@ class Flight < ApplicationRecord
       .uniq
   }
 
+  def self.search(criteria)
+    Flight.where(departure_airport_id: criteria[:departure_airport_id],
+                 arrival_airport_id: criteria[:arrival_airport_id])
+          .where('num_tickets >= ?', criteria[:num_tickets])
+          .select { |f| f.friendly_date == criteria[:departure_time] }
+  end
+
   def friendly_date
     departure_time.strftime('%b %e, %Y')
   end
