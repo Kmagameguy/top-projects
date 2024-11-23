@@ -7,11 +7,36 @@ require_relative 'player'
 class Chess
   attr_reader :board
 
-  def initialize(black_name, white_name)
+  def initialize(white_name, black_name)
     @board = Board.new
     @black_player = Player.new(black_name, :black)
     @white_player = Player.new(white_name, :white)
     @current_player = @white_player
+    @turn_count = 1
+  end
+
+  def play
+    loop do
+      switch_players
+      increment_round
+      break if game_over?
+    end
+  end
+
+  def switch_players
+    @current_player = if @current_player == @white_player
+                        @black_player
+                      else
+                        @white_player
+                      end
+  end
+
+  def increment_round
+    @turn_count += 1
+  end
+
+  def game_over?
+    @turn_count == 75
   end
 
   def chess_notation_to_array(chess_notation)
