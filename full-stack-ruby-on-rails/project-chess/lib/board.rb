@@ -19,12 +19,7 @@ class Board
 
   def setup_board
     add_pawns
-    add_rooks
-    add_knights
-    add_bishops
-    add_queens
-    add_kings
-    #add_special_pieces
+    add_special_pieces
   end
 
   def add_pawns
@@ -37,74 +32,14 @@ class Board
     end
   end
 
-  def add_rooks
-    black_rook_rank = 0
-    white_rook_rank = 7
-
-    rook1_file = 0
-    rook2_file = 7
-
-    squares[black_rook_rank][rook1_file] = Rook.new(:black, [black_rook_rank, rook1_file])
-    squares[black_rook_rank][rook2_file] = Rook.new(:black, [black_rook_rank, rook2_file])
-
-    squares[white_rook_rank][rook1_file] = Rook.new(:white, [white_rook_rank, rook1_file])
-    squares[white_rook_rank][rook2_file] = Rook.new(:white, [white_rook_rank, rook2_file])
-  end
-
-  def add_knights
-    black_knight_rank = 0
-    white_knight_rank = 7
-
-    knight1_file = 1
-    knight2_file = 6
-
-    squares[black_knight_rank][knight1_file] = Knight.new(:black, [black_knight_rank, knight1_file])
-    squares[black_knight_rank][knight2_file] = Knight.new(:black, [black_knight_rank, knight2_file])
-
-    squares[white_knight_rank][knight1_file] = Knight.new(:white, [white_knight_rank, knight1_file])
-    squares[white_knight_rank][knight2_file] = Knight.new(:white, [white_knight_rank, knight2_file])
-  end
-
-  def add_bishops
-    black_bishop_rank = 0
-    white_bishop_rank = 7
-
-    bishop1_file = 2
-    bishop2_file = 5
-
-    squares[black_bishop_rank][bishop1_file] = Bishop.new(:black, [black_bishop_rank, bishop1_file])
-    squares[black_bishop_rank][bishop2_file] = Bishop.new(:black, [black_bishop_rank, bishop2_file])
-
-    squares[white_bishop_rank][bishop1_file] = Bishop.new(:white, [white_bishop_rank, bishop1_file])
-    squares[white_bishop_rank][bishop2_file] = Bishop.new(:white, [white_bishop_rank, bishop2_file])
-  end
-
-  def add_queens
-    black_queen_rank = 0
-    white_queen_rank = 7
-    queen_file = 3
-
-    squares[black_queen_rank][queen_file] = Queen.new(:black, [black_queen_rank, queen_file])
-    squares[white_queen_rank][queen_file] = Queen.new(:white, [white_queen_rank, queen_file])
-  end
-
-  def add_kings
-    black_king_rank = 0
-    white_king_rank = 7
-    king_file = 4
-
-    squares[black_king_rank][king_file] = King.new(:black, [black_king_rank, king_file])
-    squares[white_king_rank][king_file] = King.new(:white, [white_king_rank, king_file])
-  end
-
   def add_special_pieces
-    pieces = [:rook, :knight, :bishop, :queen, :king, :bishop, :knight, :rook]
-    black_special_piece_row = squares[0]
-    white_special_piece_row = squares[7]
+    black_special_piece_row = 0
+    white_special_piece_row = 7
+    pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
 
-    size.times do |column|
-      black_special_piece_row[column] = Piece.new(:black, pieces[column])
-      white_special_piece_row[column] = Piece.new(:white, pieces[column])
+    pieces.each_with_index do |piece, column|
+      squares[black_special_piece_row][column] = piece.new(:black, [black_special_piece_row, column])
+      squares[white_special_piece_row][column] = piece.new(:white, [white_special_piece_row, column])
     end
   end
 
