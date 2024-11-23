@@ -55,11 +55,12 @@ class Display
   def update!(board, player, round)
     clear
     stringify(board)
-    puts "Round #{round}: #{player.name}'s turn."
+    puts "Round #{round}: #{player.name}'s turn.  Playing as #{player.color}."
   end
 
   def turn_prompt
-    puts 'Make your move or type "quit game" to quit:'
+    puts 'Type your move using chess notation, or type "quit game" to quit:'
+    puts 'Example: a2 a4'
   end
 
   def check_warning
