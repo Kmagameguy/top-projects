@@ -24,3 +24,10 @@
   <input type="checkbox" data-action="checkbox#toggle">
   <p>Check the box</p>
 </div>
+
+<div data-controller="character-count">
+  <textarea name="bio" placeholder="type here" rows="10" cols="25"
+    data-action="keyup->character-count#calculate"
+    data-character-count-target="input"></textarea>
+  <p>You have <span class="counter" data-character-count-target="count">0</span> characters left!</p>
+</div>

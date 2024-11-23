@@ -5,3 +5,11 @@
 .highlight {
   border: 1px solid green;
 }
+
+.counter {
+  font-weight: 700;
+}
+
+.counter.danger {
+  color: red;
+}
