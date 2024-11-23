@@ -92,6 +92,48 @@ RSpec.describe Pawn do
           end
         end
 
+        context 'and the pawn can attack en-passant' do
+          before do
+            black_position = [3, 5]
+            white_position = [3, 6]
+
+            black_pawn.move!(black_position)
+            white_pawn.move!(white_position)
+
+            board[3][5] = black_pawn
+            board[4][1] = white_pawn
+            black_pawn.rushing = true
+          end
+
+          it 'returns a diagonal square' do
+            attacking_pawn = board[4][1]
+            step_behind_en_passantable_pawn = [2, 5]
+
+            expect(attacking_pawn.possible_moves(board)).to include(step_behind_en_passantable_pawn)
+          end
+        end
+
+        context 'and the pawn is in en-passant position, but the other piece is not rushing' do
+          before do
+            black_position = [3, 5]
+            white_position = [3, 6]
+
+            black_pawn.move!(black_position)
+            white_pawn.move!(white_position)
+
+            board[3][5] = black_pawn
+            board[4][1] = white_pawn
+            black_pawn.rushing = false
+          end
+
+          it 'does not allow for en-passant capture' do
+            attacking_pawn = board[4][1]
+            step_behind_enemy_pawn = [2, 5]
+
+            expect(attacking_pawn.possible_moves(board)).to_not include(step_behind_enemy_pawn)
+          end
+        end
+
         context 'and the pawn is blocked by its friend' do
           let(:other_black_pawn) { described_class.new(:black, [4, 0]) }
           let(:other_white_pawn) { described_class.new(:white, [3, 2]) }
@@ -159,6 +201,26 @@ RSpec.describe Pawn do
     end
   end
 
+  describe '#rushing?' do
+    subject(:pawn) { described_class.new(:black, [1, 0]) }
+
+    context 'when the pawn has just leapt two places from its home row' do
+      it 'returns true' do
+        pawn.move!([3, 0])
+        expect(pawn.rushing?).to be true
+      end
+    end
+
+    context 'when the pawn rushes forward, and then steps forward once' do
+      it 'returns false' do
+        pawn.move!([3, 0])
+        pawn.move!([4, 0])
+
+        expect(pawn.rushing?).to be false
+      end
+    end
+  end
+
   describe '#trapped?' do
     let(:board) { Array.new(8) { Array.new(8) } }
     subject(:pawn) { described_class.new(:black, [1, 0]) }
@@ -197,6 +259,28 @@ RSpec.describe Pawn do
 
       it 'returns false' do
         expect(pawn.trapped?(board)).to be false
+      end
+    end
+  end
+
+  describe '#forward_move?' do
+    subject(:pawn) { described_class.new(:black, [1, 0]) }
+
+    context 'when the movement is forward one step' do
+      it 'returns true' do
+        expect(pawn.forward_move?([2, 0])).to be true
+      end
+    end
+
+    context 'when the movement is forward two steps' do
+      it 'returns true' do
+        expect(pawn.forward_move?([3, 0])).to be true
+      end
+    end
+
+    context 'when the movement is sideways' do
+      it 'returns false' do
+        expect(pawn.forward_move?([2, 1])).to be false
       end
     end
   end

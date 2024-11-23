@@ -35,8 +35,9 @@ class Board
     update_square(piece)
   end
 
-  def destroy_en_passanted_pawns(piece)
+  def destroy_en_passanted_pawns(piece, destination)
     return unless piece.is_a?(Pawn)
+    return if piece.forward_move?(destination)
 
     if !piece.en_passantable_left.empty?
       destroy_piece(piece.en_passantable_left)

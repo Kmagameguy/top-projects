@@ -27,6 +27,30 @@ class Pawn < Piece
                      .reject { |move| out_of_bounds?(move, squares) }
   end
 
+  def promote?
+    (position[0].zero? || position[0] == 7)
+  end
+
+  def rushing?
+    @rushing
+  end
+
+  def trapped?(board)
+    possible_moves(board).empty?
+  end
+
+  def forward_move?(destination)
+    x, y = position
+    forward_direction = white? ? [[x - 1, y], [x - 2, y]] : [[x + 1, y], [x + 2, y]]
+    forward_direction.include?(destination)
+  end
+
+  def to_s
+    white? ? '♙' : '♟︎'
+  end
+
+  private
+
   def move_set(squares)
     moves = next_steps
     return [] if blocked?(moves.first, squares)
@@ -116,24 +140,6 @@ class Pawn < Piece
   def invert(moves)
     moves.map { |x, y| [x * -1, y * -1] }
   end
-
-  def promote?
-    (position[0].zero? || position[0] == 7)
-  end
-
-  def rushing?
-    @rushing
-  end
-
-  def trapped?(board)
-    possible_moves(board).empty?
-  end
-
-  def to_s
-    white? ? '♙' : '♟︎'
-  end
-
-  private
 
   def update_rushing(coordinates)
     prev_rank = coordinates[0]
