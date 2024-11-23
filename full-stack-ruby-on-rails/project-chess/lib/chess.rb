@@ -28,11 +28,15 @@ class Chess
   end
 
   def switch_players
-    @current_player = if @current_player == @white_player
-                        @black_player
-                      else
-                        @white_player
-                      end
+    @current_player = other_player
+  end
+
+  def other_player
+    if @current_player == @white_player
+      @black_player
+    else
+      @white_player
+    end
   end
 
   def take_turn
@@ -93,7 +97,11 @@ class Chess
   end
 
   def valid_move?(piece, move)
-    piece.possible_moves(board.squares).include?(move)
+    piece.possible_moves(board.squares).include?(move) unless hits_king?(move)
+  end
+
+  def hits_king?(move)
+    move == board.find_king(other_player.color)
   end
 
   def increment_round

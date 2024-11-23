@@ -57,6 +57,12 @@ class Board
     squares[n_rank][n_file] = piece
   end
 
+  def find_king(color)
+    squares.flatten.compact.select.find do |piece|
+      piece.is_a? King && piece.color == color
+    end.position
+  end
+
   def default_special_pieces
     [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
   end
