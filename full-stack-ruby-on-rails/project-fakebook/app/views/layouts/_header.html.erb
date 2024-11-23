@@ -16,11 +16,19 @@
           </li>
 
           <li>
-            <%= link_to current_user.friend_requests.count, user_friend_requests_path(current_user) %>
+            <%= link_to user_friend_requests_path(current_user) do %>
+              <% if current_user.friend_requests.count > 0 %>
+                <span title="<%= pluralize(current_user.friend_requests.count, 'friend request') %>"><i class='fa-solid fa-heart'></i></span>
+              <% else %>
+                <i class='fa-regular fa-heart'></i>
+              <% end %>
+            <% end %>
           </li>
 
           <li>
-            <%= link_to current_user.friends.count, user_friends_path(current_user) %>
+            <%= link_to user_friends_path(current_user) do %>
+              <span title="<%= pluralize(current_user.friends.count, 'friends') %>"><i class='fa-solid fa-user-group'></i></span>
+            <% end %>
           </li>
 
           <li>

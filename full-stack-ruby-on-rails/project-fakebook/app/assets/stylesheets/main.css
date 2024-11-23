@@ -71,9 +71,10 @@ body {
 
 .card {
   background-color: white;
+  border: 1px solid rgb(220, 220, 220);
   border-radius: 0.4rem;
   padding: 1rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.9rem;
 }
 
 .card.status {
@@ -97,7 +98,6 @@ body {
 }
 
 .card.comment {
-  border: 1px solid rgb(220, 220, 220);
   background-color: rgb(245, 245, 245);
 }
 
