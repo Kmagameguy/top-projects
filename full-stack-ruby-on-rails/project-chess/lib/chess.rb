@@ -44,9 +44,9 @@ class Chess
   end
 
   def array_to_chess_notation(array_notation)
-    x, y = array_notation
-    x = board.size - x
-    "#{indexed_alphabet.key(y)}#{x}"
+    row, column = array_notation
+    row = board.size - row
+    "#{indexed_alphabet.key(column)}#{row}"
   end
 
   def make_move(from, to)
