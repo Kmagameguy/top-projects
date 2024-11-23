@@ -2,12 +2,17 @@
   <div class="selections-container">
     <div class="form-row">
       <%= f.label :departure_airport_id %>
-      <%= f.collection_select :departure_airport_id, Airport.all, :id, :code %>
+      <%= f.select :departure_airport_id, options_for_select(Airport.all.map(&:code), params[:departure_airport_id]) %>
     </div>
 
     <div class="form-row">
       <%= f.label :arrival_airport_id %>
-      <%= f.collection_select :arrival_airport_id, Airport.all, :id, :code %>
+      <%= f.select :arrival_airport_id, options_for_select(Airport.all.map(&:code), params[:arrival_airport_id]) %>
+    </div>
+
+    <div class="form-row">
+      <%= f.label :departure_time, "Available Departure Times" %>
+      <%= f.select :departure_time, options_for_select(@departure_times, params[:departure_time]) %>
     </div>
   </div>
 
