@@ -60,5 +60,20 @@ RSpec.describe ConnectFour do
         expect(game_loop).to be_game_over
       end
     end
+
+    context 'when all slots are filled up and no player has 4-in-a-row' do
+      it 'returns true' do
+        row1 = ['🔴', '🔴', '🔵', '🔴', '🔴', '🔵', '🔵']
+        row2 = ['🔵', '🔴', '🔴', '🔵', '🔵', '🔴', '🔴']
+        row3 = ['🔴', '🔵', '🔴', '🔴', '🔴', '🔵', '🔵']
+        row4 = ['🔵', '🔴', '🔵', '🔵', '🔵', '🔴', '🔴']
+        row5 = ['🔴', '🔵', '🔵', '🔴', '🔴', '🔵', '🔵']
+        row6 = ['🔵', '🔴', '🔵', '🔵', '🔴', '🔴', '🔵']
+        rows = [row1, row2, row3, row4, row5, row6]
+        game_loop.board.slots = rows
+
+        expect(game_loop).to be_game_over
+      end
+    end
   end
 end
