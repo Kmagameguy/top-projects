@@ -11,6 +11,9 @@
   </head>
 
   <body>
+    <div>
+      <%= link_to "logout", destroy_user_session_path, method: :delete, data: { "turbo-method" => :delete } %>
+    </div>
     <%= yield %>
   </body>
 </html>
