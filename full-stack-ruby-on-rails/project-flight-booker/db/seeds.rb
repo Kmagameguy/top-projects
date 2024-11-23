@@ -41,12 +41,17 @@ AIRPORT_CODES = %w[
 
 Airport.destroy_all
 Flight.destroy_all
+
 Airport.create!(AIRPORT_CODES.map { |code| { code: } })
 
 puts "Created #{Airport.count} airports."
 
 (AIRPORT_CODES.count - 1).times do |i|
-  Flight.create!(departure_airport_id: AIRPORT_CODES.first, arrival_airport_id: AIRPORT_CODES[i + 1])
+  Flight.create!(
+    departure_airport_id: AIRPORT_CODES.first,
+    arrival_airport_id: AIRPORT_CODES[i + 1],
+    departure_time: DateTime.now + rand(1..30).days
+  )
 end
 
 puts "Created #{Flight.count} flights."
