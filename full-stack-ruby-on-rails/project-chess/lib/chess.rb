@@ -13,6 +13,7 @@ class Chess
   def initialize(white_name, black_name, save_file = GameFile.new)
     @save_file = save_file
     @saved_and_quit = false
+    @display = Display.new
     load_game? ? load! : new_game(white_name, black_name)
   end
 
@@ -69,7 +70,7 @@ class Chess
 
   def play
     loop do
-      Display.show(board, @current_player, @turn_count)
+      @display.update!(board.squares, @current_player, @turn_count)
       break if game_over?
 
       puts 'Your King is checked!' if board.check?(@current_player.color, other_player.color)

@@ -2,12 +2,13 @@
 
 # A class to manage terminal output
 class Display
-  def self.clear
-    system('clear')
-    system('cls')
+
+  def show_intro
+    clear
+    puts introduction
   end
 
-  def self.introduction
+  def introduction
     <<~HEREDOC
       Welcome to Chess!
       To get started, please enter your player names.
@@ -16,9 +17,17 @@ class Display
     HEREDOC
   end
 
-  def self.show(board, player, round)
+  def update!(board, player, round)
     clear
     puts board.to_s
     puts "Round #{round}: #{player.name}'s turn."
   end
+
+  private
+
+  def clear
+    system('clear')
+    system('cls')
+  end
+
 end
