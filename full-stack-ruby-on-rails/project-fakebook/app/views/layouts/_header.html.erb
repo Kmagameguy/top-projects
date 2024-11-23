@@ -1,0 +1,33 @@
+<header id="main-header">
+  <nav id="main-nav">
+    <ul id="hero">
+      <li>
+        <h1><a href="/">Fakebook</a></h1>
+      </li>
+
+      <% if user_signed_in? %>
+        <ul id="nav-links">
+          <li>
+            <%= link_to "my profile", user_posts_path(current_user) %>
+          </li>
+
+          <li>
+            <%= link_to "find friends", users_path %>
+          </li>
+
+          <li>
+            <%= link_to current_user.friend_requests.count, user_friend_requests_path(current_user) %>
+          </li>
+
+          <li>
+            <%= link_to current_user.friends.count, user_friends_path(current_user) %>
+          </li>
+
+          <li>
+            <%= link_to "logout", destroy_user_session_path, method: :delete, data: { "turbo-method" => :delete } %>
+          </li>
+        </ul>
+      <% end %>
+    </ul>
+  </nav>
+</header>
