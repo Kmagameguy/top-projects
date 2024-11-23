@@ -49,21 +49,7 @@ class Board
   end
 
   def horizontal_in_a_row?(marker)
-    markers_in_a_row = 0
-    @slots.each do |row|
-      markers_in_a_row = 0
-      @column_count.times do |column|
-        if row[column] == marker
-          markers_in_a_row += 1
-        else
-          markers_in_a_row = 0
-        end
-
-        break if markers_in_a_row == 4
-      end
-      break if markers_in_a_row == 4
-    end
-    !!(markers_in_a_row == 4)
+    four_in_a_row?(rows_to_columns, marker)
   end
 
   def upslope_in_a_row?(marker)
@@ -88,9 +74,14 @@ class Board
     matrix
   end
 
+  def rows_to_columns
+    deep_copy(@slots).transpose
+  end
+
   def four_in_a_row?(rows, marker)
     markers_in_a_row = 0
-    @column_count.times do |column|
+    columns = rows[0].size
+    columns.times do |column|
       markers_in_a_row = 0
       rows.each do |row|
         if row[column] == marker

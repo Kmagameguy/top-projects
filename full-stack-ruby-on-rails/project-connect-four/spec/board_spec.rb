@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'board'
+require 'display'
 
 RSpec.describe Board do
   subject(:board) { Board.new }
@@ -136,7 +137,7 @@ RSpec.describe Board do
 
     context 'when a player has 4 spots within a row, but not in-a-row' do
       it 'returns false' do
-        game_row = [player_marker, nil, player_marker, player_marker, player_marker, nil]
+        game_row = [player_marker, nil, player_marker, player_marker, player_marker, nil, nil]
         bottom_row = board.row_count - 1
         board.slots[bottom_row] = game_row
 
