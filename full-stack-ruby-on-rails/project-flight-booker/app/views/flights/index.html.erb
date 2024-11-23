@@ -1,9 +1,15 @@
 <%= form_with url: :flights, method: :get, local: true do |f| %>
-  <%= f.label :departure_airport_id %>
-  <%= f.collection_select :departure_airport_id, Airport.all, :id, :code %>
+  <div class="selections-container">
+    <div class="form-row">
+      <%= f.label :departure_airport_id %>
+      <%= f.collection_select :departure_airport_id, Airport.all, :id, :code %>
+    </div>
 
-  <%= f.label :arrival_airport_id %>
-  <%= f.collection_select :arrival_airport_id, Airport.all, :id, :code %>
+    <div class="form-row">
+      <%= f.label :arrival_airport_id %>
+      <%= f.collection_select :arrival_airport_id, Airport.all, :id, :code %>
+    </div>
+  </div>
 
   <%= f.submit "Search" %>
 <% end %>
