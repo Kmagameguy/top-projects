@@ -1,0 +1,8 @@
+<div>
+  <h1>People</h1>
+  <ul>
+    <% @users.each do |user| %>
+      <li><%= link_to_user_profile(user) %> | <%= user.email %></li>
+    <% end %>
+  </ul>
+</div>
