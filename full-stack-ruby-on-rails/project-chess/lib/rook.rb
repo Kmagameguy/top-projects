@@ -9,7 +9,7 @@ class Rook < Piece
   end
 
   def move_set(board)
-    horizontal_moves(board).concat(vertical_moves(board))
+    horizontal_moves(board).concat(vertical_moves(board)).sort
   end
 
   def vertical_moves(board)
@@ -22,7 +22,10 @@ class Rook < Piece
 
     until x == 0
       x -= 1
-      break if blocked?([x, y], board)
+      if blocked?([x, y], board)
+        moves << [x, y] if killing_move?([x, y], board)
+        break
+      end
 
       moves << [x, y]
     end
@@ -35,7 +38,10 @@ class Rook < Piece
 
     until x == (board.size - 1)
       x += 1
-      break if blocked?([x, y], board)
+      if blocked?([x, y], board)
+        moves << [x, y] if killing_move?([x, y], board)
+        break
+      end
 
       moves << [x, y]
     end
@@ -52,7 +58,10 @@ class Rook < Piece
 
     until y == 0
       y -= 1
-      break if blocked?([x, y], board)
+      if blocked?([x, y], board)
+        moves << [x, y] if killing_move?([x, y], board)
+        break
+      end
 
       moves << [x, y]
     end
@@ -65,11 +74,23 @@ class Rook < Piece
 
     until y == (board.size - 1)
       y += 1
-      break if blocked?([x, y], board)
+      if blocked?([x, y], board)
+        moves << [x, y] if killing_move?([x, y], board)
+        break
+      end
 
       moves << [x, y]
     end
     moves
+  end
+
+  def killing_move?(move, board)
+    x, y = move
+    piece = board.dig(x, y)
+
+    return false if piece.nil?
+
+    piece.color != color
   end
 
   def to_s
