@@ -14,6 +14,12 @@ class Chess
     [rank(chess_notation), file(chess_notation)]
   end
 
+  def array_to_chess_notation(array_notation)
+    x, y = array_notation
+    x = board.size - x
+    "#{indexed_alphabet.key(y)}#{x}"
+  end
+
   def make_move(from, to)
     a_from = chess_notation_to_array(from)
     a_to = chess_notation_to_array(to)
