@@ -1,4 +1,4 @@
-<div>
+<div class="card status">
   <p>What's on your mind, <%= current_user.name %>?</p>
   <%= form_with model: @post, method: :post do |f| %>
     <%= f.text_area :body %>

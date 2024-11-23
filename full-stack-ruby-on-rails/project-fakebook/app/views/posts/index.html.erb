@@ -6,22 +6,23 @@
   <% if @posts&.any? %>
     <div>
       <% @posts.each do |post| %>
-        <p><%= post.body %></p>
-        <% if posts_owner?(@user) %>
-          <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
-        <% end %>
-        <% if post.comments.any? %>
-          <% post.comments.each do |comment| %>
-            <div>
-              <p><%= comment.commentable.user.name %>
-              <p><%= comment.body %>
-              <% if comment_owner?(comment.author) %>
-                <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
-              <% end %>
-            </div>
+        <div class="card post">
+          <p><span class="post-author"><%= post.author.name %> Posted:</span><%= post.body %></p>
+          <% if posts_owner?(@user) %>
+            <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
           <% end %>
-        <% end %>
-        <%= render "posts/comment_form", :post => post %>
+          <% if post.comments.any? %>
+            <% post.comments.each do |comment| %>
+              <div class="card comment">
+                <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
+                <% if comment_owner?(comment.author) %>
+                  <%= button_to "Delete", comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+                <% end %>
+              </div>
+            <% end %>
+            <%= render "posts/comment_form", :post => post %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   <% else %>

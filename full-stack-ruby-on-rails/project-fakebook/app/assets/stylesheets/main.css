@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+html {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  font-size: 1.2rem;
+  --heading-font-family: 'Lato', sans-serif;
+  --paragraph-font-family: 'Merriweather', serif;
+}
+
+body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-header {
+  padding: 0.2rem 1rem;
+  background-color: white;
+  border-bottom: 0.1rem solid black;
+  box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+#main-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#main-nav h1 {
+  font-family: var(--heading-font-family);
+  cursor: default;
+  padding: 0;
+}
+
+#main-nav a {
+  text-decoration: none;
+  color: black;
+}
+
+#hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+#main-content-container {
+  min-width: 50%;
+  margin: 2rem auto;
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.4rem;
+  padding: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.card.status {
+  box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.card.post {
+  box-shadow: 0rem 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.card.status form {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 1rem;
+}
+
+.card.status input[type='submit'] {
+  padding: 0.65rem 2rem;
+  align-self: flex-start;
+}
+
+.card.comment {
+  border: 1px solid rgb(220, 220, 220);
+  background-color: rgb(245, 245, 245);
+}
+
+.comment-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.comment-form input[type='submit'] {
+  padding: 0.45rem 0.6rem;
+  align-self: flex-start;
+}
