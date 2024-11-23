@@ -1,0 +1,15 @@
+<header>
+  <nav>
+    <ul>
+    <li>
+      <h1><a href="/">Flickr Photo Stream</a></h1>
+    </li>
+    <li>
+      <%= form_with url: static_pages_path, method: :get, local: true do |f| %>
+        <%= f.text_field :username, placeholder: 'Search by Flickr Username' %>
+        <%= f.submit "Search" %>
+      <% end %>
+    </li>
+    </ul>
+  </nav>
+</header>
