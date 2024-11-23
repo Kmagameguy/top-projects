@@ -3,6 +3,7 @@
 require_relative './pieces/pawn'
 require_relative './pieces/rook'
 require_relative './pieces/knight'
+require_relative './pieces/bishop'
 
 
 # A class to manage our chess board and its state
@@ -19,6 +20,7 @@ class Board
     add_pawns
     add_rooks
     add_knights
+    add_bishops
     #add_special_pieces
   end
 
@@ -58,6 +60,20 @@ class Board
 
     squares[white_knight_rank][knight1_file] = Knight.new(:white, [white_knight_rank, knight1_file])
     squares[white_knight_rank][knight2_file] = Knight.new(:white, [white_knight_rank, knight2_file])
+  end
+
+  def add_bishops
+    black_bishop_rank = 0
+    white_bishop_rank = 7
+
+    bishop1_file = 2
+    bishop2_file = 5
+
+    squares[black_bishop_rank][bishop1_file] = Bishop.new(:black, [black_bishop_rank, bishop1_file])
+    squares[black_bishop_rank][bishop2_file] = Bishop.new(:black, [black_bishop_rank, bishop2_file])
+
+    squares[white_bishop_rank][bishop1_file] = Bishop.new(:white, [white_bishop_rank, bishop1_file])
+    squares[white_bishop_rank][bishop2_file] = Bishop.new(:white, [white_bishop_rank, bishop2_file])
   end
 
   def add_special_pieces
