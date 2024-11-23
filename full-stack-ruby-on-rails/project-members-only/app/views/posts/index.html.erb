@@ -1,0 +1,18 @@
+<div class="post-container">
+  <h1>All Messages</h1>
+
+  <% @posts.each do |post| %>
+    <div class="post-card">
+      <% if user_signed_in? %>
+        <h3 class="post-author"><%= post.user.email %></h3>
+      <% end %>
+      <p class="post-content"><%= post.content %></p>
+    </div>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= button_to "logout", destroy_user_session_path, method: :delete %>
+  <% else %>
+    <%= button_to "login", new_user_session_path, method: :get %>
+  <% end %>
+</div>

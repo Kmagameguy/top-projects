@@ -7,4 +7,5 @@ Rails.application.routes.draw do
 
   root 'posts#index'
 
+  resource :posts, only: [:new, :create, :index]
 end

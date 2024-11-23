@@ -1,0 +1,8 @@
+<div class="post-form-container">
+  <%= form_with model: @post do |f| %>
+    <%= f.label :content, 'Post a new message:' %>
+    <%= f.text_area :content, placeholder: 'Post content here...' %>
+
+    <%= f.submit "Create post" %>
+  <% end %>
+</div>
