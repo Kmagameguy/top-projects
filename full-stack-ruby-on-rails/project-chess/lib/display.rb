@@ -9,7 +9,7 @@ class Display
 
   def self.show(board, player, round)
     #self.clear
-    puts "Round #{round}: #{player.name}'s turn."
     puts board.to_s
+    puts "Round #{round}: #{player.name}'s turn."
   end
 end
