@@ -1,0 +1,13 @@
+<div>
+
+  <%= render "posts/post_form" %>
+  <% if @posts&.any? %>
+    <div>
+      <% @posts.each do |post| %>
+        <p><%= post.body %></p>
+      <% end %>
+    </div>
+  <% else %>
+    <p>You haven't posted anything yet.</p>
+  <% end %>
+</div>
