@@ -18,6 +18,18 @@ class Display
     puts introduction
   end
 
+  def load_game_prompt
+    puts 'Load saved game? (y/n)'
+  end
+
+  def save_game_prompt
+    puts 'Save before quitting? (y/n)'
+  end
+
+  def quit_game_prompt
+    puts 'Quit game? (y/n)'
+  end
+
   def introduction
     <<~HEREDOC
       To get started, please enter your player names.
@@ -46,6 +58,10 @@ class Display
     puts "Round #{round}: #{player.name}'s turn."
   end
 
+  def turn_prompt
+    puts 'Make your move or type "quit game" to quit:'
+  end
+
   def check_warning
     puts 'Your King is checked!'
   end
@@ -68,6 +84,14 @@ class Display
 
   def cannot_move_into_check(piece, destination)
     puts "Moving #{piece} to #{destination} would put your King into check!"
+  end
+
+  def prompt_for_reselection
+    puts 'Select again.'
+  end
+
+  def show_winner(winner)
+    puts "Game over! #{winner} wins!"
   end
 
   private

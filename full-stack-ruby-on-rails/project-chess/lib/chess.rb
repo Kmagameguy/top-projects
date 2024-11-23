@@ -45,17 +45,17 @@ class Chess
   def load_game?
     return false unless @save_file.exists?
 
-    puts 'Load saved game? (y/n)'
+    @display.load_game_prompt
     Input.yes_response?
   end
 
   def save_game?
-    puts 'Save before quitting? (y/n)'
+    @display.save_game_prompt
     Input.yes_response?
   end
 
   def quit_game?
-    puts 'Quit game? (y/n)'
+    @display.quit_game_prompt
     Input.yes_response?
   end
 
@@ -97,11 +97,12 @@ class Chess
       switch_players
       increment_round
     end
-    puts "Game over! #{other_player.name} wins!"
+    @display.show_winner(other_player.name)
   end
 
   def take_turn
-    puts 'Make your move or type "quit game" to quit:'
+    @display.turn_prompt
+
     loop do
       input = Input.new
 
@@ -169,7 +170,7 @@ class Chess
       @display.cannot_move_into_check
     end
 
-    puts 'Select again.'
+    @display.prompt_for_reselection
   end
 
   private
