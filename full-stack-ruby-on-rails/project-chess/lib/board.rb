@@ -11,8 +11,10 @@ require_relative './pieces/king'
 class Board
   attr_reader :size, :squares
 
+  SIZE = 8
+
   def initialize
-    @size = 8
+    @size = SIZE
     @squares = Array.new(size) { Array.new(size) }
     setup_board!
   end
