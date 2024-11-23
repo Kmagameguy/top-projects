@@ -31,6 +31,186 @@ RSpec.describe Chess do
     end
   end
 
+  describe '#castling?' do
+    context 'when the selected pieces are not a king and a rook' do
+      it 'returns false' do
+        first_piece = Piece.new(:black, [0, 0])
+        second_piece = Rook.new(:black, [0, 1])
+
+        expect(game.castling?(first_piece, second_piece)).to be false
+      end
+    end
+
+    context 'when the selected pieces are a king and a rook' do
+      it 'returns true' do
+        first_piece = Rook.new(:black, [0, 0])
+        second_piece = King.new(:black, [0, 4])
+
+        expect(game.castling?(first_piece, second_piece)). to be true
+      end
+    end
+  end
+
+  describe '#identify_rook_and_king' do
+    context 'when the rook is passed in first' do
+      it 'returns [king, rook]' do
+        rook = game.board.square([7, 0])
+        king = game.board.square([7, 4])
+
+        expect(game.identify_rook_and_king(rook, king)).to eql([king, rook])
+      end
+    end
+
+    context 'when the king is passed in first' do
+      it 'returns [king, rook]' do
+        rook = game.board.square([7, 0])
+        king = game.board.square([7, 4])
+
+        expect(game.identify_rook_and_king(king, rook)).to eql([king, rook])
+      end
+    end
+  end
+
+  describe '#valid_castle?' do
+    context 'when the spaces between the rook and the king are not empty' do
+      it 'returns false' do
+        rook = game.board.square([7, 0])
+        king = game.board.square([7, 4])
+
+        expect(game.valid_castle?(king, rook)).to be false
+      end
+    end
+
+    context 'when some, but not all, the spaces between the rook and the king are empty' do
+      before do
+        2.times { |time| game.board.destroy_piece([7, time + 1]) }
+      end
+
+      it 'returns false' do
+        rook = game.board.square([7, 0])
+        king = game.board.square([7, 4])
+
+        expect(game.valid_castle?(king, rook)).to be false
+      end
+    end
+
+    context 'when the spaces between the rook and the king are empty' do
+      before do
+        3.times { |time| game.board.destroy_piece([7, time + 1]) }
+      end
+
+      context 'and the king is checked' do
+        before do
+          game.board.create_piece([5, 3], Knight, :black)
+        end
+
+        it 'returns false' do
+          rook = game.board.square([7, 0])
+          king = game.board.square([7, 4])
+
+          expect(game.valid_castle?(king, rook)).to be false
+        end
+      end
+
+      context 'and the king has moved' do
+        it 'returns false' do
+          rook = game.board.square([7, 0])
+          king = game.board.square([7, 4])
+          king.move!([7, 3])
+
+          expect(game.valid_castle?(king, rook)).to be false
+        end
+      end
+
+      context 'and the rook and king are different colors' do
+        it 'returns false' do
+          rook = game.board.square([0, 0])
+          king = game.board.square([7, 4])
+
+          expect(game.valid_castle?(king, rook)).to be false
+        end
+      end
+
+      context 'and the king passes through a square which would put it into check' do
+        before do
+          game.board.create_piece([6, 2], Pawn, :black)
+        end
+
+        it 'returns false' do
+          rook = game.board.square([0, 0])
+          king = game.board.square([7, 4])
+
+          expect(game.valid_castle?(king, rook)).to be false
+        end
+      end
+
+      context 'and the rook and king can long-castle unimpeded' do
+        it 'returns true' do
+          rook = game.board.square([7, 0])
+          king = game.board.square([7, 4])
+
+          expect(game.valid_castle?(king, rook)).to be true
+        end
+      end
+
+      context 'and the rook and king can short-castle unimpeded' do
+        before do
+          adjacent_right = 5
+          2.times { |offset| game.board.destroy_piece([7, adjacent_right + offset]) }
+        end
+
+        it 'returns true' do
+          rook = game.board.square([7, 7])
+          king = game.board.square([7, 4])
+
+          expect(game.valid_castle?(king, rook)).to be true
+        end
+      end
+    end
+  end
+
+  describe '#castle!' do
+    before do
+      king_adjacent_right = 5
+      3.times { |index| game.board.destroy_piece([7, index + 1]) }
+      2.times { |offset| game.board.destroy_piece([7, king_adjacent_right + offset]) }
+    end
+
+    context 'when the rook is to the left of the king' do
+      let(:rook) { game.board.square([7, 0]) }
+      let(:king) { game.board.square([7, 4]) }
+
+      before do
+        game.castle!(king, rook)
+      end
+
+      it 'moves the king left two squares' do
+        expect(king.position).to match_array([7, 2])
+      end
+
+      it "moves the rook to the king's right side" do
+        expect(rook.position).to match_array([7, 3])
+      end
+    end
+
+    context 'when the rook is to the right of the king' do
+      let(:rook) { game.board.square([7, 7]) }
+      let(:king) { game.board.square([7, 4]) }
+
+      before do
+        game.castle!(king, rook)
+      end
+
+      it 'moves the king right two squares' do
+        expect(king.position).to match_array([7, 6])
+      end
+
+      it "moves the rook to the king's left side" do
+        expect(rook.position).to match_array([7, 5])
+      end
+    end
+  end
+
   describe '#valid?' do
     context 'when the selected piece can move to the destination' do
       it 'return true' do
@@ -158,6 +338,78 @@ RSpec.describe Chess do
       it 'returns true' do
         expect(game.current_player.color).to be :white
         expect(game).to be_game_over
+      end
+    end
+  end
+
+  describe '#promote!' do
+    before do
+      game.switch_players
+      game.board.create_piece([7, 0], Pawn, :black)
+    end
+
+    context 'when choosing to replace the pawn with a queen' do
+      before do
+        allow(game).to receive(:replacement_piece).and_return(Queen)
+      end
+
+      it 'converts the pawn into a queen' do
+        b_pawn = game.board.square([7, 0])
+        game.promote!(b_pawn)
+
+        expect(game.board.square([7, 0])).to be_a Queen
+      end
+    end
+
+    context 'when choosing to replace the pawn with a rook' do
+      before do
+        allow(game).to receive(:replacement_piece).and_return(Rook)
+      end
+
+      it 'converts the pawn into a queen' do
+        b_pawn = game.board.square([7, 0])
+        game.promote!(b_pawn)
+
+        expect(game.board.square([7, 0])).to be_a Rook
+      end
+    end
+
+    context 'when choosing to replace the pawn with a knight' do
+      before do
+        allow(game).to receive(:replacement_piece).and_return(Knight)
+      end
+
+      it 'converts the pawn into a knight' do
+        b_pawn = game.board.square([7, 0])
+        game.promote!(b_pawn)
+
+        expect(game.board.square([7, 0])).to be_a Knight
+      end
+    end
+
+    context 'when choosing to replace the pawn with a bishop' do
+      before do
+        allow(game).to receive(:replacement_piece).and_return(Bishop)
+      end
+
+      it 'converts the pawn into a bishop' do
+        b_pawn = game.board.square([7, 0])
+        game.promote!(b_pawn)
+
+        expect(game.board.square([7, 0])).to be_a Bishop
+      end
+    end
+
+    context 'when assigning a color to the replacement piece' do
+      before do
+        allow(game).to receive(:replacement_piece).and_return(Bishop)
+      end
+
+      it 'retains the original piece color' do
+        b_pawn = game.board.square([7, 0])
+        game.promote!(b_pawn)
+
+        expect(game.board.square([7, 0]).color).to be :black
       end
     end
   end

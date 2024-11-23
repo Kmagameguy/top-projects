@@ -69,7 +69,7 @@ class Chess
         if valid?(piece, destination)
           board.update!(piece, destination)
           reset_en_passant
-          promote(piece) if promote?(piece)
+          promote!(piece) if promote?(piece)
           break
         else
           print_error(piece, destination)
@@ -140,7 +140,7 @@ class Chess
     checkmate?
   end
 
-  def promote(pawn)
+  def promote!(pawn)
     @display.update!(board.squares, @current_player, @turn_count)
     board.create_piece(pawn.position, replacement_piece, @current_player.color)
   end
