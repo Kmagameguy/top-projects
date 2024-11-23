@@ -1,0 +1,6 @@
+<%= link_to event_path event do %>
+  <h2><%= event.title %></h2>
+  <p><%= event.creator.name %></p>
+  <p><%= event.description %></p>
+  <p><%= friendly_date(event) %> at <%= event.location %></p>
+<% end %>

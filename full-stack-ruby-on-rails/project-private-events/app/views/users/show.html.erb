@@ -1,12 +1,7 @@
 <h1 class="section-header">My Created Events</h1>
 <% if @user.created_events.any? %>
   <% @user.created_events.each do |event| %>
-    <div class="card">
-      <h2><%= event.title %></h2>
-      <p><%= event.creator.name %></p>
-      <p><%= event.description %></p>
-      <p><%= event.event_date %> at <%= event.location %></p>
-    </div>
+    <%= render "events/card", event: event %>
   <% end %>
 <% else %>
   <p>You have not created any events yet.</p>
@@ -16,12 +11,7 @@
 <% if @user.attended_events.any? %>
   <% if @user.attended_events.upcoming.any? %>
     <% @user.attended_events.upcoming.each do |event| %>
-      <div class="card">
-        <h2><%= event.title %></h2>
-        <p><%= event.creator.name %></p>
-        <p><%= event.description %></p>
-        <p><%= event.event_date %> at <%= event.location %></p>
-      </div>
+      <%= render "events/card", event: event %>
     <% end %>
   <% else %>
     <p>You have no upcoming events.</p>
@@ -30,12 +20,7 @@
   <h1 class="section-header">Past Events</h2>
   <% if @user.attended_events.past.any? %>
     <% @user.attended_events.past.each do |event| %>
-      <div class="card">
-        <h2><%= event.title %></h2>
-        <p><%= event.creator.name %></p>
-        <p><%= event.description %></p>
-        <p><%= event.event_date %> at <%= event.location %></p>
-      </div>
+      <%= render "events/card", event: event %>
     <% end %>
   <% else %>
     <p>You have not attended any events yet.</p>
