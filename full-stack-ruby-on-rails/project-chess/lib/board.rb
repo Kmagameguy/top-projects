@@ -22,26 +22,6 @@ class Board
     add_special_pieces
   end
 
-  def add_pawns
-    black_pawn_rank = 1
-    white_pawn_rank = 6
-
-    size.times do |file|
-      squares[black_pawn_rank][file] = Pawn.new(:black, [black_pawn_rank, file])
-      squares[white_pawn_rank][file] = Pawn.new(:white, [white_pawn_rank, file])
-    end
-  end
-
-  def add_special_pieces
-    black_special_piece_rank = 0
-    white_special_piece_rank = 7
-
-    default_special_pieces.each_with_index do |piece, file|
-      squares[black_special_piece_rank][file] = piece.new(:black, [black_special_piece_rank, file])
-      squares[white_special_piece_rank][file] = piece.new(:white, [white_special_piece_rank, file])
-    end
-  end
-
   def square(coordinates)
     row, column = coordinates
     squares[row][column]
@@ -73,10 +53,6 @@ class Board
     squares.flatten.compact.select { |piece| piece.color == color }
   end
 
-  def default_special_pieces
-    [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-  end
-
   # convenience method for now...
   def to_s
     num_squares = size
@@ -98,16 +74,30 @@ class Board
     ('a'..'h').each { |letter| print letter.to_s + ' ' }
     puts ''
   end
-end
 
-# board:
-# (0) 8 [♜] [♞] [♝] [♛] [♚] [♝] [♞] [♜]
-# (1) 7 [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎] [♟︎]
-# (2) 6 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
-# (3) 5 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
-# (4) 4 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
-# (5) 3 [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
-# (6) 2 [♙] [♙] [♙] [♙] [♙] [♙] [♙] [♙]
-# (7) 1 [♖] [♘] [♗] [♕] [♔] [♗] [♘] [♖]
-#        a   b   c   d   e   f   g   h
-#       (0) (1) (2) (3) (4) (5) (6) (7)
+  private
+
+  def default_special_pieces
+    [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+  end
+
+  def add_pawns
+    black_pawn_rank = 1
+    white_pawn_rank = 6
+
+    size.times do |file|
+      squares[black_pawn_rank][file] = Pawn.new(:black, [black_pawn_rank, file])
+      squares[white_pawn_rank][file] = Pawn.new(:white, [white_pawn_rank, file])
+    end
+  end
+
+  def add_special_pieces
+    black_special_piece_rank = 0
+    white_special_piece_rank = 7
+
+    default_special_pieces.each_with_index do |piece, file|
+      squares[black_special_piece_rank][file] = piece.new(:black, [black_special_piece_rank, file])
+      squares[white_special_piece_rank][file] = piece.new(:white, [white_special_piece_rank, file])
+    end
+  end
+end
