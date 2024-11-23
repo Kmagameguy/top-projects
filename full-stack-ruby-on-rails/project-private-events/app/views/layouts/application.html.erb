@@ -10,9 +10,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <%= render "layouts/header" %>
-
   <body>
+    <%= render "layouts/header" %>
+
     <% if notice %>
       <p class="toast notice"><%= notice %></p>
     <% end %>
@@ -21,6 +21,8 @@
       <p class="toast alert"><%= alert %></p>
     <% end %>
 
-    <%= yield %>
+    <div class="main-content">
+      <%= yield %>
+    </div>
   </body>
 </html>

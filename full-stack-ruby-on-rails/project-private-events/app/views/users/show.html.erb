@@ -1,0 +1,9 @@
+<h1>My Created Events</h1>
+<% @user.created_events.each do |event| %>
+  <div class="card">
+    <h2><%= event.title %></h2>
+    <p><%= event.creator.name %></p>
+    <p><%= event.description %></p>
+    <p><%= event.event_date %> at <%= event.location %></p>
+  </div>
+<% end %>

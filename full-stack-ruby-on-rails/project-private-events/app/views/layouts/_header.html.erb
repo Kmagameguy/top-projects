@@ -1,8 +1,11 @@
-<nav class="header">
-  <a href="/" class="home">Home</a>
-  <% if user_signed_in? %>
-    <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
-  <% else %>
-    <%= button_to "Login", new_user_session_path, method: :get %>
-  <% end %>
-</nav>
+<header>
+  <nav>
+    <%= link_to("Home", root_path, method: :get, :class => "btn-home") %>
+    <% if user_signed_in? %>
+      <%= link_to("My Events", current_user, method: :get) %>
+      <%= link_to("Log Out", destroy_user_session_path, data: { turbo_method: :delete }) %>
+    <% else %>
+      <%= link_to("Login", new_user_session_path, method: :get) %>
+    <% end %>
+  </nav>
+</header>
