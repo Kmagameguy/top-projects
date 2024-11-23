@@ -1,7 +1,23 @@
-<div>
-  <% if posts_owner?(@user) %>
-    <%= render "posts/post_form" %>
-  <% end %>
+<div class="profile-container">
+  <div class="friends-container">
+    <div class="card friends">
+      <%= possessive(@user.name) %> friends:
+      <% if @user.friends.any? %>
+        <ul>
+          <% @user.friends.each do |friend| %>
+            <li><%= link_to_user_profile(friend) %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p><%= @user.name %> doesn't have any friends yet.  You could be their first!</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="feed-container">
+    <% if posts_owner?(@user) %>
+      <%= render "posts/post_form" %>
+    <% end %>
 
   <% if @posts&.any? %>
     <div>
