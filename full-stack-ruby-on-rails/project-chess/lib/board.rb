@@ -53,28 +53,6 @@ class Board
     squares.flatten.compact.select { |piece| piece.color == color }
   end
 
-  # convenience method for now...
-  def to_s
-    num_squares = size
-    squares.each_with_index do |row, index|
-      print "#{num_squares - index}| "
-      row.each do |square|
-
-        if square.is_a?(Piece)
-          print square.to_s + ' '
-        else
-          print '  '
-        end
-
-      end
-      print '|'
-      puts ''
-    end
-    print '   '
-    ('a'..'h').each { |letter| print letter.to_s + ' ' }
-    puts ''
-  end
-
   private
 
   def default_special_pieces
