@@ -1,9 +1,8 @@
 class Profile < ApplicationRecord
   belongs_to :user
 
-  def birthday
-    return nil if read_attribute(:birthday).blank?
-    read_attribute(:birthday).strftime('%m/%d/%y')
+  def pretty_format_birthday
+    birthday.strftime('%B %e, %Y')
   end
 
   def address
