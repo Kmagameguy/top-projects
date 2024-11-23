@@ -10,11 +10,21 @@ class Chess
     @board = Board.new
   end
 
-  def chess_notation_to_array_notation(chess_notation)
-    [rank(chess_notation), indexed_alphabet[file(chess_notation)]]
+  def chess_notation_to_array(chess_notation)
+    [rank(chess_notation), file(chess_notation)]
   end
 
-  def valid_move?(piece, move)
+  def make_move(from, to)
+    from = chess_notation_to_array(from)
+    to = chess_notation_to_array(to)
+
+    board.update(from, to) if valid_move?(from, to)
+  end
+
+  def valid_move?(square, move)
+    square_rank, square_file = square
+    piece = board.squares[square_rank][square_file]
+
     m = piece.possible_moves
              .reject { |p_move| out_of_bounds?(p_move) }
 
@@ -45,6 +55,6 @@ class Chess
   end
 
   def file(string)
-    string.strip.chars.first.downcase
+    indexed_alphabet[string.strip.chars.first.downcase]
   end
 end
