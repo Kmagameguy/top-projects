@@ -39,6 +39,7 @@
         <% @posts.each do |post| %>
           <div class="card post">
             <p><span class="post-author"><%= post.author.name %> Posted:</span> <%= post.body %></p>
+            <%= render "posts/likes", { :user => @user, :commentable => post } %>
             <% if posts_owner?(@user) %>
               <%= link_to icon('fa-regular', 'trash-can'), post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?', turbo_method: :delete }, method: :delete %>
             <% end %>
@@ -46,6 +47,7 @@
               <% post.comments.each do |comment| %>
                 <div class="card comment">
                   <p><%= link_to_user_profile(comment.author) %> says: <%= comment.body %></p>
+                  <%= render "posts/likes", {:user => @user, :commentable => comment } %>
                   <% if comment_owner?(comment.author) %>
                     <%= link_to icon('fa-regular', 'trash-can'), comment_path(comment), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?', turbo_method: :delete }, method: :delete %>
                   <% end %>
@@ -57,7 +59,7 @@
         <% end %>
       <% else %>
         <div class="card post">
-          <p><%= posts_owner?(@user) ? "You haven\'t" : "#{@user&.name} hasn't" %> posted anything yet.</p>
+          <p><%= posts_owner?(@user) ? "You haven't" : "#{@user&.name} hasn't" %> posted anything yet.</p>
         </div>
       <% end %>
     </div>
