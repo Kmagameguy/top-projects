@@ -2,7 +2,6 @@
 
 require_relative 'knight'
 require_relative 'node'
-require 'pry-byebug'
 
 # A class which contains a knight and a grid of positions onto which it can move
 class GameBoard
