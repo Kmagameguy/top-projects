@@ -8,8 +8,9 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
 
     if @booking.save
-      flash[:success] = "Flight booked!"
       send_registration_emails
+
+      flash[:success] = "Flight booked!"
       redirect_to @booking
     else
       flash[:alert] = "something went wrong"
