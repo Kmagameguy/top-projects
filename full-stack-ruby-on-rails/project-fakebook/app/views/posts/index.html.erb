@@ -1,17 +1,36 @@
 <div class="profile-container">
-  <div>
-    <h1><%= possessive(@user.name) %> Profile</h1>
-    <h4>
-      <% if current_user.email == @user.email %>
-        <i>That's you!</i>
-      <% elsif pending_friend_request?(@user) %>
-        Your friend request is still pending...
-      <% elsif current_user.friends.include?(@user) %>
-        <p>You and <%= @user.name %> are friends.</p> <%= button_to "Unfriend 🔪", friend_path(@user), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
-      <% else %>
-        <%= button_to 'Request to be friends', user_friend_requests_path(@user), data: { 'turbo-method' => :post } %>
+  <div class="profile-info card post">
+    <div class="profile-left">
+      <div class="profile-img">
+        <%= gravatar_for(@user) %>
+      </div>
+      <div class="profile-header">
+        <h1><%= possessive(@user.name) %> Profile</h1>
+        <h4>
+          <% if current_user.email == @user.email %>
+            <i>That's you!</i>
+          <% elsif pending_friend_request?(@user) %>
+            Your friend request is still pending...
+          <% elsif current_user.friends.include?(@user) %>
+            <p>You and <%= @user.name %> are friends.</p> <%= button_to "Unfriend 🔪", friend_path(@user), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+          <% else %>
+            <%= button_to 'Request to be friends', user_friend_requests_path(@user), data: { 'turbo-method' => :post } %>
+          <% end %>
+        </h4>
+      </div>
+    </div>
+    <div class="profile-details">
+      <ul>
+        <li><span class="bold-text">Bio: </span><%= format_attribute(@user.profile.bio) %></li>
+        <li><span class="bold-text">Email: </span><%= format_email(@user.profile.email) %></li>
+        <li><span class="bold-text">Birthday: </span><%= format_date(@user.profile.birthday) %></li>
+        <li><span class="bold-text">Location: </span><%= format_attribute(@user.profile.full_address) %></li>
+        <li><span class="bold-text">Phone: </span><%= format_phone(@user.profile.phone) %></li>
+      </ul>
+      <% if current_user.id == @user.id %>
+        <%= link_to "Edit Profile", edit_user_profile_path(@user.profile) %>
       <% end %>
-    </h4>
+    </div>
   </div>
 
   <div class="profile-sidebars">
