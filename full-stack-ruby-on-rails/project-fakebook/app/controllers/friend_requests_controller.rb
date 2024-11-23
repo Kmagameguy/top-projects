@@ -5,7 +5,7 @@ class FriendRequestsController < ApplicationController
     @friend_request = FriendRequest.create(user_id: params[:user_id], friend_id: current_user.id)
     if @friend_request.save
       flash[:notice] = "Friend request sent!"
-      redirect_to user_path(params[:user_id])
+      redirect_to request.env['HTTP_REFERER']
     else
       flash[:alert] = "Fate laughs at your friend request (an error occurred)"
       redirect_to root_path
