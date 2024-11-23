@@ -7,6 +7,9 @@
     <div>
       <% @posts.each do |post| %>
         <p><%= post.body %></p>
+        <% if posts_owner?(@user) %>
+          <%= button_to "Delete", post_path(post), data: { confirm: 'Are you sure?', turbo_confirm: 'Are you sure?' }, method: :delete %>
+        <% end %>
       <% end %>
     </div>
   <% else %>
