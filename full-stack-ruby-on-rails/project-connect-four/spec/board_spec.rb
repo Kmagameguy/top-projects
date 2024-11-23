@@ -73,14 +73,53 @@ RSpec.describe Board do
       end
     end
 
-    context 'when a player has 4 vertical spots in a column, but not in-a-row' do
+    context 'when a player has 4 spots in a column, but not in-a-row' do
       it 'returns false' do
         chosen_column = 3
-        column_markers = [nil, 'x', 'o', 'x', 'x', 'x']
+        player_marker = 'x'
+        computer_marker = 'o'
 
-        column_markers.each { |marker| board.drop_to_slot(chosen_column, marker) }
+        3.times { board.drop_to_slot(chosen_column, player_marker) }
+        board.drop_to_slot(chosen_column, computer_marker)
+        board.drop_to_slot(chosen_column, player_marker)
 
+        o_row = 3
+
+        expect(board.find_slot(o_row, chosen_column)).to eql 'o'
         expect(board.vertical_in_a_row?('x')).to be false
+      end
+    end
+  end
+
+  describe '#horizontal_in_a_row_match?' do
+    context 'when no player has 4-in-a-row, horizontally' do
+      it 'returns false' do
+        chosen_column = 3
+        player_marker = 'x'
+        board.drop_to_slot(chosen_column, player_marker)
+        expect(board.vertical_in_a_row?(player_marker)).to be false
+      end
+    end
+
+    context 'when a player has 4-in-a-row, horizontally' do
+      it 'returns true' do
+        player_marker = 'x'
+        4.times do |column|
+          board.drop_to_slot(column + 1, player_marker)
+        end
+
+        expect(board.horizontal_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4 spots within a row, but not in-a-row' do
+      it 'returns false' do
+        game_row = ['x', nil, 'x', 'x', 'x', nil]
+        bottom_row = board.row_count - 1
+        board.slots[bottom_row] = game_row
+
+        expect(board.find_slot(6, 1)).to eql 'x'
+        expect(board.horizontal_in_a_row?('x')).to be false
       end
     end
   end

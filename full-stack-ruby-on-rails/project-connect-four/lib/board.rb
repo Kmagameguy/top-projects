@@ -45,4 +45,20 @@ class Board
     end
     !!(markers_in_a_row == 4)
   end
+
+  def horizontal_in_a_row?(marker)
+    markers_in_a_row = 0
+    @slots.each do |row|
+      @column_count.times do |column|
+        if row[column] == marker
+          markers_in_a_row += 1
+        else
+          markers_in_a_row = 0
+        end
+
+        break if markers_in_a_row == 4
+      end
+    end
+    !!(markers_in_a_row == 4)
+  end
 end
