@@ -11,7 +11,7 @@ class Chess
   end
 
   def chess_notation_to_array_notation(chess_notation)
-    [indexed_alphabet[first_char(chess_notation)], second_char(chess_notation)]
+    [rank(chess_notation), indexed_alphabet[file(chess_notation)]]
   end
 
   def valid_move?(piece, move)
@@ -35,16 +35,16 @@ class Chess
   private
 
   def indexed_alphabet
-    ('a'..'z').each_with_object({}).with_index do |(letter, hash), index|
+    ('a'..'h').each_with_object({}).with_index do |(letter, hash), index|
       hash[letter] = index
     end
   end
 
-  def first_char(string)
-    string.strip.chars.first.downcase
+  def rank(string)
+    board.size - string.strip.chars.last.to_i
   end
 
-  def second_char(string)
-    string.strip.chars.last.to_i
+  def file(string)
+    string.strip.chars.first.downcase
   end
 end

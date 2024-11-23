@@ -7,20 +7,20 @@ RSpec.describe Chess do
     subject(:game) { described_class.new }
 
     context 'when input is lowercase' do
-      it 'converts f8 to [5, 8]' do
-        expect(game.chess_notation_to_array_notation('f8')).to eql [5, 8]
+      it 'converts f8 to [0, 5]' do
+        expect(game.chess_notation_to_array_notation('f8')).to eql [0, 5]
       end
     end
 
     context 'when input is uppercase' do
-      it 'converts B8 to [1, 8]' do
-        expect(game.chess_notation_to_array_notation('B8')).to eql [1, 8]
+      it 'converts B8 to [0, 1]' do
+        expect(game.chess_notation_to_array_notation('B8')).to eql [0, 1]
       end
     end
 
     context 'when input has trailing space' do
-      it 'converts " C4  " to [2, 4]' do
-        expect(game.chess_notation_to_array_notation(' C4  ')).to eql [2, 4]
+      it 'converts " C4  " to [4, 2]' do
+        expect(game.chess_notation_to_array_notation(' C4  ')).to eql [4, 2]
       end
     end
   end
