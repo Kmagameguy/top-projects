@@ -14,13 +14,6 @@
   <%= f.submit "Search" %>
 <% end %>
 
-<h2>All Flights</h2>
-<% @all_flights.each do |flight| %>
-  <%= render "flights/flight_card", flight: flight %>
-<% end %>
-
-<br>
-
 <% if @search_results %>
   <h2>Search Results</h2>
   <% unless @search_results.present? %>
@@ -30,4 +23,11 @@
       <%= render "flights/flight_card", flight: flight %>
     <% end %>
   <% end %>
+<% end %>
+
+<br />
+
+<h2>All Flights</h2>
+<% @all_flights.each do |flight| %>
+  <%= render "flights/flight_card", flight: flight %>
 <% end %>
