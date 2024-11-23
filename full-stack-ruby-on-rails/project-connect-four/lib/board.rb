@@ -29,6 +29,13 @@ class Board
     @slots[row - 1][column - 1]
   end
 
+  def any_in_a_row?(marker)
+    vertical_in_a_row?(marker) ||
+      horizontal_in_a_row?(marker)
+  end
+
+  private
+
   def vertical_in_a_row?(marker)
     markers_in_a_row = 0
     @column_count.times do |column|
