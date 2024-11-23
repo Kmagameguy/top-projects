@@ -1,5 +1,8 @@
 <div class="post-container">
   <h1>All Messages</h1>
+  <% if !user_signed_in? %>
+    <p class="user-account">You are not signed in.  Displaying posts anonymously.</p>
+  <% end %>
 
   <% @posts.each do |post| %>
     <div class="card">

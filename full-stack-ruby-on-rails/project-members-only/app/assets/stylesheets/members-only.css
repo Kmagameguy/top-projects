@@ -97,6 +97,11 @@ h6 {
   align-items: center;
 }
 
+.user-account {
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
 .card {
   background-color: white;
   width: 60%;
