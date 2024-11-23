@@ -12,9 +12,9 @@ class ConnectFour
 
   def initialize(player_name:)
     @board = Board.new
-    @player = Player.new(player_name, @board.column_count)
+    @player = Player.new(player_name, board.column_count)
     @computer = Computer.new
-    @current_player = @player
+    @current_player = player
     show_board
   end
 
@@ -33,16 +33,16 @@ class ConnectFour
   def switch_players
     return if board.blank?
 
-    @current_player = if @current_player == @player
-                        @computer
+    @current_player = if current_player == player
+                        computer
                       else
-                        @player
+                        player
                       end
   end
 
   def add_chip
-    board.drop_to_slot(pick_column, @current_player.marker)
-    sleep(1) if @current_player == @computer
+    board.drop_to_slot(pick_column, current_player.marker)
+    sleep(1) if current_player == computer
   end
 
   def pick_column
@@ -61,8 +61,8 @@ class ConnectFour
   private
 
   def show_turn_message
-    if @current_player == @player
-      puts "#{@current_player.name} it's your turn.  Next move?"
+    if current_player == player
+      puts "#{current_player.name} it's your turn.  Next move?"
     else
       puts 'Computer is picking a spot...'
     end
@@ -73,26 +73,26 @@ class ConnectFour
   end
 
   def verify_column(column)
-    return column unless @board.column_full?(column)
+    return column unless board.column_full?(column)
   end
 
   def pick
-    @current_player.select_column
+    current_player.select_column
   end
 
   def player_has_four_in_a_row
-    @board.any_in_a_row?(@current_player.marker)
+    board.any_in_a_row?(current_player.marker)
   end
 
   def no_spots_left?
-    @board.full?
+    board.full?
   end
 
   def show_game_over_message
     if no_spots_left?
       puts "It's a draw!"
     else
-      puts "#{@current_player.name} wins!" unless no_spots_left?
+      puts "#{current_player.name} wins!" unless no_spots_left?
     end
   end
 end

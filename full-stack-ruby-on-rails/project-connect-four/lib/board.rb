@@ -8,26 +8,26 @@ class Board
   def initialize
     @row_count = 6
     @column_count = 7
-    @slots = Array.new(@row_count) { Array.new(@column_count) }
+    @slots = Array.new(row_count) { Array.new(column_count) }
   end
 
   def blank?
-    @slots.all? { |row| row.all?(&:nil?) }
+    slots.all? { |row| row.all?(&:nil?) }
   end
 
   def column_full?(column)
     column_index = column - 1
 
-    @slots.all? { |row| !row[column_index].nil? }
+    slots.all? { |row| !row[column_index].nil? }
   end
 
   def full?
-    @slots.all? { |row| row.none?(&:nil?) }
+    slots.all? { |row| row.none?(&:nil?) }
   end
 
   def drop_to_slot(column, marker)
     column_index = column - 1
-    @slots.reverse_each do |row|
+    slots.reverse_each do |row|
       if row[column_index].nil?
         row[column_index] = marker
         break
@@ -36,7 +36,7 @@ class Board
   end
 
   def find_slot(row, column)
-    @slots[row - 1][column - 1]
+    slots[row - 1][column - 1]
   end
 
   def any_in_a_row?(marker)
@@ -49,7 +49,7 @@ class Board
   private
 
   def vertical_in_a_row?(marker)
-    four_in_a_row?(@slots, marker)
+    four_in_a_row?(slots, marker)
   end
 
   def horizontal_in_a_row?(marker)
@@ -67,7 +67,7 @@ class Board
   end
 
   def vertically_align_diagonal_cells(check_upslope: false)
-    matrix = deep_copy(@slots)
+    matrix = deep_copy(slots)
     matrix.reverse! if check_upslope
     matrix.map.with_index do |row, index|
       index.times do
@@ -79,7 +79,7 @@ class Board
   end
 
   def rows_to_columns
-    deep_copy(@slots).transpose
+    deep_copy(slots).transpose
   end
 
   def four_in_a_row?(rows, marker)
