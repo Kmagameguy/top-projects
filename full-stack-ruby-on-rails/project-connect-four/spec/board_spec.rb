@@ -158,4 +158,41 @@ RSpec.describe Board do
       end
     end
   end
+
+  describe '#diagonal_left_in_a_row?' do
+    context 'when no player has 4-in-a-row, diagonally' do
+      it 'returns false' do
+        player_marker = 'x'
+
+        board.slots[0][0] = player_marker
+        expect(board.diagonal_right_in_a_row?(player_marker)).to be false
+      end
+    end
+
+    context 'when a player has 4-in-a-row, diagonally' do
+      it 'returns true' do
+        player_marker = 'x'
+
+        board.slots[0][6] = player_marker
+        board.slots[1][5] = player_marker
+        board.slots[2][4] = player_marker
+        board.slots[3][3] = player_marker
+
+        expect(board.diagonal_left_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4 spots taken, but not in-a-row' do
+      it 'returns false' do
+        player_marker = 'x'
+
+        board.slots[0][6] = player_marker
+        board.slots[1][5] = player_marker
+        board.slots[2][4] = player_marker
+        board.slots[4][4] = player_marker
+
+        expect(board.diagonal_left_in_a_row?(player_marker)).to be false
+      end
+    end
+  end
 end
