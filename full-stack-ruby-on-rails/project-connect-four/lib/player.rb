@@ -4,9 +4,9 @@
 class Player
   attr_reader :name, :marker
 
-  def initialize(name, marker, max_range = 7)
+  def initialize(name, max_range = 7)
     @name = name
-    @marker = marker
+    @marker = 'x'
     @max_range = max_range
   end
 

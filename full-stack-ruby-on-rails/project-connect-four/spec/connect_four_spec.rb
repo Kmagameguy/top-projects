@@ -3,7 +3,7 @@
 require 'connect_four'
 
 RSpec.describe ConnectFour do
-  subject(:game_loop) { described_class.new(player_name: 'Ongar the World-Weary', player_marker: 'x') }
+  subject(:game_loop) { described_class.new(player_name: 'Ongar the World-Weary') }
 
   describe '#switch_players' do
     context 'when the game has just started' do

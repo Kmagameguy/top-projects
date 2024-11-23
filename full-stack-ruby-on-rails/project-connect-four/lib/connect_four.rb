@@ -2,16 +2,17 @@
 
 require_relative 'board'
 require_relative 'player'
+require_relative 'computer'
 
 # A class to manage our Connect Four game
 class ConnectFour
   attr_accessor :board
   attr_reader :player, :computer, :current_player
 
-  def initialize(player_name:, player_marker:)
+  def initialize(player_name:)
     @board = Board.new
-    @player = Player.new(player_name, player_marker, @board.column_count)
-    @computer = Player.new('computer', 'o')
+    @player = Player.new(player_name, @board.column_count)
+    @computer = Computer.new
     @current_player = @player
   end
 

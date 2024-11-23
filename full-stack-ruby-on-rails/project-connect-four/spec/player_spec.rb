@@ -3,7 +3,7 @@
 require 'player'
 
 RSpec.describe Player do
-  subject(:column_selection) { described_class.new('Mannimarco', 'x') }
+  subject(:column_selection) { described_class.new('Mannimarco') }
 
   describe '#select_column' do
     context 'when user selection is valid' do
