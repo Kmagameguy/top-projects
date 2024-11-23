@@ -15,11 +15,11 @@ class GameBoard
     @queue = []
   end
 
-  def knight_move(source, destination)
+  def knight_moves(source, destination)
     @start_position = source
     @end_position = destination
     build_move_tree(Node.new(coordinates: @start_position))
-    print_result(find_shortest_path)
+    find_shortest_path
   end
 
   private
@@ -45,11 +45,6 @@ class GameBoard
     end
   end
 
-  def print_result(result)
-    puts "Knight made it from #{result[:pathway].first} to #{result[:pathway].last} in #{result[:move_count]} moves."
-    result[:pathway].each { |square| p square }
-  end
-
   def find_shortest_path
     pathway = []
     move_count = 0
@@ -73,4 +68,6 @@ class GameBoard
 end
 
 b = GameBoard.new
-b.knight_move([3, 3], [4, 3])
+r = b.knight_moves([3, 3], [4, 3])
+puts "Knight made it from #{r[:pathway].first} to #{r[:pathway].last} in #{r[:move_count]} moves."
+r[:pathway].each { |square| p square }
