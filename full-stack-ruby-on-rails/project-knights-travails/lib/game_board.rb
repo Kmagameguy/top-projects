@@ -15,7 +15,6 @@ class GameBoard
   end
 
   def knight_move(source, destination)
-    puts "Starting position: #{source}"
     node = Node.new(source)
     queue = [node]
     @visited_squares << node
@@ -35,16 +34,20 @@ class GameBoard
                            .first
 
     pathway = []
+    move_count = 0
     until path.parent.nil?
       pathway << path.coordinates
       path = path.parent
+      move_count += 1
     end
-    pathway.reverse
+    puts "Knight made it from #{source} to #{destination} in #{move_count} moves:"
+    pathway << source
+    pathway.reverse.each { |square| p square }
   end
 end
 
 b = GameBoard.new
-p b.knight_move([1, 6], [6, 1])
+b.knight_move([3, 3], [4, 3])
 
 # Board:
 #
