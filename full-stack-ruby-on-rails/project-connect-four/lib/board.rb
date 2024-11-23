@@ -83,22 +83,15 @@ class Board
   end
 
   def four_in_a_row?(rows, chip)
-    chips_in_a_row = 0
     columns = rows[0].size
-    columns.times do |column|
-      chips_in_a_row = 0
-      rows.each do |row|
-        if row[column] == chip
-          chips_in_a_row += 1
-        else
-          chips_in_a_row = 0
+    row_cap = rows.size - 4
+    (0..columns).any? do |column|
+      (0..row_cap).any? do |row|
+        (0..3).all? do |row_offset|
+          rows[row + row_offset][column] == chip
         end
-
-        break if chips_in_a_row == 4
       end
-      break if chips_in_a_row == 4
     end
-    !!(chips_in_a_row == 4)
   end
 
   # I couldn't figure out a better way to avoid mutating the @slots
