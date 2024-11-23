@@ -3,6 +3,7 @@
 require_relative 'board'
 require_relative 'player'
 require_relative 'display'
+require_relative 'input'
 
 # A class to manage the state of a chess game
 class Chess
@@ -41,52 +42,40 @@ class Chess
   end
 
   def take_turn
-    piece = choose_piece
-    destination = choose_destination(piece)
-    board.update!(piece, destination)
-  end
-
-  def choose_piece
-    puts 'Choose a piece to move:'
+    puts 'Make your move:'
     loop do
-      piece = board.square(chess_notation_to_array(choose_square))
+      input = Input.new
+      piece = board.square(chess_notation_to_array(input.first_location))
+      destination = chess_notation_to_array(input.second_location)
 
-      if !own_piece?(piece)
-        puts "That isn't one of your pieces. Select again."
-      elsif trapped?(piece)
-        puts "Your #{piece.class} cannot move. Select again."
+      if valid?(piece, destination)
+        board.update!(piece, destination)
+        break
       else
-        return piece
+        puts 'Invalid option(s).  Select again.'
       end
     end
   end
 
-  def choose_destination(piece)
-    puts "Choose a destination for your #{piece.class}:"
-    loop do
-      destination = chess_notation_to_array(choose_square)
-      return destination if valid_move?(piece, destination)
+  def valid?(piece, destination)
+    valid_piece?(piece) && valid_destination?(piece, destination)
+  end
 
-      puts "#{piece.class} cannot move there. Select again."
+  def valid_piece?(piece)
+    return false unless own_piece?(piece)
+    return false if trapped?(piece)
+
+    true
+  end
+
+  def valid_destination?(piece, destination)
+    if in_move_set?(piece, destination)
+      return false if hits_king?(destination)
+
+      true
+    else
+      false
     end
-  end
-
-  def choose_square
-    input = user_input
-
-    until chess_notation?(input)
-      puts 'Invalid option. Try [Letter][Number].'
-      input = user_input
-    end
-    input
-  end
-
-  def user_input
-    gets.chomp.strip
-  end
-
-  def chess_notation?(string)
-    string.match(/^([a-h])([1-8])/i)
   end
 
   def own_piece?(piece)
@@ -97,7 +86,7 @@ class Chess
     piece&.possible_moves(board.squares)&.empty?
   end
 
-  def valid_move?(piece, move)
+  def in_move_set?(piece, move)
     piece.possible_moves(board.squares).include?(move) unless hits_king?(move)
   end
 
