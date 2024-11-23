@@ -96,4 +96,21 @@ RSpec.describe Piece do
       end
     end
   end
+
+  describe '#moved?' do
+    subject(:piece) { described_class.new(:black, :pawn) }
+
+    context 'when the piece has not moved from its initial position' do
+      it 'returns false' do
+        expect(piece).to_not be_moved
+      end
+    end
+
+    context 'when the piece has moved from its initial position' do
+      it 'returns true' do
+        piece.move
+        expect(piece).to be_moved
+      end
+    end
+  end
 end
