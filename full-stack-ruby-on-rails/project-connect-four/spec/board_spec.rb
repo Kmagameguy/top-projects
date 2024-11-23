@@ -89,36 +89,73 @@ RSpec.describe Board do
         expect(board.any_in_a_row?('x')).to be false
       end
     end
-  end
 
-  context 'when no player has 4-in-a-row, horizontally' do
-    it 'returns false' do
-      chosen_column = 3
-      player_marker = 'x'
-      board.drop_to_slot(chosen_column, player_marker)
-      expect(board.any_in_a_row?(player_marker)).to be false
-    end
-  end
-
-  context 'when a player has 4-in-a-row, horizontally' do
-    it 'returns true' do
-      player_marker = 'x'
-      4.times do |column|
-        board.drop_to_slot(column + 1, player_marker)
+    context 'when no player has 4-in-a-row, horizontally' do
+      it 'returns false' do
+        chosen_column = 3
+        player_marker = 'x'
+        board.drop_to_slot(chosen_column, player_marker)
+        expect(board.any_in_a_row?(player_marker)).to be false
       end
+    end
 
-      expect(board.any_in_a_row?(player_marker)).to be true
+    context 'when a player has 4-in-a-row, horizontally' do
+      it 'returns true' do
+        player_marker = 'x'
+        4.times do |column|
+          board.drop_to_slot(column + 1, player_marker)
+        end
+
+        expect(board.any_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4 spots within a row, but not in-a-row' do
+      it 'returns false' do
+        game_row = ['x', nil, 'x', 'x', 'x', nil]
+        bottom_row = board.row_count - 1
+        board.slots[bottom_row] = game_row
+
+        expect(board.find_slot(6, 1)).to eql 'x'
+        expect(board.any_in_a_row?('x')).to be false
+      end
     end
   end
 
-  context 'when a player has 4 spots within a row, but not in-a-row' do
-    it 'returns false' do
-      game_row = ['x', nil, 'x', 'x', 'x', nil]
-      bottom_row = board.row_count - 1
-      board.slots[bottom_row] = game_row
+  describe '#diagonal_right_in_a_row?' do
+    context 'when no player has 4-in-a-row, diagonally' do
+      it 'returns false' do
+        player_marker = 'x'
+        board.slots[0][0] = player_marker
 
-      expect(board.find_slot(6, 1)).to eql 'x'
-      expect(board.any_in_a_row?('x')).to be false
+        expect(board.diagonal_right_in_a_row?(player_marker)).to be false
+      end
+    end
+
+    context 'when a player has 4-in-a-row, diagonally' do
+      it 'returns true' do
+        player_marker = 'x'
+
+        board.slots[0][0] = player_marker
+        board.slots[1][1] = player_marker
+        board.slots[2][2] = player_marker
+        board.slots[3][3] = player_marker
+
+        expect(board.diagonal_right_in_a_row?(player_marker)).to be true
+      end
+    end
+
+    context 'when a player has 4 spots taken, but not in-a-row' do
+      it 'returns false' do
+        player_marker = 'x'
+
+        board.slots[5][0] = player_marker
+        board.slots[4][1] = player_marker
+        board.slots[3][2] = player_marker
+        board.slots[1][4] = player_marker
+
+        expect(board.diagonal_right_in_a_row?(player_marker)).to be false
+      end
     end
   end
 end
