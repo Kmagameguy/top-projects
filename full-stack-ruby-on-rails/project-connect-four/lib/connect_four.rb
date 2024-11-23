@@ -53,6 +53,12 @@ class ConnectFour
     end
   end
 
+  def game_over?
+    board.any_in_a_row?(@current_player.marker)
+  end
+
+  private
+
   def show_turn_message
     if @current_player == @player
       puts "#{@current_player.name} it's your turn.  Next move?"
@@ -71,9 +77,5 @@ class ConnectFour
 
   def pick
     @current_player.select_column
-  end
-
-  def game_over?
-    board.any_in_a_row?(@current_player.marker)
   end
 end
