@@ -6,7 +6,7 @@ module UsersHelper
   def gravatar_for(user)
     gravatar_url =
       Rails.cache.fetch("gravatar/#{user.id}", expires_in: 1.hour) do
-        email = user.profile.email || ''
+        email = user.email || ''
         gravatar_id = Digest::MD5.hexdigest(email)
         "https://secure.gravatar.com/avatar/#{gravatar_id}"
       end
