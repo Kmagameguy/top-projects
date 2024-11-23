@@ -4,7 +4,7 @@
   <% @posts.each do |post| %>
     <div class="card">
       <% if user_signed_in? %>
-        <h3 class="post-author"><%= post.user.email %></h3>
+        <h3 class="post-author"><%= post.user.name %></h3>
       <% end %>
       <p class="post-content"><%= post.content %></p>
     </div>
@@ -12,10 +12,10 @@
 
   <% if user_signed_in? %>
     <div class="btn-container">
-      <%= button_to "logout", destroy_user_session_path, method: :delete %>
+      <%= button_to "Logout", destroy_user_session_path, method: :delete %>
       <%= button_to "New Post", new_posts_path, method: :get %>
     </div>
   <% else %>
-    <%= button_to "login", new_user_session_path, method: :get %>
+    <%= button_to "Login", new_user_session_path, method: :get %>
   <% end %>
 </div>
